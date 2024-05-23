@@ -2,6 +2,8 @@ package ru.msu.university.service;
 
 import ru.msu.university.model.Faculty;
 
+import java.util.Collection;
+
 public interface FacultyService {
     Faculty add(Faculty faculty);
 
@@ -12,4 +14,5 @@ public interface FacultyService {
     Faculty delete(Long id);
 
     Faculty delete(Faculty faculty);
+    Collection<Faculty> getAll();
 }

@@ -7,6 +7,7 @@ import ru.msu.university.service.StudentService;
 import ru.msu.university.service.impl.StudentServiceImpl;
 
 @RequestMapping("/student")
+@RestController
 public class StudentController {
 
     private StudentService studentService;

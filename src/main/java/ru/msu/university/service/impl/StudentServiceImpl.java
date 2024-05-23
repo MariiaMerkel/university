@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import ru.msu.university.model.Student;
 import ru.msu.university.service.StudentService;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,5 +37,10 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student delete(Student student) {
         return students.remove(student);
+    }
+
+    @Override
+    public Collection<Student> getAll() {
+        return Collections.unmodifiableCollection(students.values());
     }
 }
