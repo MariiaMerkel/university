@@ -18,7 +18,8 @@ public class FacultyServiceImpl implements FacultyService {
     @Override
     public Faculty add(Faculty faculty) {
         faculty.setId(++facultyId);
-        return faculties.put(facultyId, faculty);
+        faculties.put(facultyId, faculty);
+        return faculty;
     }
 
     @Override
@@ -33,12 +34,15 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public Faculty update(Long id, Faculty faculty) {
-        return faculties.replace(id, faculty);
+        faculties.replace(id, faculty);
+        return faculty;
     }
 
     @Override
     public Faculty delete(Long id) {
-        return faculties.remove(id);
+        Faculty faculty = faculties.get(id);
+        faculties.remove(id);
+        return faculty;
     }
 
     @Override

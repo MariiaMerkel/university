@@ -4,7 +4,10 @@ import org.springframework.stereotype.Service;
 import ru.msu.university.model.Student;
 import ru.msu.university.service.StudentService;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -14,7 +17,8 @@ public class StudentServiceImpl implements StudentService {
 
     public Student add(Student student) {
         student.setId(++studentId);
-        return students.put(studentId, student);
+        students.put(studentId, student);
+        return student;
     }
 
     @Override
@@ -29,12 +33,15 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student update(Long id, Student student) {
-        return students.replace(id, student);
+        students.replace(id, student);
+        return student;
     }
 
     @Override
     public Student delete(Long id) {
-        return students.remove(id);
+        Student student = students.get(id);
+        students.remove(id);
+        return student;
     }
 
     @Override
