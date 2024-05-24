@@ -9,7 +9,7 @@ import java.util.*;
 @Service
 public class FacultyServiceImpl implements FacultyService {
 
-    private Map<Long, Faculty> faculties = new HashMap<>();
+    private final Map<Long, Faculty> faculties = new HashMap<>();
     private Long facultyId = 0L;
 
     @Override
@@ -25,8 +25,7 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public Collection<Faculty> getByColor(String color) {
-        List<Faculty> facultyList = faculties.values().stream().filter(s -> s.getColor().equals(color)).toList();
-        return Collections.unmodifiableCollection(facultyList);
+        return faculties.values().stream().filter(s -> s.getColor().equals(color)).toList();
     }
 
     @Override
@@ -37,11 +36,6 @@ public class FacultyServiceImpl implements FacultyService {
     @Override
     public Faculty delete(Long id) {
         return faculties.remove(id);
-    }
-
-    @Override
-    public Faculty delete(Faculty faculty) {
-        return faculties.remove(faculty);
     }
 
     @Override

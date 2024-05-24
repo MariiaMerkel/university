@@ -15,7 +15,5 @@ public interface StudentService {
 
     Student delete(Long id);
 
-    Student delete(Student student);
-
     Collection<Student> getAll();
 }

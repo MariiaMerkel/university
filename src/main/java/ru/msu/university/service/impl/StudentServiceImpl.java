@@ -24,8 +24,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Collection<Student> getByAge(int age) {
-        List<Student> studentList = students.values().stream().filter(s -> s.getAge() == age).toList();
-        return Collections.unmodifiableCollection(studentList);
+        return students.values().stream().filter(s -> s.getAge() == age).toList();
     }
 
     @Override
@@ -36,11 +35,6 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student delete(Long id) {
         return students.remove(id);
-    }
-
-    @Override
-    public Student delete(Student student) {
-        return students.remove(student);
     }
 
     @Override
