@@ -4,7 +4,10 @@ import org.springframework.stereotype.Service;
 import ru.msu.university.model.Faculty;
 import ru.msu.university.service.FacultyService;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {

@@ -62,13 +62,4 @@ public class StudentController {
         }
         return ResponseEntity.ok(student);
     }
-
-    @DeleteMapping("/delete")
-    public ResponseEntity<Student> delete(@RequestBody Student student) {
-        Student deletedStudent = studentService.delete(student);
-        if (deletedStudent == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(deletedStudent);
-    }
 }

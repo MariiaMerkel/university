@@ -9,7 +9,7 @@ import java.util.*;
 @Service
 public class StudentServiceImpl implements StudentService {
 
-    private Map<Long, Student> students = new HashMap<>();
+    private final Map<Long, Student> students = new HashMap<>();
     private Long studentId = 0L;
 
     public Student add(Student student) {

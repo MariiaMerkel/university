@@ -3,7 +3,6 @@ package ru.msu.university.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.msu.university.model.Faculty;
-import ru.msu.university.model.Student;
 import ru.msu.university.service.FacultyService;
 import ru.msu.university.service.impl.FacultyServiceImpl;
 
@@ -62,14 +61,5 @@ public class FacultyController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(faculty);
-    }
-
-    @DeleteMapping("/delete")
-    public ResponseEntity<Faculty> delete(@RequestBody Faculty faculty) {
-        Faculty deletedFaculty = facultyService.delete(faculty);
-        if (deletedFaculty == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(deletedFaculty);
     }
 }
