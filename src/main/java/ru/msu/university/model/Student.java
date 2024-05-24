@@ -9,7 +9,6 @@ public class Student {
     private int age;
 
     public Student(String name, int age) {
-        this.id = getId();
         this.name = name;
         this.age = age;
     }

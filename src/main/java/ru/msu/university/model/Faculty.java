@@ -9,7 +9,6 @@ public class Faculty {
     private String color;
 
     public Faculty(String name, String color) {
-        this.id = getId();
         this.name = name;
         this.color = color;
     }

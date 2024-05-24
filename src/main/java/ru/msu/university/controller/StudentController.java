@@ -6,6 +6,8 @@ import ru.msu.university.model.Student;
 import ru.msu.university.service.StudentService;
 import ru.msu.university.service.impl.StudentServiceImpl;
 
+import java.util.Collection;
+
 @RequestMapping("/student")
 @RestController
 public class StudentController {
@@ -29,6 +31,18 @@ public class StudentController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(student);
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<Collection<Student>> getAll() {
+        Collection<Student> students = studentService.getAll();
+        return ResponseEntity.ok(students);
+    }
+
+    @GetMapping("getByAge/{age}")
+    public ResponseEntity<Collection<Student>> getByAge(@PathVariable int age) {
+        Collection<Student> students = studentService.getByAge(age);
+        return ResponseEntity.ok(students);
     }
 
     @PutMapping("/update/{id}")

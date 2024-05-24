@@ -2,28 +2,31 @@ package ru.msu.university.service.impl;
 
 import org.springframework.stereotype.Service;
 import ru.msu.university.model.Faculty;
-import ru.msu.university.model.Student;
 import ru.msu.university.service.FacultyService;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
 
     private Map<Long, Faculty> faculties = new HashMap<>();
-    private Long facultyId = 1L;
+    private Long facultyId = 0L;
 
     @Override
     public Faculty add(Faculty faculty) {
-        return faculties.put(facultyId++, faculty);
+        faculty.setId(++facultyId);
+        return faculties.put(facultyId, faculty);
     }
 
     @Override
     public Faculty get(Long id) {
         return faculties.get(id);
+    }
+
+    @Override
+    public Collection<Faculty> getByColor(String color) {
+        List<Faculty> facultyList = faculties.values().stream().filter(s -> s.getColor().equals(color)).toList();
+        return Collections.unmodifiableCollection(facultyList);
     }
 
     @Override

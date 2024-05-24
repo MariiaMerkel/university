@@ -4,24 +4,28 @@ import org.springframework.stereotype.Service;
 import ru.msu.university.model.Student;
 import ru.msu.university.service.StudentService;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class StudentServiceImpl implements StudentService {
 
     private Map<Long, Student> students = new HashMap<>();
-    private Long studentId = 1L;
+    private Long studentId = 0L;
 
     public Student add(Student student) {
-        return students.put(studentId++, student);
+        student.setId(++studentId);
+        return students.put(studentId, student);
     }
 
     @Override
     public Student get(Long id) {
         return students.get(id);
+    }
+
+    @Override
+    public Collection<Student> getByAge(int age) {
+        List<Student> studentList = students.values().stream().filter(s -> s.getAge() == age).toList();
+        return Collections.unmodifiableCollection(studentList);
     }
 
     @Override

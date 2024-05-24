@@ -3,8 +3,11 @@ package ru.msu.university.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.msu.university.model.Faculty;
+import ru.msu.university.model.Student;
 import ru.msu.university.service.FacultyService;
 import ru.msu.university.service.impl.FacultyServiceImpl;
+
+import java.util.Collection;
 
 @RequestMapping("/faculty")
 @RestController
@@ -29,6 +32,18 @@ public class FacultyController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(faculty);
+    }
+
+    @GetMapping("getByColor/{color}")
+    public ResponseEntity<Collection<Faculty>> getByAge(@PathVariable String color) {
+        Collection<Faculty> faculties = facultyService.getByColor(color);
+        return ResponseEntity.ok(faculties);
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<Collection<Faculty>> getAll() {
+        Collection<Faculty> faculties = facultyService.getAll();
+        return ResponseEntity.ok(faculties);
     }
 
     @PutMapping("/update/{id}")
