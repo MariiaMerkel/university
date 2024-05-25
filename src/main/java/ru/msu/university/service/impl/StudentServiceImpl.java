@@ -1,6 +1,7 @@
 package ru.msu.university.service.impl;
 
 import org.springframework.stereotype.Service;
+import ru.msu.university.exceptions.StudentNotFoundException;
 import ru.msu.university.model.Student;
 import ru.msu.university.service.StudentService;
 
@@ -23,7 +24,11 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student get(Long id) {
-        return students.get(id);
+        Student student = students.get(id);
+        if (student == null) {
+            throw new StudentNotFoundException(id);
+        }
+        return student;
     }
 
     @Override
@@ -33,6 +38,12 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student update(Long id, Student student) {
+        Student updatedStudent = null;
+        updatedStudent = students.get(id);
+        if (updatedStudent == null) {
+            throw new StudentNotFoundException(id);
+        }
+        student.setId(updatedStudent.getId());
         students.replace(id, student);
         return student;
     }
