@@ -13,12 +13,22 @@ public class Faculty {
         this.color = color;
     }
 
+    public Faculty(Long id, String name, String color) {
+        setId(id);
+        this.name = name;
+        this.color = color;
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        if (id != null) {
+            this.id = id;
+        } else {
+            throw new NullPointerException("id факультета не может быть null");
+        }
     }
 
     public String getName() {

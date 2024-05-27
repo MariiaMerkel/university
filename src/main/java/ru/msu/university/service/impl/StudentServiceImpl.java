@@ -17,6 +17,7 @@ public class StudentServiceImpl implements StudentService {
     private Long studentId = 0L;
 
     public Student add(Student student) {
+
         student.setId(++studentId);
         students.put(studentId, student);
         return student;
@@ -24,6 +25,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student get(Long id) {
+
         Student student = students.get(id);
         if (student == null) {
             throw new StudentNotFoundException(id);
@@ -33,11 +35,13 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Collection<Student> getByAge(int age) {
+
         return students.values().stream().filter(s -> s.getAge() == age).toList();
     }
 
     @Override
     public Student update(Long id, Student student) {
+
         Student updatedStudent = null;
         updatedStudent = students.get(id);
         if (updatedStudent == null) {
@@ -50,6 +54,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student delete(Long id) {
+
         Student student = students.get(id);
         students.remove(id);
         return student;
@@ -57,6 +62,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Collection<Student> getAll() {
+
         return Collections.unmodifiableCollection(students.values());
     }
 }

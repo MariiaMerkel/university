@@ -13,12 +13,22 @@ public class Student {
         this.age = age;
     }
 
+    public Student(Long id, String name, int age) {
+        setId(id);
+        this.name = name;
+        this.age = age;
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        if (id != null) {
+            this.id = id;
+        } else {
+            throw new NullPointerException("id студента не может быть null");
+        }
     }
 
     public String getName() {

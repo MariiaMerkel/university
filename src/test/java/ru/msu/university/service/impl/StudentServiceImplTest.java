@@ -10,6 +10,7 @@ import ru.msu.university.service.StudentService;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static ru.msu.university.service.impl.ConstantsForTests.*;
 
 class StudentServiceImplTest {
 
@@ -17,36 +18,32 @@ class StudentServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        studentService.add(new Student("Alex", 40));
-        studentService.add(new Student("Sergey", 30));
+
+        studentService.add(ALEX);
+        studentService.add(SERGEY);
     }
 
     @Test
     void addTest() {
-        Student expected = new Student("Mariia", 35);
-        expected.setId(3L);
-        Student expected2 = new Student("Tatyana", 50);
-        expected2.setId(4L);
 
-        Student actual = studentService.add(new Student("Mariia", 35));
-        Student actual2 = studentService.add(new Student("Tatyana", 50));
+        Student actual = studentService.add(MARIIA);
+        Student actual2 = studentService.add(TATYANA);
 
-        assertEquals(expected, actual);
-        assertEquals(expected2, actual2);
+        assertEquals(MARIIA_EXPECTED, actual);
+        assertEquals(TATYANA_EXPECTED, actual2);
     }
 
     @Test
     void getTest() {
-        Student expected = new Student("Sergey", 30);
-        expected.setId(2L);
 
         Student actual = studentService.get(2L);
 
-        assertEquals(expected, actual);
+        assertEquals(SERGEY_EXPECTED, actual);
     }
 
     @Test
     void shouldReturnExceptionForGetting() {
+
         assertThrows(StudentNotFoundException.class, () -> studentService.get(3L));
         StudentNotFoundException thrown = Assertions.assertThrows(StudentNotFoundException.class, () -> {
             studentService.get(3L);
@@ -55,9 +52,9 @@ class StudentServiceImplTest {
 
     @Test
     void getByAgeTest() {
+
         Collection<Student> expected = new ArrayList<>();
-        Student student = new Student("Sergey", 30);
-        student.setId(2L);
+        Student student = SERGEY_EXPECTED;
         expected.add(student);
 
         Collection<Student> expected2 = new ArrayList<>();
@@ -71,17 +68,16 @@ class StudentServiceImplTest {
 
     @Test
     void updateTest() {
-        Student expected = new Student("Ivan", 60);
-        expected.setId(1L);
 
-        Student actual = studentService.update(1L, new Student("Ivan", 60));
+        Student actual = studentService.update(1L, IVAN);
 
-        assertEquals(expected, actual);
+        assertEquals(IVAN_EXPECTED, actual);
     }
 
     @Test
     void shouldReturnExceptionForUpdating() {
-        assertThrows(StudentNotFoundException.class, () -> studentService.update(3L, new Student("Ivan", 60)));
+
+        assertThrows(StudentNotFoundException.class, () -> studentService.update(3L, IVAN));
         StudentNotFoundException thrown = Assertions.assertThrows(StudentNotFoundException.class, () -> {
             studentService.get(3L);
         }, "Студент с id=3 не найден");
@@ -89,17 +85,16 @@ class StudentServiceImplTest {
 
     @Test
     void deleteTest() {
-        Student expected = new Student("Sergey", 30);
-        expected.setId(2L);
 
         Student actual = studentService.delete(2L);
 
-        assertEquals(expected, actual);
+        assertEquals(SERGEY_EXPECTED, actual);
     }
 
     @Test
     void shouldReturnExceptionForDeleting() {
-        assertThrows(StudentNotFoundException.class, () -> studentService.update(3L, new Student("Ivan", 60)));
+
+        assertThrows(StudentNotFoundException.class, () -> studentService.update(3L, IVAN));
         StudentNotFoundException thrown = Assertions.assertThrows(StudentNotFoundException.class, () -> {
             studentService.get(3L);
         }, "Студент с id=3 не найден");
@@ -107,21 +102,14 @@ class StudentServiceImplTest {
 
     @Test
     void getAll() {
+
         Map<Long, Student> studentMap = new HashMap<>();
-
-        Student student = new Student("Alex", 40);
-        student.setId(1L);
-        studentMap.put(student.getId(), student);
-
-        Student student2 = new Student("Sergey", 30);
-        student2.setId(2L);
-        studentMap.put(student2.getId(), student2);
-
+        studentMap.put(ALEX_EXPECTED.getId(), ALEX_EXPECTED);
+        studentMap.put(SERGEY_EXPECTED.getId(), SERGEY_EXPECTED);
         Collection<Student> expected = Collections.unmodifiableCollection(studentMap.values());
 
         Collection<Student> actual = studentService.getAll();
 
         assertArrayEquals(expected.toArray(), actual.toArray());
-
     }
 }
