@@ -18,13 +18,13 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<Student> add(@RequestBody Student student) {
         Student addedStudent = studentService.add(student);
         return ResponseEntity.ok(addedStudent);
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<Student> get(@PathVariable Long id) {
         Student student = studentService.get(id);
         if (student == null) {
@@ -33,7 +33,7 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping
     public ResponseEntity<Collection<Student>> getAll() {
         Collection<Student> students = studentService.getAll();
         return ResponseEntity.ok(students);
@@ -45,7 +45,7 @@ public class StudentController {
         return ResponseEntity.ok(students);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("{id}")
     public ResponseEntity<Student> update(@RequestBody Student student) {
         Student updatedStudent = studentService.update(student.getId(), student);
         if (updatedStudent == null) {
@@ -54,7 +54,7 @@ public class StudentController {
         return ResponseEntity.ok(updatedStudent);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<Student> delete(@PathVariable Long id) {
         Student student = studentService.delete(id);
         if (student == null) {

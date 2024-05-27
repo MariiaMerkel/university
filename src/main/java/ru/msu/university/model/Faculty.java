@@ -8,6 +8,9 @@ public class Faculty {
     private String name;
     private String color;
 
+    public Faculty() {
+    }
+
     public Faculty(String name, String color) {
         this.name = name;
         this.color = color;

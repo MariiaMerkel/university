@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.msu.university.exceptions.FacultyNotFoundException;
-import ru.msu.university.exceptions.StudentNotFoundException;
 import ru.msu.university.model.Faculty;
 import ru.msu.university.model.Student;
 import ru.msu.university.service.FacultyService;
@@ -23,6 +22,7 @@ class FacultyServiceImplTest {
         facultyService.add(BIOLOGY);
         facultyService.add(MATHEMATICS);
     }
+
     @Test
     void addTest() {
 
