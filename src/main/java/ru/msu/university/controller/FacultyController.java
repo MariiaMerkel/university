@@ -45,7 +45,7 @@ public class FacultyController {
         return ResponseEntity.ok(faculties);
     }
 
-    @PutMapping("{id}")
+    @PutMapping
     public ResponseEntity<Faculty> update(@RequestBody Faculty faculty) {
         Faculty updatedFaculty = facultyService.update(faculty.getId(), faculty);
         if (updatedFaculty == null) {
