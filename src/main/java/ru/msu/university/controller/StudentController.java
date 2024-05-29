@@ -51,6 +51,14 @@ public class StudentController {
         return ResponseEntity.ok(students);
     }
 
+
+
+    @GetMapping("getByAge/{min}/{max}")
+    public ResponseEntity<Collection<Student>> getByAgeBetween(@PathVariable int min, @PathVariable int max) {
+        Collection<Student> students = studentService.getByAgeBetween(min, max);
+        return ResponseEntity.ok(students);
+    }
+
     @PutMapping
     public ResponseEntity<Student> update(@RequestBody Student student) {
         Student updatedStudent = studentService.update(student);

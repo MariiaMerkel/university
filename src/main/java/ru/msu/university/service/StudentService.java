@@ -13,6 +13,8 @@ public interface StudentService {
 
     Collection<Student> getByAge(int age);
 
+    Collection<Student> getByAgeBetween(int min, int max);
+
     Student update(Student student);
 
     Student delete(Long id);

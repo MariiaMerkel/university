@@ -53,6 +53,16 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public Collection<Student> getByAgeBetween(int min, int max) {
+        Collection<Student> students = studentRepository.findByAgeBetween(min, max);
+        if (students.isEmpty()) {
+            throw new StudentNotFoundException("Студенты с указанным возрастом не найдены");
+        } else {
+            return students;
+        }
+    }
+
+    @Override
     public Student update(Student student) {
         Optional<Student> studentOptional = studentRepository.findById(student.getId());
         if (studentOptional.isPresent()) {
