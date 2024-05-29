@@ -12,7 +12,7 @@ public interface FacultyService {
 
     Collection<Faculty> getByColor(String color);
 
-    Faculty update(Long id, Faculty faculty);
+    Faculty update(Faculty faculty);
 
     Faculty delete(Long id);
 

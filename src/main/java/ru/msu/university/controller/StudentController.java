@@ -47,7 +47,7 @@ public class StudentController {
 
     @PutMapping
     public ResponseEntity<Student> update(@RequestBody Student student) {
-        Student updatedStudent = studentService.update(student.getId(), student);
+        Student updatedStudent = studentService.update(student);
         if (updatedStudent == null) {
             return ResponseEntity.notFound().build();
         }

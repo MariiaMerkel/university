@@ -3,67 +3,64 @@ package ru.msu.university.service.impl;
 import org.springframework.stereotype.Service;
 import ru.msu.university.exceptions.FacultyNotFoundException;
 import ru.msu.university.model.Faculty;
+import ru.msu.university.repositories.FacultyRepository;
 import ru.msu.university.service.FacultyService;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
 
-    private final Map<Long, Faculty> faculties = new HashMap<>();
-    private Long facultyId = 0L;
+    private FacultyRepository facultyRepository;
+
+    public FacultyServiceImpl(FacultyRepository facultyRepository) {
+        this.facultyRepository = facultyRepository;
+    }
 
     @Override
     public Faculty add(Faculty faculty) {
-
-        faculty.setId(++facultyId);
-        faculties.put(facultyId, faculty);
-        return faculty;
+        return facultyRepository.save(faculty);
     }
 
     @Override
     public Faculty get(Long id) {
-
-        Faculty faculty = faculties.get(id);
-        if (faculty == null) {
-            throw new FacultyNotFoundException(id);
+        Optional<Faculty> faculty = facultyRepository.findById(id);
+        if (faculty.isPresent()) {
+            return faculty.get();
         }
-        return faculty;
+        throw new FacultyNotFoundException(id);
     }
 
     @Override
     public Collection<Faculty> getByColor(String color) {
 
-        return faculties.values().stream().filter(s -> s.getColor().equals(color)).toList();
+        return facultyRepository.findAll();
+//        return facultyRepository.findByColor(color);
     }
 
     @Override
-    public Faculty update(Long id, Faculty faculty) {
-
-        Faculty updatedFaculty = null;
-        updatedFaculty = faculties.get(id);
-        if (updatedFaculty == null) {
-            throw new FacultyNotFoundException(id);
+    public Faculty update(Faculty faculty) {
+        Optional<Faculty> facultyOptional = facultyRepository.findById(faculty.getId());
+        if (facultyOptional.isPresent()) {
+            facultyRepository.save(faculty);
+            return faculty;
         }
-        faculty.setId(updatedFaculty.getId());
-        faculties.replace(id, faculty);
-        return faculty;
+        throw new FacultyNotFoundException(faculty.getId());
     }
 
     @Override
     public Faculty delete(Long id) {
-
-        Faculty faculty = faculties.get(id);
-        faculties.remove(id);
-        return faculty;
+        Optional<Faculty> faculty = facultyRepository.findById(id);
+        if (faculty.isPresent()) {
+            facultyRepository.deleteById(id);
+            return faculty.get();
+        }
+        throw new FacultyNotFoundException(id);
     }
 
     @Override
     public Collection<Faculty> getAll() {
-
-        return Collections.unmodifiableCollection(faculties.values());
+        return facultyRepository.findAll();
     }
 }

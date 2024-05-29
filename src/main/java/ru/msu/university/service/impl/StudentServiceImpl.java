@@ -3,66 +3,63 @@ package ru.msu.university.service.impl;
 import org.springframework.stereotype.Service;
 import ru.msu.university.exceptions.StudentNotFoundException;
 import ru.msu.university.model.Student;
+import ru.msu.university.repositories.StudentRepository;
 import ru.msu.university.service.StudentService;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class StudentServiceImpl implements StudentService {
 
-    private final Map<Long, Student> students = new HashMap<>();
-    private Long studentId = 0L;
+    private final StudentRepository studentRepository;
+
+    public StudentServiceImpl(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
 
     public Student add(Student student) {
-
-        student.setId(++studentId);
-        students.put(studentId, student);
-        return student;
+        return studentRepository.save(student);
     }
 
     @Override
     public Student get(Long id) {
 
-        Student student = students.get(id);
-        if (student == null) {
-            throw new StudentNotFoundException(id);
+        Optional<Student> student = studentRepository.findById(id);
+        if (student.isPresent()) {
+            return student.get();
         }
-        return student;
+        throw new StudentNotFoundException(id);
     }
 
     @Override
     public Collection<Student> getByAge(int age) {
-
-        return students.values().stream().filter(s -> s.getAge() == age).toList();
+        return studentRepository.findAll();
+//        return studentRepository.findByAge(age);
     }
 
     @Override
-    public Student update(Long id, Student student) {
-
-        Student updatedStudent = null;
-        updatedStudent = students.get(id);
-        if (updatedStudent == null) {
-            throw new StudentNotFoundException(id);
+    public Student update(Student student) {
+        Optional<Student> studentOptional = studentRepository.findById(student.getId());
+        if (studentOptional.isPresent()) {
+            studentRepository.save(student);
+            return student;
         }
-        student.setId(updatedStudent.getId());
-        students.replace(id, student);
-        return student;
+        throw new StudentNotFoundException(student.getId());
     }
 
     @Override
     public Student delete(Long id) {
-
-        Student student = students.get(id);
-        students.remove(id);
-        return student;
+        Optional<Student> student = studentRepository.findById(id);
+        if (student.isPresent()) {
+            studentRepository.deleteById(id);
+            return student.get();
+        }
+        throw new StudentNotFoundException(id);
     }
 
     @Override
     public Collection<Student> getAll() {
-
-        return Collections.unmodifiableCollection(students.values());
+        return studentRepository.findAll();
     }
 }

@@ -11,7 +11,7 @@ public interface StudentService {
 
     Collection<Student> getByAge(int age);
 
-    Student update(Long id, Student student);
+    Student update(Student student);
 
     Student delete(Long id);
 

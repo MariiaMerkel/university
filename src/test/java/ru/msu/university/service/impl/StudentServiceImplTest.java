@@ -14,7 +14,11 @@ import static ru.msu.university.service.impl.ConstantsForTests.*;
 
 class StudentServiceImplTest {
 
-    private final StudentService studentService = new StudentServiceImpl();
+    private final StudentService studentService;
+
+    public StudentServiceImplTest(StudentServiceImpl studentService) {
+        this.studentService = studentService;
+    }
 
     @BeforeEach
     void setUp() {
@@ -69,7 +73,7 @@ class StudentServiceImplTest {
     @Test
     void updateTest() {
 
-        Student actual = studentService.update(1L, IVAN);
+        Student actual = studentService.update(IVAN);
 
         assertEquals(IVAN_EXPECTED, actual);
     }
@@ -77,7 +81,7 @@ class StudentServiceImplTest {
     @Test
     void shouldReturnExceptionForUpdating() {
 
-        assertThrows(StudentNotFoundException.class, () -> studentService.update(3L, IVAN));
+        assertThrows(StudentNotFoundException.class, () -> studentService.update(IVAN));
         StudentNotFoundException thrown = Assertions.assertThrows(StudentNotFoundException.class, () -> {
             studentService.get(3L);
         }, "Студент с id=3 не найден");
@@ -94,7 +98,7 @@ class StudentServiceImplTest {
     @Test
     void shouldReturnExceptionForDeleting() {
 
-        assertThrows(StudentNotFoundException.class, () -> studentService.update(3L, IVAN));
+        assertThrows(StudentNotFoundException.class, () -> studentService.update(IVAN));
         StudentNotFoundException thrown = Assertions.assertThrows(StudentNotFoundException.class, () -> {
             studentService.get(3L);
         }, "Студент с id=3 не найден");
