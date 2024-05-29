@@ -3,25 +3,38 @@ package ru.msu.university.service.impl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ru.msu.university.exceptions.StudentNotFoundException;
 import ru.msu.university.model.Student;
-import ru.msu.university.service.StudentService;
+import ru.msu.university.repositories.StudentRepository;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.msu.university.service.impl.ConstantsForTests.*;
 
+@ExtendWith(MockitoExtension.class)
 class StudentServiceImplTest {
 
-    private final StudentService studentService;
+    @InjectMocks
+    private StudentServiceImpl studentService;
 
-    public StudentServiceImplTest(StudentServiceImpl studentService) {
-        this.studentService = studentService;
-    }
+    @Mock
+    private StudentRepository studentRepository;
+
+//    public StudentServiceImplTest(StudentServiceImpl studentService) {
+//        this.studentService = studentService;
+//    }
 
     @BeforeEach
-    void setUp() {
+    void setUpBeforeEach() {
+
+        MockitoAnnotations.initMocks(this);
+        studentService = new StudentServiceImpl(studentRepository);
 
         studentService.add(ALEX);
         studentService.add(SERGEY);
