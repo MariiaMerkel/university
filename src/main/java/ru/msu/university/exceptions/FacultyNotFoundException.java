@@ -6,7 +6,7 @@ public class FacultyNotFoundException extends RuntimeException {
         super("Факультет с id=" + id + " не найден");
     }
     public FacultyNotFoundException(String color) {
-        super("Факультет с color=" + color + " не найден");
+        super("Факультет \"" + color + "\" не найден");
     }
 
 }

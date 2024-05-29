@@ -34,9 +34,20 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public Collection<Faculty> getByColor(String color) {
+        Collection<Faculty> faculties = facultyRepository.findByColor(color);
+        if (faculties.isEmpty()) {
+            throw new FacultyNotFoundException(color);
+        }
+        return facultyRepository.findByColor(color);
+    }
 
-        return facultyRepository.findAll();
-//        return facultyRepository.findByColor(color);
+    @Override
+    public Collection<Faculty> getByName(String name) {
+        Collection<Faculty> faculties = facultyRepository.findByName(name);
+        if (faculties.isEmpty()) {
+            throw new FacultyNotFoundException(name);
+        }
+        return faculties;
     }
 
     @Override

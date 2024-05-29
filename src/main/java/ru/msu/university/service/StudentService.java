@@ -9,6 +9,8 @@ public interface StudentService {
 
     Student get(Long id);
 
+    Collection<Student> getByName(String name);
+
     Collection<Student> getByAge(int age);
 
     Student update(Student student);

@@ -33,17 +33,30 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public Collection<Student> getByName(String name) {
+        Collection<Student> student = studentRepository.findByName(name);
+        if (student.isEmpty()) {
+            throw new StudentNotFoundException(name);
+        } else {
+            return student;
+        }
+    }
+
+    @Override
     public Collection<Student> getByAge(int age) {
-        return studentRepository.findAll();
-//        return studentRepository.findByAge(age);
+        Collection<Student> students = studentRepository.findByAge(age);
+        if (students.isEmpty()) {
+            throw new StudentNotFoundException(age);
+        } else {
+            return students;
+        }
     }
 
     @Override
     public Student update(Student student) {
         Optional<Student> studentOptional = studentRepository.findById(student.getId());
         if (studentOptional.isPresent()) {
-            studentRepository.save(student);
-            return student;
+            return studentRepository.save(student);
         }
         throw new StudentNotFoundException(student.getId());
     }
