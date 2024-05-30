@@ -9,9 +9,11 @@ public interface StudentService {
 
     Student get(Long id);
 
+    Collection<Student> getByName(String name);
+
     Collection<Student> getByAge(int age);
 
-    Student update(Long id, Student student);
+    Student update(Student student);
 
     Student delete(Long id);
 

@@ -10,9 +10,11 @@ public interface FacultyService {
 
     Faculty get(Long id);
 
+    Collection<Faculty> getByName(String name);
+
     Collection<Faculty> getByColor(String color);
 
-    Faculty update(Long id, Faculty faculty);
+    Faculty update(Faculty faculty);
 
     Faculty delete(Long id);
 

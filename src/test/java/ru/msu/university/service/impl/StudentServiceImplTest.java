@@ -3,21 +3,38 @@ package ru.msu.university.service.impl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ru.msu.university.exceptions.StudentNotFoundException;
 import ru.msu.university.model.Student;
-import ru.msu.university.service.StudentService;
+import ru.msu.university.repositories.StudentRepository;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.msu.university.service.impl.ConstantsForTests.*;
 
+@ExtendWith(MockitoExtension.class)
 class StudentServiceImplTest {
 
-    private final StudentService studentService = new StudentServiceImpl();
+    @InjectMocks
+    private StudentServiceImpl studentService;
+
+    @Mock
+    private StudentRepository studentRepository;
+
+//    public StudentServiceImplTest(StudentServiceImpl studentService) {
+//        this.studentService = studentService;
+//    }
 
     @BeforeEach
-    void setUp() {
+    void setUpBeforeEach() {
+
+        MockitoAnnotations.initMocks(this);
+        studentService = new StudentServiceImpl(studentRepository);
 
         studentService.add(ALEX);
         studentService.add(SERGEY);
@@ -69,7 +86,7 @@ class StudentServiceImplTest {
     @Test
     void updateTest() {
 
-        Student actual = studentService.update(1L, IVAN);
+        Student actual = studentService.update(IVAN);
 
         assertEquals(IVAN_EXPECTED, actual);
     }
@@ -77,7 +94,7 @@ class StudentServiceImplTest {
     @Test
     void shouldReturnExceptionForUpdating() {
 
-        assertThrows(StudentNotFoundException.class, () -> studentService.update(3L, IVAN));
+        assertThrows(StudentNotFoundException.class, () -> studentService.update(IVAN));
         StudentNotFoundException thrown = Assertions.assertThrows(StudentNotFoundException.class, () -> {
             studentService.get(3L);
         }, "Студент с id=3 не найден");
@@ -94,7 +111,7 @@ class StudentServiceImplTest {
     @Test
     void shouldReturnExceptionForDeleting() {
 
-        assertThrows(StudentNotFoundException.class, () -> studentService.update(3L, IVAN));
+        assertThrows(StudentNotFoundException.class, () -> studentService.update(IVAN));
         StudentNotFoundException thrown = Assertions.assertThrows(StudentNotFoundException.class, () -> {
             studentService.get(3L);
         }, "Студент с id=3 не найден");

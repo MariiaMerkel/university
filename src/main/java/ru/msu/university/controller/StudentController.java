@@ -39,6 +39,12 @@ public class StudentController {
         return ResponseEntity.ok(students);
     }
 
+    @GetMapping("getByName/{name}")
+    public ResponseEntity<Collection<Student>> getByName(@PathVariable String name) {
+        Collection<Student> students = studentService.getByName(name);
+        return ResponseEntity.ok(students);
+    }
+
     @GetMapping("getByAge/{age}")
     public ResponseEntity<Collection<Student>> getByAge(@PathVariable int age) {
         Collection<Student> students = studentService.getByAge(age);
@@ -47,7 +53,7 @@ public class StudentController {
 
     @PutMapping
     public ResponseEntity<Student> update(@RequestBody Student student) {
-        Student updatedStudent = studentService.update(student.getId(), student);
+        Student updatedStudent = studentService.update(student);
         if (updatedStudent == null) {
             return ResponseEntity.notFound().build();
         }

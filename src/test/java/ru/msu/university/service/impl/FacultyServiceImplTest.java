@@ -15,7 +15,11 @@ import static ru.msu.university.service.impl.ConstantsForTests.*;
 
 class FacultyServiceImplTest {
 
-    private final FacultyService facultyService = new FacultyServiceImpl();
+    private final FacultyService facultyService;
+
+    public FacultyServiceImplTest(FacultyService facultyService) {
+        this.facultyService = facultyService;
+    }
 
     @BeforeEach
     void setUp() {
@@ -69,7 +73,7 @@ class FacultyServiceImplTest {
     @Test
     void updateTest() {
 
-        Faculty actual = facultyService.update(1L, PHILOLOGY);
+        Faculty actual = facultyService.update(PHILOLOGY);
 
         assertEquals(PHILOLOGY_EXPECTED, actual);
     }
@@ -77,7 +81,7 @@ class FacultyServiceImplTest {
     @Test
     void shouldReturnExceptionForUpdating() {
 
-        assertThrows(FacultyNotFoundException.class, () -> facultyService.update(3L, CHEMICAL));
+        assertThrows(FacultyNotFoundException.class, () -> facultyService.update(CHEMICAL));
         FacultyNotFoundException thrown = Assertions.assertThrows(FacultyNotFoundException.class, () -> {
             facultyService.get(3L);
         }, "Факультет с id=3 не найден");
@@ -93,7 +97,7 @@ class FacultyServiceImplTest {
     @Test
     void shouldReturnExceptionForDeleting() {
 
-        assertThrows(FacultyNotFoundException.class, () -> facultyService.update(3L, CHEMICAL));
+        assertThrows(FacultyNotFoundException.class, () -> facultyService.update(CHEMICAL));
         FacultyNotFoundException thrown = Assertions.assertThrows(FacultyNotFoundException.class, () -> {
             facultyService.get(3L);
         }, "Факультет с id=3 не найден");
