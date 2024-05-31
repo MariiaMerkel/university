@@ -3,6 +3,7 @@ package ru.msu.university.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.msu.university.model.Faculty;
+import ru.msu.university.model.Student;
 import ru.msu.university.service.FacultyService;
 import ru.msu.university.service.impl.FacultyServiceImpl;
 
@@ -44,6 +45,13 @@ public class FacultyController {
         Collection<Faculty> faculties = facultyService.getByColor(color);
         return ResponseEntity.ok(faculties);
     }
+
+    @GetMapping("getStudents/{id}")
+    public ResponseEntity<Collection<Student>> getStudents(@PathVariable Long id) {
+        Collection<Student> students = facultyService.getStudents(id);
+        return ResponseEntity.ok(students);
+    }
+
 
     @GetMapping
     public ResponseEntity<Collection<Faculty>> getAll() {

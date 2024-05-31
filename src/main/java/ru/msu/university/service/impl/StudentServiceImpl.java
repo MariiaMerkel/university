@@ -2,7 +2,6 @@ package ru.msu.university.service.impl;
 
 import org.springframework.stereotype.Service;
 import ru.msu.university.exceptions.StudentNotFoundException;
-import ru.msu.university.model.Faculty;
 import ru.msu.university.model.Student;
 import ru.msu.university.repositories.StudentRepository;
 import ru.msu.university.service.StudentService;

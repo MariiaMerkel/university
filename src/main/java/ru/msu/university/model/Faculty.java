@@ -1,5 +1,6 @@
 package ru.msu.university.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -14,6 +15,7 @@ public class Faculty {
     private String name;
     private String color;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "faculty")
     private Set<Student> students;
 
@@ -57,6 +59,14 @@ public class Faculty {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public Set<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set<Student> students) {
+        this.students = students;
     }
 
     @Override

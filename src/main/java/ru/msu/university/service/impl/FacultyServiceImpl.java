@@ -3,6 +3,7 @@ package ru.msu.university.service.impl;
 import org.springframework.stereotype.Service;
 import ru.msu.university.exceptions.FacultyNotFoundException;
 import ru.msu.university.model.Faculty;
+import ru.msu.university.model.Student;
 import ru.msu.university.repositories.FacultyRepository;
 import ru.msu.university.service.FacultyService;
 
@@ -48,6 +49,15 @@ public class FacultyServiceImpl implements FacultyService {
             throw new FacultyNotFoundException(name);
         }
         return faculties;
+    }
+
+    @Override
+    public Collection<Student> getStudents(Long id) {
+        Optional<Faculty> optional = facultyRepository.findById(id);
+        if (optional.isEmpty()) {
+            throw new FacultyNotFoundException(id);
+        }
+        return optional.get().getStudents();
     }
 
     @Override
