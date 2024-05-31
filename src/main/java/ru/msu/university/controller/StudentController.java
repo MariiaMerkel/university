@@ -2,6 +2,7 @@ package ru.msu.university.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.msu.university.model.Faculty;
 import ru.msu.university.model.Student;
 import ru.msu.university.service.StudentService;
 import ru.msu.university.service.impl.StudentServiceImpl;
@@ -51,11 +52,18 @@ public class StudentController {
         return ResponseEntity.ok(students);
     }
 
-
     @GetMapping("getByAge/{min}/{max}")
     public ResponseEntity<Collection<Student>> getByAgeBetween(@PathVariable int min, @PathVariable int max) {
         Collection<Student> students = studentService.getByAgeBetween(min, max);
         return ResponseEntity.ok(students);
+    }
+
+
+    @GetMapping("getFaculty/{id}")
+    public ResponseEntity<Faculty> getFaculty(@PathVariable Long id) {
+        Student student = studentService.get(id);
+        Faculty faculty = student.getFaculty();
+        return ResponseEntity.ok(faculty);
     }
 
     @PutMapping
