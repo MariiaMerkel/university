@@ -52,7 +52,6 @@ public class StudentController {
     }
 
 
-
     @GetMapping("getByAge/{min}/{max}")
     public ResponseEntity<Collection<Student>> getByAgeBetween(@PathVariable int min, @PathVariable int max) {
         Collection<Student> students = studentService.getByAgeBetween(min, max);

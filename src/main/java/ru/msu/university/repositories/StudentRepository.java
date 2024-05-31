@@ -6,7 +6,7 @@ import ru.msu.university.model.Student;
 import java.util.Collection;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
-    Collection<Student> findByName(String name);
+    Collection<Student> findByNameContainsIgnoreCase(String name);
 
     Collection<Student> findByAge(int age);
 

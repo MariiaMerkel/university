@@ -34,16 +34,16 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public Collection<Faculty> getByColor(String color) {
-        Collection<Faculty> faculties = facultyRepository.findByColor(color);
+        Collection<Faculty> faculties = facultyRepository.findByColorContainsIgnoreCase(color);
         if (faculties.isEmpty()) {
             throw new FacultyNotFoundException(color);
         }
-        return facultyRepository.findByColor(color);
+        return facultyRepository.findByColorContainsIgnoreCase(color);
     }
 
     @Override
     public Collection<Faculty> getByName(String name) {
-        Collection<Faculty> faculties = facultyRepository.findByName(name);
+        Collection<Faculty> faculties = facultyRepository.findByNameContainsIgnoreCase(name);
         if (faculties.isEmpty()) {
             throw new FacultyNotFoundException(name);
         }

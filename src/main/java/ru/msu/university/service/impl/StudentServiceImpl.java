@@ -34,7 +34,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Collection<Student> getByName(String name) {
-        Collection<Student> student = studentRepository.findByName(name);
+        Collection<Student> student = studentRepository.findByNameContainsIgnoreCase(name);
         if (student.isEmpty()) {
             throw new StudentNotFoundException(name);
         } else {

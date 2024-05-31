@@ -3,6 +3,8 @@ package ru.msu.university.service.impl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import ru.msu.university.exceptions.FacultyNotFoundException;
 import ru.msu.university.model.Faculty;
 import ru.msu.university.model.Student;
@@ -13,13 +15,12 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.msu.university.service.impl.ConstantsForTests.*;
 
+@SpringBootTest
 class FacultyServiceImplTest {
 
-    private final FacultyService facultyService;
+    @Autowired
+    private FacultyService facultyService;
 
-    public FacultyServiceImplTest(FacultyService facultyService) {
-        this.facultyService = facultyService;
-    }
 
     @BeforeEach
     void setUp() {
