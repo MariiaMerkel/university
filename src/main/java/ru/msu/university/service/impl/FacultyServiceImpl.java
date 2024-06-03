@@ -21,6 +21,7 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public Faculty add(Faculty faculty) {
+        faculty.setId(null);
         return facultyRepository.save(faculty);
     }
 
@@ -53,11 +54,8 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public Collection<Student> getStudents(Long id) {
-        Optional<Faculty> optional = facultyRepository.findById(id);
-        if (optional.isEmpty()) {
-            throw new FacultyNotFoundException(id);
-        }
-        return optional.get().getStudents();
+        Faculty faculty = facultyRepository.findById(id).orElseThrow(() -> new FacultyNotFoundException(id));
+        return faculty.getStudents();
     }
 
     @Override

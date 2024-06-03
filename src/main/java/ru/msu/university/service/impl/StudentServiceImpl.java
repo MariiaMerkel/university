@@ -19,6 +19,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public Student add(Student student) {
+        student.setId(null);
         return studentRepository.save(student);
     }
 
@@ -37,9 +38,8 @@ public class StudentServiceImpl implements StudentService {
         Collection<Student> student = studentRepository.findByNameContainsIgnoreCase(name);
         if (student.isEmpty()) {
             throw new StudentNotFoundException(name);
-        } else {
-            return student;
         }
+        return student;
     }
 
     @Override
@@ -47,9 +47,8 @@ public class StudentServiceImpl implements StudentService {
         Collection<Student> students = studentRepository.findByAge(age);
         if (students.isEmpty()) {
             throw new StudentNotFoundException(age);
-        } else {
-            return students;
         }
+        return students;
     }
 
     @Override
@@ -57,9 +56,8 @@ public class StudentServiceImpl implements StudentService {
         Collection<Student> students = studentRepository.findByAgeBetween(min, max);
         if (students.isEmpty()) {
             throw new StudentNotFoundException("Студенты с указанным возрастом не найдены");
-        } else {
-            return students;
         }
+        return students;
     }
 
     @Override
