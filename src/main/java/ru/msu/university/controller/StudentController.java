@@ -25,8 +25,8 @@ public class StudentController {
         return ResponseEntity.ok(addedStudent);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<Student> get(@PathVariable Long id) {
+    @GetMapping(params = "id")
+    public ResponseEntity<Student> get(@RequestParam Long id) {
         Student student = studentService.get(id);
         if (student == null) {
             return ResponseEntity.notFound().build();
@@ -40,21 +40,21 @@ public class StudentController {
         return ResponseEntity.ok(students);
     }
 
-    @GetMapping("getByName/{name}")
-    public ResponseEntity<Collection<Student>> getByName(@PathVariable String name) {
+    @GetMapping(params = "name")
+    public ResponseEntity<Collection<Student>> getByName(@RequestParam String name) {
         Collection<Student> students = studentService.getByName(name);
         return ResponseEntity.ok(students);
     }
 
-    @GetMapping("getByAge/{age}")
-    public ResponseEntity<Collection<Student>> getByAge(@PathVariable int age) {
+    @GetMapping(params = "age")
+    public ResponseEntity<Collection<Student>> getByAge(@RequestParam int age) {
         Collection<Student> students = studentService.getByAge(age);
         return ResponseEntity.ok(students);
     }
 
-    @GetMapping("getByAge/{min}/{max}")
-    public ResponseEntity<Collection<Student>> getByAgeBetween(@PathVariable int min, @PathVariable int max) {
-        Collection<Student> students = studentService.getByAgeBetween(min, max);
+    @GetMapping(params = {"minAge", "maxAge"})
+    public ResponseEntity<Collection<Student>> getByAgeBetween(@RequestParam int minAge, @RequestParam int maxAge) {
+        Collection<Student> students = studentService.getByAgeBetween(minAge, maxAge);
         return ResponseEntity.ok(students);
     }
 
@@ -75,8 +75,8 @@ public class StudentController {
         return ResponseEntity.ok(updatedStudent);
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Student> delete(@PathVariable Long id) {
+    @DeleteMapping(params = "id")
+    public ResponseEntity<Student> delete(@RequestParam Long id) {
         Student student = studentService.delete(id);
         if (student == null) {
             return ResponseEntity.notFound().build();
