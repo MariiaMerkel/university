@@ -11,17 +11,17 @@ import java.util.NoSuchElementException;
 public class AppExceptionHandler {
 
     @ExceptionHandler
-    public ResponseEntity<?> handlerStudentNotFound(StudentNotFoundException ex) {
+    public ResponseEntity<String> handlerStudentNotFound(StudentNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
     @ExceptionHandler
-    public ResponseEntity<?> handlerFacultyNotFound(FacultyNotFoundException ex) {
+    public ResponseEntity<String> handlerFacultyNotFound(FacultyNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
     @ExceptionHandler
-    public ResponseEntity<?> handlerNoSuchElement(NoSuchElementException ex) {
+    public ResponseEntity<String> handlerNoSuchElement(NoSuchElementException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 }

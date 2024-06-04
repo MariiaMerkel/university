@@ -2,8 +2,8 @@ package ru.msu.university.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.msu.university.model.Faculty;
-import ru.msu.university.model.Student;
+import ru.msu.university.entities.Faculty;
+import ru.msu.university.entities.Student;
 import ru.msu.university.service.FacultyService;
 import ru.msu.university.service.impl.FacultyServiceImpl;
 
@@ -13,7 +13,7 @@ import java.util.Collection;
 @RestController
 public class FacultyController {
 
-    private FacultyService facultyService;
+    private final FacultyService facultyService;
 
     public FacultyController(FacultyServiceImpl facultyService) {
         this.facultyService = facultyService;
@@ -49,9 +49,9 @@ public class FacultyController {
         return ResponseEntity.ok(faculties);
     }
 
-    @GetMapping("getStudents/{id}")
-    public ResponseEntity<Collection<Student>> getStudents(@PathVariable Long id) {
-        Collection<Student> students = facultyService.getStudents(id);
+    @GetMapping("/{id}/students")
+    public ResponseEntity<Collection<Student>> getStudentsByFaculty(@PathVariable Long id) {
+        Collection<Student> students = facultyService.getStudentsByFaculty(id);
         return ResponseEntity.ok(students);
     }
 

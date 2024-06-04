@@ -1,8 +1,8 @@
 package ru.msu.university.service.impl;
 
 import org.springframework.stereotype.Service;
+import ru.msu.university.entities.Student;
 import ru.msu.university.exceptions.StudentNotFoundException;
-import ru.msu.university.model.Student;
 import ru.msu.university.repositories.StudentRepository;
 import ru.msu.university.service.StudentService;
 
@@ -70,11 +70,6 @@ public class StudentServiceImpl implements StudentService {
                     return studentRepository.save(s);
                 })
                 .orElseThrow(() -> new StudentNotFoundException(student.getId()));
-//        Optional<Student> studentOptional = studentRepository.findById(student.getId());
-//        if (studentOptional.isPresent()) {
-//            return studentRepository.save(student);
-//        }
-//        throw new StudentNotFoundException(student.getId());
     }
 
     @Override
@@ -85,12 +80,6 @@ public class StudentServiceImpl implements StudentService {
                     return s;
                 })
                 .orElseThrow(() -> new StudentNotFoundException(id));
-//        Optional<Student> student = studentRepository.findById(id);
-//        if (student.isPresent()) {
-//            studentRepository.deleteById(id);
-//            return student.get();
-//        }
-//        throw new StudentNotFoundException(id);
     }
 
     @Override

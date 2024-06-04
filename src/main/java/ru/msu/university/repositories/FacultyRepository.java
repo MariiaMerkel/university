@@ -1,7 +1,7 @@
 package ru.msu.university.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.msu.university.model.Faculty;
+import ru.msu.university.entities.Faculty;
 
 import java.util.Collection;
 

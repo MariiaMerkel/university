@@ -1,13 +1,13 @@
 package ru.msu.university.service.impl;
 
-import ru.msu.university.model.Faculty;
-import ru.msu.university.model.Student;
+import ru.msu.university.entities.Faculty;
+import ru.msu.university.entities.Student;
 
 public class ConstantsForTests {
     public static final Student ALEX = new Student("Alex", 40);
     public static final Student ALEX_EXPECTED = new Student(1L, "Alex", 40);
     public static final Student SERGEY = new Student("Sergey", 30);
-    public static final Student SERGEY_EXPECTED = new Student(2l, "Sergey", 30);
+    public static final Student SERGEY_EXPECTED = new Student(2L, "Sergey", 30);
     public static final Student MARIIA = new Student("Mariia", 35);
     public static final Student MARIIA_EXPECTED = new Student(3L, "Mariia", 35);
     public static final Student TATYANA = new Student("Tatyana", 50);
@@ -21,8 +21,8 @@ public class ConstantsForTests {
     public static final Faculty MATHEMATICS_EXPECTED = new Faculty(2L, "Mathematics", "Grey");
     public static final Faculty ECONOMICS = new Faculty("Economics", "Pink");
     public static final Faculty ECONOMICS_EXPECTED = new Faculty(3L, "Economics", "Pink");
-    public static final Faculty CHEMICAL = new Faculty("Сhemical", "Blue");
-    public static final Faculty CHEMICAL_EXPECTED = new Faculty(4L, "Сhemical", "Blue");
+    public static final Faculty CHEMICAL = new Faculty("Chemical", "Blue");
+    public static final Faculty CHEMICAL_EXPECTED = new Faculty(4L, "Chemical", "Blue");
     public static final Faculty PHILOLOGY = new Faculty("Philology", "Red");
     public static final Faculty PHILOLOGY_EXPECTED = new Faculty(1L, "Philology", "Red");
 }

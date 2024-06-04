@@ -3,13 +3,10 @@ package ru.msu.university.service.impl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.msu.university.exceptions.StudentNotFoundException;
-import ru.msu.university.model.Student;
-import ru.msu.university.service.StudentService;
+import ru.msu.university.entities.Student;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

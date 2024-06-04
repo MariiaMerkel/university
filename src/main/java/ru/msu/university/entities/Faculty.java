@@ -1,12 +1,11 @@
-package ru.msu.university.model;
+package ru.msu.university.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
+@Table(name = "faculties")
 public class Faculty {
 
     @Id
@@ -14,10 +13,6 @@ public class Faculty {
     private Long id;
     private String name;
     private String color;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "faculty")
-    private Set<Student> students;
 
     public Faculty() {
     }
@@ -57,14 +52,6 @@ public class Faculty {
         this.color = color;
     }
 
-    public Set<Student> getStudents() {
-        return students;
-    }
-
-    public void setStudents(Set<Student> students) {
-        this.students = students;
-    }
-
     @Override
     public String toString() {
         return "Faculty{" +
@@ -78,7 +65,7 @@ public class Faculty {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Faculty faculty)) return false;
-        return id == faculty.id && Objects.equals(name, faculty.name) && Objects.equals(color, faculty.color);
+        return id.equals(faculty.id) && Objects.equals(name, faculty.name) && Objects.equals(color, faculty.color);
     }
 
     @Override

@@ -1,10 +1,11 @@
 package ru.msu.university.service.impl;
 
 import org.springframework.stereotype.Service;
+import ru.msu.university.entities.Faculty;
+import ru.msu.university.entities.Student;
 import ru.msu.university.exceptions.FacultyNotFoundException;
-import ru.msu.university.model.Faculty;
-import ru.msu.university.model.Student;
 import ru.msu.university.repositories.FacultyRepository;
+import ru.msu.university.repositories.StudentRepository;
 import ru.msu.university.service.FacultyService;
 
 import java.util.Collection;
@@ -14,9 +15,11 @@ import java.util.Optional;
 public class FacultyServiceImpl implements FacultyService {
 
     private final FacultyRepository facultyRepository;
+    private final StudentRepository studentRepository;
 
-    public FacultyServiceImpl(FacultyRepository facultyRepository) {
+    public FacultyServiceImpl(FacultyRepository facultyRepository, StudentRepository studentRepository) {
         this.facultyRepository = facultyRepository;
+        this.studentRepository = studentRepository;
     }
 
     @Override
@@ -58,9 +61,9 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public Collection<Student> getStudents(Long id) {
-        Faculty faculty = facultyRepository.findById(id).orElseThrow(() -> new FacultyNotFoundException(id));
-        return faculty.getStudents();
+    public Collection<Student> getStudentsByFaculty(Long facultyId) {
+        return studentRepository.findByFaculty_Id(facultyId);
+
     }
 
     @Override
@@ -72,12 +75,6 @@ public class FacultyServiceImpl implements FacultyService {
                     return facultyRepository.save(f);
                 })
                 .orElseThrow(() -> new FacultyNotFoundException(faculty.getId()));
-//        Optional<Faculty> facultyOptional = facultyRepository.findById(faculty.getId());
-//        if (facultyOptional.isPresent()) {
-//            facultyRepository.save(faculty);
-//            return faculty;
-//        }
-//        throw new FacultyNotFoundException(faculty.getId());
     }
 
     @Override
@@ -88,13 +85,6 @@ public class FacultyServiceImpl implements FacultyService {
                     return f;
                 })
                 .orElseThrow(() -> new FacultyNotFoundException(id));
-
-//        Optional<Faculty> faculty = facultyRepository.findById(id);
-//        if (faculty.isPresent()) {
-//            facultyRepository.deleteById(id);
-//            return faculty.get();
-//        }
-//        throw new FacultyNotFoundException(id);
     }
 
     @Override
