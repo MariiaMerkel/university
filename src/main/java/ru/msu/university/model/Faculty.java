@@ -38,11 +38,7 @@ public class Faculty {
     }
 
     public void setId(Long id) {
-        if (id != null) {
-            this.id = id;
-        } else {
-            throw new NullPointerException("id факультета не может быть null");
-        }
+        this.id = id;
     }
 
     public String getName() {

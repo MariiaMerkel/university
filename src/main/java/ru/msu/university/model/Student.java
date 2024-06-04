@@ -36,11 +36,7 @@ public class Student {
     }
 
     public void setId(Long id) {
-        if (id != null) {
-            this.id = id;
-        } else {
-            throw new NullPointerException("id студента не может быть null");
-        }
+        this.id = id;
     }
 
     public String getName() {
