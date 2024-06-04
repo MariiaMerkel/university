@@ -31,26 +31,26 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-    @GetMapping
+    @GetMapping("/getAll")
     public ResponseEntity<Collection<Student>> getAll() {
         Collection<Student> students = studentService.getAll();
         return ResponseEntity.ok(students);
     }
 
-    @GetMapping(path = "/getByName", params = "name")
-    public ResponseEntity<Collection<Student>> getByName(@RequestParam String name) {
+    @GetMapping("/getByName")
+    public ResponseEntity<Collection<Student>> getByName(String name) {
         Collection<Student> students = studentService.getByName(name);
         return ResponseEntity.ok(students);
     }
 
-    @GetMapping(path = "/getByAge", params = "age")
-    public ResponseEntity<Collection<Student>> getByAge(@RequestParam int age) {
+    @GetMapping("/getByAge")
+    public ResponseEntity<Collection<Student>> getByAge(int age) {
         Collection<Student> students = studentService.getByAge(age);
         return ResponseEntity.ok(students);
     }
 
-    @GetMapping(path = "/getByAgeBetween", params = {"minAge", "maxAge"})
-    public ResponseEntity<Collection<Student>> getByAgeBetween(@RequestParam int minAge, @RequestParam int maxAge) {
+    @GetMapping("/getByAgeBetween")
+    public ResponseEntity<Collection<Student>> getByAgeBetween(int minAge, int maxAge) {
         Collection<Student> students = studentService.getByAgeBetween(minAge, maxAge);
         return ResponseEntity.ok(students);
     }
@@ -68,8 +68,8 @@ public class StudentController {
         return ResponseEntity.ok(updatedStudent);
     }
 
-    @DeleteMapping(params = "id")
-    public ResponseEntity<Student> delete(@RequestParam Long id) {
+    @DeleteMapping
+    public ResponseEntity<Student> delete(Long id) {
         Student student = studentService.delete(id);
         return ResponseEntity.ok(student);
     }
