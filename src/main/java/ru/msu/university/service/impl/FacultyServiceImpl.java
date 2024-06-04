@@ -60,10 +60,11 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public Faculty update(Faculty faculty) {
-        return facultyRepository.findById(faculty.getId()).map(old -> {
-                    old.setName(faculty.getName());
-                    old.setColor(faculty.getColor());
-                    return facultyRepository.save(old);
+        return facultyRepository.findById(faculty.getId())
+                .map(f -> {
+                    f.setName(faculty.getName());
+                    f.setColor(faculty.getColor());
+                    return facultyRepository.save(f);
                 })
                 .orElseThrow(() -> new FacultyNotFoundException(faculty.getId()));
 //        Optional<Faculty> facultyOptional = facultyRepository.findById(faculty.getId());
@@ -76,12 +77,19 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public Faculty delete(Long id) {
-        Optional<Faculty> faculty = facultyRepository.findById(id);
-        if (faculty.isPresent()) {
-            facultyRepository.deleteById(id);
-            return faculty.get();
-        }
-        throw new FacultyNotFoundException(id);
+        return facultyRepository.findById(id)
+                .map(f -> {
+                    facultyRepository.delete(f);
+                    return f;
+                })
+                .orElseThrow(() -> new FacultyNotFoundException(id));
+
+//        Optional<Faculty> faculty = facultyRepository.findById(id);
+//        if (faculty.isPresent()) {
+//            facultyRepository.deleteById(id);
+//            return faculty.get();
+//        }
+//        throw new FacultyNotFoundException(id);
     }
 
     @Override

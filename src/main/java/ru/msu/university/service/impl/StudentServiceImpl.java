@@ -63,11 +63,11 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student update(Student student) {
         return studentRepository.findById(student.getId())
-                .map(old -> {
-                    old.setName(student.getName());
-                    old.setAge(student.getAge());
-                    old.setFaculty(student.getFaculty());
-                    return studentRepository.save(old);
+                .map(s -> {
+                    s.setName(student.getName());
+                    s.setAge(student.getAge());
+                    s.setFaculty(student.getFaculty());
+                    return studentRepository.save(s);
                 })
                 .orElseThrow(() -> new StudentNotFoundException(student.getId()));
 //        Optional<Student> studentOptional = studentRepository.findById(student.getId());
@@ -79,12 +79,18 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student delete(Long id) {
-        Optional<Student> student = studentRepository.findById(id);
-        if (student.isPresent()) {
-            studentRepository.deleteById(id);
-            return student.get();
-        }
-        throw new StudentNotFoundException(id);
+        return studentRepository.findById(id)
+                .map(s -> {
+                    studentRepository.delete(s);
+                    return s;
+                })
+                .orElseThrow(() -> new StudentNotFoundException(id));
+//        Optional<Student> student = studentRepository.findById(id);
+//        if (student.isPresent()) {
+//            studentRepository.deleteById(id);
+//            return student.get();
+//        }
+//        throw new StudentNotFoundException(id);
     }
 
     @Override
