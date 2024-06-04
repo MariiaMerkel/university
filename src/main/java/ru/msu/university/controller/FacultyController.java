@@ -28,9 +28,6 @@ public class FacultyController {
     @GetMapping(params = "id")
     public ResponseEntity<Faculty> get(@RequestParam Long id) {
         Faculty faculty = facultyService.get(id);
-        if (faculty == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(faculty);
     }
 
@@ -41,8 +38,14 @@ public class FacultyController {
     }
 
     @GetMapping(params = "color")
-    public ResponseEntity<Collection<Faculty>> getByAge(@RequestParam String color) {
+    public ResponseEntity<Collection<Faculty>> getByColor(@RequestParam String color) {
         Collection<Faculty> faculties = facultyService.getByColor(color);
+        return ResponseEntity.ok(faculties);
+    }
+
+    @GetMapping(params = "nameOrColor")
+    public ResponseEntity<Collection<Faculty>> getByNameOrColor(@RequestParam String nameOrColor) {
+        Collection<Faculty> faculties = facultyService.getByNameOrColor(nameOrColor);
         return ResponseEntity.ok(faculties);
     }
 
@@ -62,18 +65,12 @@ public class FacultyController {
     @PutMapping
     public ResponseEntity<Faculty> update(@RequestBody Faculty faculty) {
         Faculty updatedFaculty = facultyService.update(faculty);
-        if (updatedFaculty == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(updatedFaculty);
     }
 
     @DeleteMapping(params = "id")
     public ResponseEntity<Faculty> delete(@RequestParam Long id) {
         Faculty faculty = facultyService.delete(id);
-        if (faculty == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(faculty);
     }
 }

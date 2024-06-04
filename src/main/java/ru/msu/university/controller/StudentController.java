@@ -28,9 +28,6 @@ public class StudentController {
     @GetMapping(params = "id")
     public ResponseEntity<Student> get(@RequestParam Long id) {
         Student student = studentService.get(id);
-        if (student == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(student);
     }
 
@@ -69,18 +66,12 @@ public class StudentController {
     @PutMapping
     public ResponseEntity<Student> update(@RequestBody Student student) {
         Student updatedStudent = studentService.update(student);
-        if (updatedStudent == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(updatedStudent);
     }
 
     @DeleteMapping(params = "id")
     public ResponseEntity<Student> delete(@RequestParam Long id) {
         Student student = studentService.delete(id);
-        if (student == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(student);
     }
 }
