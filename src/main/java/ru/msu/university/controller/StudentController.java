@@ -37,19 +37,19 @@ public class StudentController {
         return ResponseEntity.ok(students);
     }
 
-    @GetMapping(params = "name")
+    @GetMapping(path = "/getByName", params = "name")
     public ResponseEntity<Collection<Student>> getByName(@RequestParam String name) {
         Collection<Student> students = studentService.getByName(name);
         return ResponseEntity.ok(students);
     }
 
-    @GetMapping(params = "age")
+    @GetMapping(path = "/getByAge", params = "age")
     public ResponseEntity<Collection<Student>> getByAge(@RequestParam int age) {
         Collection<Student> students = studentService.getByAge(age);
         return ResponseEntity.ok(students);
     }
 
-    @GetMapping(params = {"minAge", "maxAge"})
+    @GetMapping(path = "/getByAgeBetween", params = {"minAge", "maxAge"})
     public ResponseEntity<Collection<Student>> getByAgeBetween(@RequestParam int minAge, @RequestParam int maxAge) {
         Collection<Student> students = studentService.getByAgeBetween(minAge, maxAge);
         return ResponseEntity.ok(students);
