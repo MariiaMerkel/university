@@ -6,7 +6,10 @@ import ru.msu.university.model.Faculty;
 import java.util.Collection;
 
 public interface FacultyRepository extends JpaRepository<Faculty, Long> {
+
     Collection<Faculty> findByNameContainsIgnoreCase(String name);
 
     Collection<Faculty> findByColorContainsIgnoreCase(String color);
+
+    Collection<Faculty> findByNameContainsIgnoreCaseOrColorContainsIgnoreCase(String name, String color);
 }

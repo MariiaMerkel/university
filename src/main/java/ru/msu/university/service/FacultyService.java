@@ -21,4 +21,6 @@ public interface FacultyService {
     Collection<Faculty> getAll();
 
     Collection<Student> getStudents(Long id);
+
+    Collection<Faculty> getByNameOrColor(String nameOrColor);
 }
