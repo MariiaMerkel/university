@@ -62,11 +62,19 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student update(Student student) {
-        Optional<Student> studentOptional = studentRepository.findById(student.getId());
-        if (studentOptional.isPresent()) {
-            return studentRepository.save(student);
-        }
-        throw new StudentNotFoundException(student.getId());
+        return studentRepository.findById(student.getId())
+                .map(old -> {
+                    old.setName(student.getName());
+                    old.setAge(student.getAge());
+                    old.setFaculty(student.getFaculty());
+                    return studentRepository.save(old);
+                })
+                .orElseThrow(() -> new StudentNotFoundException(student.getId()));
+//        Optional<Student> studentOptional = studentRepository.findById(student.getId());
+//        if (studentOptional.isPresent()) {
+//            return studentRepository.save(student);
+//        }
+//        throw new StudentNotFoundException(student.getId());
     }
 
     @Override

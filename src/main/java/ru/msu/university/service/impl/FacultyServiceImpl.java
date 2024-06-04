@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 public class FacultyServiceImpl implements FacultyService {
 
-    private FacultyRepository facultyRepository;
+    private final FacultyRepository facultyRepository;
 
     public FacultyServiceImpl(FacultyRepository facultyRepository) {
         this.facultyRepository = facultyRepository;
@@ -60,12 +60,18 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public Faculty update(Faculty faculty) {
-        Optional<Faculty> facultyOptional = facultyRepository.findById(faculty.getId());
-        if (facultyOptional.isPresent()) {
-            facultyRepository.save(faculty);
-            return faculty;
-        }
-        throw new FacultyNotFoundException(faculty.getId());
+        return facultyRepository.findById(faculty.getId()).map(old -> {
+                    old.setName(faculty.getName());
+                    old.setColor(faculty.getColor());
+                    return facultyRepository.save(old);
+                })
+                .orElseThrow(() -> new FacultyNotFoundException(faculty.getId()));
+//        Optional<Faculty> facultyOptional = facultyRepository.findById(faculty.getId());
+//        if (facultyOptional.isPresent()) {
+//            facultyRepository.save(faculty);
+//            return faculty;
+//        }
+//        throw new FacultyNotFoundException(faculty.getId());
     }
 
     @Override
