@@ -1,5 +1,6 @@
 package ru.msu.university.controller;
 
+import jakarta.validation.constraints.NotNull;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +22,10 @@ public class AvatarController {
     }
 
     @PostMapping(value = "/{studentId}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> uploadAvatar(@PathVariable Long studentId, @RequestParam MultipartFile avatar) throws IOException {
+    public ResponseEntity<String> uploadAvatar(@PathVariable Long studentId, @RequestParam @NotNull  MultipartFile avatar) throws IOException {
+        if(avatar.getSize() >= 1024 * 300) {
+            return ResponseEntity.badRequest().body("Слишком большой файл");
+        }
         avatarService.uploadAvatar(studentId, avatar);
         return ResponseEntity.ok().build();
     }
