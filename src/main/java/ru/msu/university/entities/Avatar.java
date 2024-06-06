@@ -10,16 +10,19 @@ public class Avatar {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    String filePath;
-    Long fileSize;
-    String mediaType;
+    private Long id;
+    private String filePath;
+    private Long fileSize;
+    private String mediaType;
 
     @Lob
-    byte[] data;
+    private byte[] preview;
+
+    @Lob
+    private byte[] data;
 
     @OneToOne
-    Student student;
+    private Student student;
 
     public Long getId() {
         return id;
@@ -67,6 +70,14 @@ public class Avatar {
 
     public void setStudent(Student student) {
         this.student = student;
+    }
+
+    public byte[] getPreview() {
+        return preview;
+    }
+
+    public void setPreview(byte[] preview) {
+        this.preview = preview;
     }
 
     @Override
