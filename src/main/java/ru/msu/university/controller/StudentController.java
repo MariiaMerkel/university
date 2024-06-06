@@ -2,7 +2,8 @@ package ru.msu.university.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.msu.university.model.Student;
+import ru.msu.university.entities.Faculty;
+import ru.msu.university.entities.Student;
 import ru.msu.university.service.StudentService;
 import ru.msu.university.service.impl.StudentServiceImpl;
 
@@ -12,7 +13,7 @@ import java.util.Collection;
 @RestController
 public class StudentController {
 
-    private StudentService studentService;
+    private final StudentService studentService;
 
     public StudentController(StudentServiceImpl studentService) {
         this.studentService = studentService;
@@ -24,12 +25,9 @@ public class StudentController {
         return ResponseEntity.ok(addedStudent);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<Student> get(@PathVariable Long id) {
+    @GetMapping(params = "id")
+    public ResponseEntity<Student> get(@RequestParam Long id) {
         Student student = studentService.get(id);
-        if (student == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(student);
     }
 
@@ -39,33 +37,40 @@ public class StudentController {
         return ResponseEntity.ok(students);
     }
 
-    @GetMapping("getByName/{name}")
-    public ResponseEntity<Collection<Student>> getByName(@PathVariable String name) {
+    @GetMapping(path = "/getByName", params = "name")
+    public ResponseEntity<Collection<Student>> getByName(@RequestParam String name) {
         Collection<Student> students = studentService.getByName(name);
         return ResponseEntity.ok(students);
     }
 
-    @GetMapping("getByAge/{age}")
-    public ResponseEntity<Collection<Student>> getByAge(@PathVariable int age) {
+    @GetMapping(path = "/getByAge", params = "age")
+    public ResponseEntity<Collection<Student>> getByAge(@RequestParam int age) {
         Collection<Student> students = studentService.getByAge(age);
         return ResponseEntity.ok(students);
+    }
+
+    @GetMapping(path = "/getByAgeBetween", params = {"minAge", "maxAge"})
+    public ResponseEntity<Collection<Student>> getByAgeBetween(@RequestParam int minAge, @RequestParam int maxAge) {
+        Collection<Student> students = studentService.getByAgeBetween(minAge, maxAge);
+        return ResponseEntity.ok(students);
+    }
+
+
+    @GetMapping("/{id}/faculty")
+    public ResponseEntity<Faculty> getFacultyOfStudent(@PathVariable Long id) {
+        Faculty faculty = studentService.get(id).getFaculty();
+        return ResponseEntity.ok(faculty);
     }
 
     @PutMapping
     public ResponseEntity<Student> update(@RequestBody Student student) {
         Student updatedStudent = studentService.update(student);
-        if (updatedStudent == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(updatedStudent);
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Student> delete(@PathVariable Long id) {
+    @DeleteMapping(params = "id")
+    public ResponseEntity<Student> delete(@RequestParam Long id) {
         Student student = studentService.delete(id);
-        if (student == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(student);
     }
 }

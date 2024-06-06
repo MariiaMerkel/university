@@ -1,7 +1,7 @@
 package ru.msu.university.service;
 
-import ru.msu.university.model.Faculty;
-import ru.msu.university.model.Student;
+import ru.msu.university.entities.Faculty;
+import ru.msu.university.entities.Student;
 
 import java.util.Collection;
 
@@ -19,4 +19,8 @@ public interface FacultyService {
     Faculty delete(Long id);
 
     Collection<Faculty> getAll();
+
+    Collection<Student> getStudentsByFaculty(Long id);
+
+    Collection<Faculty> getByNameOrColor(String nameOrColor);
 }

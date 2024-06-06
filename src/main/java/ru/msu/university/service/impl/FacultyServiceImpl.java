@@ -1,9 +1,11 @@
 package ru.msu.university.service.impl;
 
 import org.springframework.stereotype.Service;
+import ru.msu.university.entities.Faculty;
+import ru.msu.university.entities.Student;
 import ru.msu.university.exceptions.FacultyNotFoundException;
-import ru.msu.university.model.Faculty;
 import ru.msu.university.repositories.FacultyRepository;
+import ru.msu.university.repositories.StudentRepository;
 import ru.msu.university.service.FacultyService;
 
 import java.util.Collection;
@@ -12,14 +14,17 @@ import java.util.Optional;
 @Service
 public class FacultyServiceImpl implements FacultyService {
 
-    private FacultyRepository facultyRepository;
+    private final FacultyRepository facultyRepository;
+    private final StudentRepository studentRepository;
 
-    public FacultyServiceImpl(FacultyRepository facultyRepository) {
+    public FacultyServiceImpl(FacultyRepository facultyRepository, StudentRepository studentRepository) {
         this.facultyRepository = facultyRepository;
+        this.studentRepository = studentRepository;
     }
 
     @Override
     public Faculty add(Faculty faculty) {
+        faculty.setId(null);
         return facultyRepository.save(faculty);
     }
 
@@ -33,17 +38,8 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public Collection<Faculty> getByColor(String color) {
-        Collection<Faculty> faculties = facultyRepository.findByColor(color);
-        if (faculties.isEmpty()) {
-            throw new FacultyNotFoundException(color);
-        }
-        return facultyRepository.findByColor(color);
-    }
-
-    @Override
     public Collection<Faculty> getByName(String name) {
-        Collection<Faculty> faculties = facultyRepository.findByName(name);
+        Collection<Faculty> faculties = facultyRepository.findByNameContainsIgnoreCase(name);
         if (faculties.isEmpty()) {
             throw new FacultyNotFoundException(name);
         }
@@ -51,23 +47,44 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public Faculty update(Faculty faculty) {
-        Optional<Faculty> facultyOptional = facultyRepository.findById(faculty.getId());
-        if (facultyOptional.isPresent()) {
-            facultyRepository.save(faculty);
-            return faculty;
+    public Collection<Faculty> getByColor(String color) {
+        Collection<Faculty> faculties = facultyRepository.findByColorContainsIgnoreCase(color);
+        if (faculties.isEmpty()) {
+            throw new FacultyNotFoundException(color);
         }
-        throw new FacultyNotFoundException(faculty.getId());
+        return facultyRepository.findByColorContainsIgnoreCase(color);
+    }
+
+    @Override
+    public Collection<Faculty> getByNameOrColor(String nameOrColor) {
+        return facultyRepository.findByNameContainsIgnoreCaseOrColorContainsIgnoreCase(nameOrColor, nameOrColor);
+    }
+
+    @Override
+    public Collection<Student> getStudentsByFaculty(Long facultyId) {
+        return studentRepository.findByFaculty_Id(facultyId);
+
+    }
+
+    @Override
+    public Faculty update(Faculty faculty) {
+        return facultyRepository.findById(faculty.getId())
+                .map(f -> {
+                    f.setName(faculty.getName());
+                    f.setColor(faculty.getColor());
+                    return facultyRepository.save(f);
+                })
+                .orElseThrow(() -> new FacultyNotFoundException(faculty.getId()));
     }
 
     @Override
     public Faculty delete(Long id) {
-        Optional<Faculty> faculty = facultyRepository.findById(id);
-        if (faculty.isPresent()) {
-            facultyRepository.deleteById(id);
-            return faculty.get();
-        }
-        throw new FacultyNotFoundException(id);
+        return facultyRepository.findById(id)
+                .map(f -> {
+                    facultyRepository.delete(f);
+                    return f;
+                })
+                .orElseThrow(() -> new FacultyNotFoundException(id));
     }
 
     @Override

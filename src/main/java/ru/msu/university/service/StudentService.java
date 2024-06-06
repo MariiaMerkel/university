@@ -1,6 +1,6 @@
 package ru.msu.university.service;
 
-import ru.msu.university.model.Student;
+import ru.msu.university.entities.Student;
 
 import java.util.Collection;
 
@@ -12,6 +12,8 @@ public interface StudentService {
     Collection<Student> getByName(String name);
 
     Collection<Student> getByAge(int age);
+
+    Collection<Student> getByAgeBetween(int min, int max);
 
     Student update(Student student);
 

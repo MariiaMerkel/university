@@ -1,8 +1,8 @@
 package ru.msu.university.service.impl;
 
 import org.springframework.stereotype.Service;
+import ru.msu.university.entities.Student;
 import ru.msu.university.exceptions.StudentNotFoundException;
-import ru.msu.university.model.Student;
 import ru.msu.university.repositories.StudentRepository;
 import ru.msu.university.service.StudentService;
 
@@ -19,6 +19,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public Student add(Student student) {
+        student.setId(null);
         return studentRepository.save(student);
     }
 
@@ -34,12 +35,11 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Collection<Student> getByName(String name) {
-        Collection<Student> student = studentRepository.findByName(name);
+        Collection<Student> student = studentRepository.findByNameContainsIgnoreCase(name);
         if (student.isEmpty()) {
             throw new StudentNotFoundException(name);
-        } else {
-            return student;
         }
+        return student;
     }
 
     @Override
@@ -47,28 +47,39 @@ public class StudentServiceImpl implements StudentService {
         Collection<Student> students = studentRepository.findByAge(age);
         if (students.isEmpty()) {
             throw new StudentNotFoundException(age);
-        } else {
-            return students;
         }
+        return students;
+    }
+
+    @Override
+    public Collection<Student> getByAgeBetween(int min, int max) {
+        Collection<Student> students = studentRepository.findByAgeBetween(min, max);
+        if (students.isEmpty()) {
+            throw new StudentNotFoundException("Студенты с указанным возрастом не найдены");
+        }
+        return students;
     }
 
     @Override
     public Student update(Student student) {
-        Optional<Student> studentOptional = studentRepository.findById(student.getId());
-        if (studentOptional.isPresent()) {
-            return studentRepository.save(student);
-        }
-        throw new StudentNotFoundException(student.getId());
+        return studentRepository.findById(student.getId())
+                .map(s -> {
+                    s.setName(student.getName());
+                    s.setAge(student.getAge());
+                    s.setFaculty(student.getFaculty());
+                    return studentRepository.save(s);
+                })
+                .orElseThrow(() -> new StudentNotFoundException(student.getId()));
     }
 
     @Override
     public Student delete(Long id) {
-        Optional<Student> student = studentRepository.findById(id);
-        if (student.isPresent()) {
-            studentRepository.deleteById(id);
-            return student.get();
-        }
-        throw new StudentNotFoundException(id);
+        return studentRepository.findById(id)
+                .map(s -> {
+                    studentRepository.delete(s);
+                    return s;
+                })
+                .orElseThrow(() -> new StudentNotFoundException(id));
     }
 
     @Override

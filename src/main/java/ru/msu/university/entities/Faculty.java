@@ -1,16 +1,15 @@
-package ru.msu.university.model;
+package ru.msu.university.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
 @Entity
+@Table(name = "faculties")
 public class Faculty {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String color;
@@ -34,11 +33,7 @@ public class Faculty {
     }
 
     public void setId(Long id) {
-        if (id != null) {
-            this.id = id;
-        } else {
-            throw new NullPointerException("id факультета не может быть null");
-        }
+        this.id = id;
     }
 
     public String getName() {
@@ -70,7 +65,7 @@ public class Faculty {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Faculty faculty)) return false;
-        return id == faculty.id && Objects.equals(name, faculty.name) && Objects.equals(color, faculty.color);
+        return id.equals(faculty.id) && Objects.equals(name, faculty.name) && Objects.equals(color, faculty.color);
     }
 
     @Override
