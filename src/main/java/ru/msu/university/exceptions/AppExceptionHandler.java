@@ -24,4 +24,9 @@ public class AppExceptionHandler {
     public ResponseEntity<String> handlerNoSuchElement(NoSuchElementException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
+
+    @ExceptionHandler
+    public ResponseEntity<String> handlerAvatarNotFound(AvatarNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
 }

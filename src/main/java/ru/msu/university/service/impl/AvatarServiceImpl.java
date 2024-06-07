@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.msu.university.entities.Avatar;
 import ru.msu.university.entities.Student;
+import ru.msu.university.exceptions.AvatarNotFoundException;
 import ru.msu.university.repositories.AvatarRepository;
 import ru.msu.university.service.AvatarService;
 import ru.msu.university.service.StudentService;
@@ -48,7 +49,7 @@ public class AvatarServiceImpl implements AvatarService {
         ) {
             bis.transferTo(bos);
         }
-        Avatar avatar = findAvatar(studentId);
+        Avatar avatar = findAvatarByStudent(studentId);
         avatar.setStudent(student);
         avatar.setFilePath(filePath.toString());
         avatar.setFileSize(avatarFile.getSize());
@@ -58,7 +59,7 @@ public class AvatarServiceImpl implements AvatarService {
         avatarRepository.save(avatar);
     }
 
-    private Avatar findAvatar(Long studentId) {
+    private Avatar findAvatarByStudent(Long studentId) {
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
 
@@ -81,5 +82,10 @@ public class AvatarServiceImpl implements AvatarService {
             ImageIO.write(preview, getExtensions(filePath.getFileName().toString()), baos);
             return baos.toByteArray();
         }
+    }
+
+    @Override
+    public Avatar getAvatarByStudent(Long studentId) {
+        return avatarRepository.findByStudentId(studentId).orElseThrow(AvatarNotFoundException::new);
     }
 }
