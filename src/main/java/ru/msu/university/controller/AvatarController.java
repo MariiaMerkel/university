@@ -1,5 +1,6 @@
 package ru.msu.university.controller;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,10 @@ import ru.msu.university.service.AvatarService;
 import ru.msu.university.service.impl.AvatarServiceImpl;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 @RestController
 public class AvatarController {
@@ -31,7 +36,7 @@ public class AvatarController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{studentId}/cover/preview")
+    @GetMapping("/{studentId}/avatar/preview")
     public ResponseEntity<byte[]> getPreview(@PathVariable Long studentId) {
         Avatar avatar = avatarService.getAvatarByStudent(studentId);
 
@@ -40,5 +45,19 @@ public class AvatarController {
         headers.setContentLength(avatar.getPreview().length);
 
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(avatar.getPreview());
+    }
+
+    @GetMapping("/{studentId}/avatar")
+    public void getAvatar(@PathVariable Long studentId, HttpServletResponse response) throws IOException {
+        Avatar avatar = avatarService.getAvatarByStudent(studentId);
+
+        Path path = Path.of(avatar.getFilePath());
+
+        try (InputStream is = Files.newInputStream(path);
+             OutputStream os = response.getOutputStream()) {
+            response.setContentType(avatar.getMediaType());
+            response.setContentLength((int) avatar.getFileSize());
+            is.transferTo(os);
+        }
     }
 }
