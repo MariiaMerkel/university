@@ -10,9 +10,9 @@ public class Avatar {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
     private String filePath;
-    private Long fileSize;
+    private long fileSize;
     private String mediaType;
 
     @Lob
@@ -24,11 +24,11 @@ public class Avatar {
     @OneToOne
     private Student student;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -40,11 +40,11 @@ public class Avatar {
         this.filePath = filePath;
     }
 
-    public Long getFileSize() {
+    public long getFileSize() {
         return fileSize;
     }
 
-    public void setFileSize(Long fileSize) {
+    public void setFileSize(long fileSize) {
         this.fileSize = fileSize;
     }
 
@@ -87,6 +87,7 @@ public class Avatar {
                 ", filePath='" + filePath + '\'' +
                 ", fileSize=" + fileSize +
                 ", mediaType='" + mediaType + '\'' +
+                ", preview=" + Arrays.toString(preview) +
                 ", data=" + Arrays.toString(data) +
                 ", student=" + student +
                 '}';
@@ -97,11 +98,17 @@ public class Avatar {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Avatar avatar = (Avatar) o;
-        return Objects.equals(id, avatar.id) && Objects.equals(filePath, avatar.filePath) && Objects.equals(fileSize, avatar.fileSize) && Objects.equals(mediaType, avatar.mediaType) && Objects.deepEquals(data, avatar.data) && Objects.equals(student, avatar.student);
+        return id == avatar.id &&
+               fileSize == avatar.fileSize &&
+               Objects.equals(filePath, avatar.filePath) &&
+               Objects.equals(mediaType, avatar.mediaType) &&
+               Objects.deepEquals(preview, avatar.preview) &&
+               Objects.deepEquals(data, avatar.data) &&
+               Objects.equals(student, avatar.student);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, filePath, fileSize, mediaType, Arrays.hashCode(data), student);
+        return Objects.hash(id, filePath, fileSize, mediaType, Arrays.hashCode(preview), Arrays.hashCode(data), student);
     }
 }
