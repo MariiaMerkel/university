@@ -25,4 +25,10 @@ class UniversityApplicationTests {
         Assertions.assertThat(studentController).isNotNull();
     }
 
+    @Test
+    void defaultMessage() throws Exception {
+        Assertions
+                .assertThat(this.testRestTemplate.getForObject("http://localhost:" + port + "/", String.class))
+                .isEqualTo("Hello");
+    }
 }
