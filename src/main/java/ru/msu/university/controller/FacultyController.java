@@ -55,7 +55,6 @@ public class FacultyController {
         return ResponseEntity.ok(students);
     }
 
-
     @GetMapping
     public ResponseEntity<Collection<Faculty>> getAll() {
         Collection<Faculty> faculties = facultyService.getAll();
