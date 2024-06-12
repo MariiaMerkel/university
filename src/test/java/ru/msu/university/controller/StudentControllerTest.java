@@ -75,10 +75,10 @@ class StudentControllerTest {
     @Test
     void getFacultyOfStudentTest() {
         Student student = new Student("Natasha", 45);
-        Student addedStudent = testRestTemplate.getForObject(url + "/2", student, Student.class);
+        Student addedStudent = testRestTemplate.postForObject(url, student, Student.class);
         student.setId(addedStudent.getId());
-        String actual = testRestTemplate.getForObject(url, String.class);
-
+        String actual = testRestTemplate.getForObject(url + "?id=" + addedStudent.getId(), String.class);
+        assertThat(actual).isEqualTo("{\"id\":" + addedStudent.getId() + ",\"name\":\"Natasha\",\"age\":45,\"faculty\":null}");
     }
 
     @Test
