@@ -13,12 +13,12 @@ public class AppExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<String> handlerStudentNotFound(StudentNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
     @ExceptionHandler
     public ResponseEntity<String> handlerFacultyNotFound(FacultyNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
     @ExceptionHandler
