@@ -15,6 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 import ru.msu.university.entities.Student;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static ru.msu.university.service.impl.ConstantsForTests.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("home")
@@ -50,66 +51,87 @@ class StudentControllerTest {
     }
 
     @Test
-    void addTest() throws Exception {
+    void addTest() {
 
-        Student expected = new Student("Pasha", 23);
+        Student expected = ALEX;
         Student actual = testRestTemplate.postForObject(url, expected, Student.class);
         expected.setId(actual.getId());
         assertThat(actual).isEqualTo(expected);
     }
 
     @Test
-    void getAllTest() throws Exception {
+    void getAllTest() {
 
-        Student student = new Student("Glasha", 100);
-        Student addedStudent = testRestTemplate.postForObject(url, student, Student.class);
-        student.setId(addedStudent.getId());
+        Student addedStudent = testRestTemplate.postForObject(url, SERGEY, Student.class);
         String actual = testRestTemplate.getForObject(url, String.class);
         assertThat(actual).contains(
                 "[",
                 "]",
-                "{\"id\":" + addedStudent.getId() + ",\"name\":\"Glasha\",\"age\":100,\"faculty\":null}"
+                "{\"id\":" + addedStudent.getId() + ",\"name\":\"Sergey\",\"age\":30,\"faculty\":null}"
         );
     }
 
     @Test
-    void getFacultyOfStudentTest() {
-        Student student = new Student("Natasha", 45);
-        Student addedStudent = testRestTemplate.postForObject(url, student, Student.class);
-        student.setId(addedStudent.getId());
+    void getByIdTest() {
+        Student addedStudent = testRestTemplate.postForObject(url, MARIIA, Student.class);
         String actual = testRestTemplate.getForObject(url + "?id=" + addedStudent.getId(), String.class);
-        assertThat(actual).isEqualTo("{\"id\":" + addedStudent.getId() + ",\"name\":\"Natasha\",\"age\":45,\"faculty\":null}");
+        assertThat(actual).isEqualTo("{\"id\":" + addedStudent.getId() + ",\"name\":\"Mariia\",\"age\":35,\"faculty\":null}");
     }
 
     @Test
     void updateTest() {
+        try {
+            studentController.delete(1L);
+        } catch (Exception e) {
+            Student updated = new Student(1L, "Roman", 53);
 
-        final Student updated = new Student(99L, "Rowan Atkinson", 53);
+            ResponseEntity<String> response = testRestTemplate.exchange(
+                    "http://localhost:" + port + "/student",
+                    HttpMethod.PUT,
+                    new HttpEntity<>(updated),
+                    String.class
+            );
+            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        }
+    }
 
-        final ResponseEntity<Student> response = testRestTemplate.exchange(
-                String.format(url),
+    @Test
+    void shouldReturnStudentNotFoundException() {
+        ResponseEntity<Student> response = testRestTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                new HttpEntity<>(ALEX),
+                Student.class
+        );
+        SERGEY.setId(response.getBody().getId());
+
+        ResponseEntity<Student> actual = testRestTemplate.exchange(
+                url,
                 HttpMethod.PUT,
-                new HttpEntity<>(updated),
+                new HttpEntity<>(SERGEY),
                 Student.class
         );
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-
-//        final Student updated2 = new Student(2L, "Mariia", 35);
-//
-//        final ResponseEntity<Student> response2 = testRestTemplate.exchange(
-//                String.format("http://localhost:" + port + "/student"),
-//                HttpMethod.PUT,
-//                new HttpEntity<>(updated2),
-//                Student.class
-//        );
-//
-//        assertThat(response2.getStatusCode()).isEqualTo(HttpStatus.OK);
-
-
+        assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(actual.getBody()).isEqualTo(SERGEY);
     }
 
     @Test
     void deleteTest() {
+        ResponseEntity<Student> response = testRestTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                new HttpEntity<>(TATYANA),
+                Student.class
+        );
+
+        Long id = response.getBody().getId();
+
+        testRestTemplate.delete(url + "?id=" + id);
+//        assertThat(testRestTemplate.getForObject(url, id, Student.class).isEqualTo(HttpStatus.OK);
+
+        String actual = testRestTemplate.getForObject(url + "?id=" + id, String.class);
+        assertThat(actual).contains("Студент с id=" + id + " не найден");
+
     }
 }
