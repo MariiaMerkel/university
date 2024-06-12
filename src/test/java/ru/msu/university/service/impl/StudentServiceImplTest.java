@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import ru.msu.university.exceptions.StudentNotFoundException;
 import ru.msu.university.entities.Student;
 
@@ -16,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static ru.msu.university.service.impl.ConstantsForTests.*;
 
 @SpringBootTest
+@ActiveProfiles("home")
 class StudentServiceImplTest {
 
     @Autowired
