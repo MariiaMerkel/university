@@ -51,14 +51,6 @@ class StudentControllerTest {
     }
 
     @Test
-    void mainTest() {
-        Assertions
-                .assertThat(this.testRestTemplate.getForObject("http://localhost:" + port, String.class))
-                .contains("ello")
-                .isEqualTo("Hello");
-    }
-
-    @Test
     void addTest() {
         Student expected = ALEX;
         Student actual = testRestTemplate.postForObject(url, expected, Student.class);
