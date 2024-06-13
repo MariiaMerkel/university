@@ -26,6 +26,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.msu.university.service.impl.ConstantsForTests.*;
 
 @WebMvcTest
 @ActiveProfiles("home")
@@ -56,7 +57,7 @@ class StudentControllerMVCTest {
     private StudentController studentController;
 
     @Test
-    void saveStudentTest() throws Exception {
+    void addTest() throws Exception {
 
         Long id = 1l;
         String name = "Olga";
@@ -98,4 +99,52 @@ class StudentControllerMVCTest {
                 .andExpect(jsonPath("$.age").value(age))
                 .andExpect(jsonPath("$.faculty").value(faculty));
     }
+
+    @Test
+    void getAll() throws Exception {
+        when(studentRepository.findAll()).thenReturn(STUDENTS);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("http://localhost/student")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0]").value(STUDENTS.get(0)))
+                .andExpect(jsonPath("$[1]").value(STUDENTS.get(1)))
+                .andExpect(jsonPath("$[2]").value(STUDENTS.get(2)))
+                .andExpect(jsonPath("$[3]").value(STUDENTS.get(3)))
+                .andExpect(jsonPath("$[4]").value(STUDENTS.get(4)));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
