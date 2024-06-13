@@ -15,8 +15,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
+import ru.msu.university.entities.Faculty;
 import ru.msu.university.entities.Student;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -198,5 +201,29 @@ class StudentControllerTest {
         String actual = testRestTemplate.getForObject(url + "?id=" + id, String.class);
 
         assertThat(actual).contains("Студент с id=" + id + " не найден");
+    }
+
+    @Test
+    void getFacultyTest() {
+        ArrayList<LinkedHashMap> faculties = testRestTemplate.getForObject("http://localhost:" + port + "/faculty", ArrayList.class);
+
+        Long id = Long.valueOf(faculties.get(2).get("id").toString());
+        String name = String.valueOf(faculties.get(2).get("name"));
+        String color = String.valueOf(faculties.get(2).get("color"));
+
+        Faculty faculty = new Faculty(id, name, color);
+        TATYANA.setFaculty(faculty);
+
+        ResponseEntity<Student> response = testRestTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                new HttpEntity<>(TATYANA),
+                Student.class
+        );
+
+        Faculty actual = testRestTemplate.getForObject(
+                url + "/" + response.getBody().getId() + "/faculty",
+                Faculty.class);
+        assertThat(actual).isEqualTo(faculty);
     }
 }
