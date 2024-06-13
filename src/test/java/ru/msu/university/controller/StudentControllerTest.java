@@ -148,7 +148,7 @@ class StudentControllerTest {
             Student updated = new Student(1L, "Roman", 53);
 
             ResponseEntity<String> response = testRestTemplate.exchange(
-                    "http://localhost:" + port + "/student",
+                    url,
                     HttpMethod.PUT,
                     new HttpEntity<>(updated),
                     String.class
