@@ -141,7 +141,7 @@ class StudentControllerTest {
     }
 
     @Test
-    void shouldReturnStudentNotFoundException() {
+    void shouldReturnNotFoundExceptionByUpdate() {
         try {
             studentController.delete(1L);
         } catch (Exception e) {
@@ -197,14 +197,8 @@ class StudentControllerTest {
 
     @Test
     void getFacultyTest() {
-        ArrayList<LinkedHashMap> faculties = testRestTemplate.getForObject("http://localhost:" + port + "/faculty", ArrayList.class);
-
-        Long id = Long.valueOf(faculties.get(2).get("id").toString());
-        String name = String.valueOf(faculties.get(2).get("name"));
-        String color = String.valueOf(faculties.get(2).get("color"));
-
-        Faculty faculty = new Faculty(id, name, color);
-        TATYANA.setFaculty(faculty);
+        Faculty[] faculties = testRestTemplate.getForObject("http://localhost:" + port + "/faculty", Faculty[].class);
+        TATYANA.setFaculty(faculties[0]);
 
         ResponseEntity<Student> response = testRestTemplate.exchange(
                 url,
@@ -216,6 +210,6 @@ class StudentControllerTest {
         Faculty actual = testRestTemplate.getForObject(
                 url + "/" + response.getBody().getId() + "/faculty",
                 Faculty.class);
-        assertThat(actual).isEqualTo(faculty);
+        assertThat(actual).isEqualTo(faculties[0]);
     }
 }
