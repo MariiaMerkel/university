@@ -72,7 +72,7 @@ class StudentControllerMVCTest {
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post("http://localhost/student")
-                        .content(jsonStudent.toString())
+                        .content(jsonStudent)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -212,7 +212,9 @@ class StudentControllerMVCTest {
         when(studentRepository.findByAgeBetween(any(Integer.class), any(Integer.class))).thenReturn(studentList);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("http://localhost/student?minAge=" + minAge + "&maxAge=" + maxAge)
+                        .get("http://localhost/student")
+                        .param("minAge",String.valueOf(minAge))
+                        .param("maxAge", String.valueOf(maxAge))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
@@ -253,11 +255,12 @@ class StudentControllerMVCTest {
 
     @Test
     void updateTest() throws Exception {
-
+        OLGA.setFaculty(POLYTECHNIC);
+        when(studentRepository.findById(1L)).thenReturn(Optional.of(OLGA));
         when(studentRepository.save(any(Student.class))).thenReturn(OLGA);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("http://localhost/student")
+                        .put("http://localhost/student")
                         .content(getJsonObjectStudent())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -271,14 +274,32 @@ class StudentControllerMVCTest {
     @Test
     void shouldReturnNotFoundExceptionByUpdate() throws Exception {
         OLGA.setFaculty(POLYTECHNIC);
+
         when(studentRepository.save(any(Student.class))).thenThrow(StudentNotFoundException.class);
+
         String jsonStudent = getJsonObjectStudent();
+
         mockMvc.perform(MockMvcRequestBuilders
                         .post("http://localhost/student")
                         .content(jsonStudent)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void getFacultyOfStudent() throws Exception{
+        OLGA.setFaculty(POLYTECHNIC);
+        when(studentRepository.findById(1L)).thenReturn(Optional.of(OLGA));
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("http://localhost/student/1/faculty")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(POLYTECHNIC.getId()))
+                .andExpect(jsonPath("$.name").value(POLYTECHNIC.getName()))
+                .andExpect(jsonPath("$.color").value(POLYTECHNIC.getColor()));
     }
 
     private String getJsonObjectStudent() throws JSONException {
@@ -294,4 +315,6 @@ class StudentControllerMVCTest {
 
         return jsonStudent.toString();
     }
+
+
 }
