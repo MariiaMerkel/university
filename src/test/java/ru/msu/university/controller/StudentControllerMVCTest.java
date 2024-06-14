@@ -2,6 +2,9 @@ package ru.msu.university.controller;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -22,6 +25,7 @@ import ru.msu.university.service.impl.StudentServiceImpl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -213,6 +217,40 @@ class StudentControllerMVCTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
+
+    @ParameterizedTest
+    @MethodSource("provideParamsForShouldReturnBadRequest")
+    void shouldReturnBadRequestByAgeBetween(String minAge, String maxAge, String expected) throws Exception {
+        String url = "http://localhost/student?";
+
+        if (minAge != null && maxAge != null) {
+            url = url + minAge + "&" + maxAge;
+        }
+        if (minAge == null && maxAge != null) {
+            url = url + maxAge;
+        }
+        if (minAge != null && maxAge == null) {
+            url = url + minAge;
+        }
+        when(studentRepository.findByAgeBetween(any(Integer.class), any(Integer.class))).thenReturn(STUDENTS);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get(url)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    public static Stream<Arguments> provideParamsForShouldReturnBadRequest() {
+        return Stream.of(
+                Arguments.of(null, "maxAge=30", "Один из параметров введён не корректно"),
+                Arguments.of("minAge=30", null, "Один из параметров введён не корректно"),
+                Arguments.of("minAge=30", "maxAge=-5", "Один из параметров введён не корректно"),
+                Arguments.of("minAge=-5", "maxAge=30", "Один из параметров введён не корректно"),
+                Arguments.of(null, "maxAge=-5", "Один из параметров введён не корректно"),
+                Arguments.of("minAge=-5", null, "Один из параметров введён не корректно")
+        );
+    }
+
 
 
 }
