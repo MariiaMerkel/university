@@ -9,7 +9,6 @@ import java.util.List;
 
 public class ConstantsForTests {
 
-    public static final Student OLGA = new Student(1L, "Olga", 41);
     public static final Student ALEX = new Student("Alex", 40);
     public static final Student ALEX_EXPECTED = new Student(1L, "Alex", 40);
     public static final Student SERGEY = new Student("Sergey", 30);
@@ -20,9 +19,11 @@ public class ConstantsForTests {
     public static final Student TATYANA_EXPECTED = new Student(4L, "Tatyana", 50);
     public static final Student IVAN = new Student("Ivan", 60);
     public static final Student IVAN_EXPECTED = new Student(1L, "Ivan", 60);
+    public static final Student OLGA = new Student(1L, "Olga", 41);
 
     public static final List<Student> STUDENTS = List.of(ALEX, SERGEY, MARIIA, TATYANA, IVAN);
 
+    public static final Faculty POLYTECHNIC = new Faculty(1L, "polytechnic", "Black");
     public static final Faculty BIOLOGY = new Faculty("Biology", "Green");
     public static final Faculty BIOLOGY_EXPECTED = new Faculty(1L, "Biology", "Green");
     public static final Faculty MATHEMATICS = new Faculty("Mathematics", "Grey");
