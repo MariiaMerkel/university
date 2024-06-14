@@ -29,6 +29,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -213,7 +214,7 @@ class StudentControllerMVCTest {
 
         mockMvc.perform(MockMvcRequestBuilders
                         .get("http://localhost/student")
-                        .param("minAge",String.valueOf(minAge))
+                        .param("minAge", String.valueOf(minAge))
                         .param("maxAge", String.valueOf(maxAge))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
@@ -288,7 +289,7 @@ class StudentControllerMVCTest {
     }
 
     @Test
-    void getFacultyOfStudent() throws Exception{
+    void getFacultyOfStudent() throws Exception {
         OLGA.setFaculty(POLYTECHNIC);
         when(studentRepository.findById(1L)).thenReturn(Optional.of(OLGA));
 
@@ -300,6 +301,24 @@ class StudentControllerMVCTest {
                 .andExpect(jsonPath("$.id").value(POLYTECHNIC.getId()))
                 .andExpect(jsonPath("$.name").value(POLYTECHNIC.getName()))
                 .andExpect(jsonPath("$.color").value(POLYTECHNIC.getColor()));
+    }
+
+    @Test
+    void deleteTest() throws Exception {
+        when(studentRepository.findById(1L)).thenReturn(Optional.of(OLGA));
+        doNothing().when(studentRepository).delete(any(Student.class));
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("http://localhost/student")
+                        .param("id", String.valueOf(1))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(OLGA.getId()))
+                .andExpect(jsonPath("$.name").value(OLGA.getName()))
+                .andExpect(jsonPath("$.age").value(OLGA.getAge()))
+                .andExpect(jsonPath("$.faculty").value(OLGA.getFaculty()));
+
     }
 
     private String getJsonObjectStudent() throws JSONException {
