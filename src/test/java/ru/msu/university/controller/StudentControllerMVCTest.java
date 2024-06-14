@@ -134,12 +134,85 @@ class StudentControllerMVCTest {
     void getByNameTest() throws Exception {
         String substring = "mAr";
         List<Student> studentList = STUDENTS.stream().filter(s -> s.getName().toLowerCase().contains(substring.toLowerCase())).toList();
+
         when(studentRepository.findByNameContainsIgnoreCase(any(String.class))).thenReturn(studentList);
+
         mockMvc.perform(MockMvcRequestBuilders
                         .get("http://localhost/student?name=" + substring)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpectAll(jsonPath("$[0]").value(MARIIA));
     }
+
+    @Test
+    void shouldReturnNotFoundByName() throws Exception {
+        String substring = "rrr";
+        List<Student> studentList = STUDENTS.stream().filter(s -> s.getName().toLowerCase().contains(substring.toLowerCase())).toList();
+
+        when(studentRepository.findByNameContainsIgnoreCase(any(String.class))).thenReturn(studentList);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("http://localhost/student?name=" + substring)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void getByAgeTest() throws Exception {
+        int age = 35;
+        List<Student> studentList = STUDENTS.stream().filter(s -> s.getAge() == age).toList();
+
+        when(studentRepository.findByAge(any(Integer.class))).thenReturn(studentList);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("http://localhost/student?age=" + age)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpectAll(jsonPath("$[0]").value(MARIIA));
+    }
+
+    @Test
+    void shouldReturnNotFoundByAge() throws Exception {
+        int age = 51;
+        List<Student> studentList = STUDENTS.stream().filter(s -> s.getAge() == age).toList();
+
+        when(studentRepository.findByAge(any(Integer.class))).thenReturn(studentList);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("http://localhost/student?age=" + age)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void getByAgeBetweenTest() throws Exception {
+        int minAge = 40;
+        int maxAge = 50;
+        List<Student> studentList = STUDENTS.stream().filter(s -> s.getAge() >= minAge && s.getAge() <= maxAge).toList();
+
+        when(studentRepository.findByAgeBetween(any(Integer.class), any(Integer.class))).thenReturn(studentList);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("http://localhost/student?minAge=" + minAge + "&maxAge=" + maxAge)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0]").value(studentList.get(0)))
+                .andExpect(jsonPath("$[1]").value(studentList.get(1)));
+    }
+
+    @Test
+    void shouldReturnNotFoundByAgeBetween() throws Exception {
+        int minAge = 10;
+        int maxAge = 15;
+        List<Student> studentList = STUDENTS.stream().filter(s -> s.getAge() >= minAge && s.getAge() <= maxAge).toList();
+
+        when(studentRepository.findByAgeBetween(any(Integer.class), any(Integer.class))).thenReturn(studentList);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("http://localhost/student?minAge=" + minAge + "&maxAge=" + maxAge)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
 
 }
