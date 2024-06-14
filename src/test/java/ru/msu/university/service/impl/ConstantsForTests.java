@@ -8,6 +8,8 @@ import java.util.Collection;
 import java.util.List;
 
 public class ConstantsForTests {
+
+    public static final Student OLGA = new Student(1L, "Olga", 41);
     public static final Student ALEX = new Student("Alex", 40);
     public static final Student ALEX_EXPECTED = new Student(1L, "Alex", 40);
     public static final Student SERGEY = new Student("Sergey", 30);
@@ -33,6 +35,4 @@ public class ConstantsForTests {
     public static final Faculty PHILOLOGY_EXPECTED = new Faculty(1L, "Philology", "Red");
 
     public static final List<Faculty> FACULTIES = List.of(BIOLOGY, MATHEMATICS, ECONOMICS, CHEMICAL, PHILOLOGY);
-//    public static final Collection<Faculty> FACULTIES_COLLECTION = FACULTIES.stream().filter(e -> e.getDepartment().equals(DEPARTMENT1)).collect(Collectors.toSet());
-//    public static final Collection<Employee> EMPLOYEES_FOR_EMPLOYEE_SERVICE = Collections.unmodifiableCollection(List.of(EMPLOYEE_2, EMPLOYEE_1, EMPLOYEE_3));
 }
