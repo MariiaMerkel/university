@@ -20,6 +20,7 @@ import ru.msu.university.service.impl.AvatarServiceImpl;
 import ru.msu.university.service.impl.FacultyServiceImpl;
 import ru.msu.university.service.impl.StudentServiceImpl;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -123,11 +124,22 @@ class StudentControllerMVCTest {
                         .get("http://localhost/student?id=1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath(".id").value(ALEX.getId()))
-                .andExpect(jsonPath(".name").value(ALEX.getName()))
-                .andExpect(jsonPath(".age").value(ALEX.getAge()))
-                .andExpect(jsonPath(".faculty").value(ALEX.getFaculty()));
+                .andExpect(jsonPath("$.id").value(ALEX.getId()))
+                .andExpect(jsonPath("$.name").value(ALEX.getName()))
+                .andExpect(jsonPath("$.age").value(ALEX.getAge()))
+                .andExpect(jsonPath("$.faculty").value(ALEX.getFaculty()));
     }
 
+    @Test
+    void getByNameTest() throws Exception {
+        String substring = "mAr";
+        List<Student> studentList = STUDENTS.stream().filter(s -> s.getName().toLowerCase().contains(substring.toLowerCase())).toList();
+        when(studentRepository.findByNameContainsIgnoreCase(any(String.class))).thenReturn(studentList);
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("http://localhost/student?name=" + substring)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpectAll(jsonPath("$[0]").value(MARIIA));
+    }
 
 }
