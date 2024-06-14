@@ -1,5 +1,6 @@
 package ru.msu.university.controller;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,8 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ru.msu.university.entities.Faculty;
 import ru.msu.university.entities.Student;
+import ru.msu.university.exceptions.StudentNotFoundException;
 import ru.msu.university.repositories.AvatarRepository;
 import ru.msu.university.repositories.FacultyRepository;
 import ru.msu.university.repositories.StudentRepository;
@@ -63,26 +64,11 @@ class StudentControllerMVCTest {
 
     @Test
     void addTest() throws Exception {
+        OLGA.setFaculty(POLYTECHNIC);
+        String jsonStudent = getJsonObjectStudent();
 
-        Long id = 1l;
-        String name = "Olga";
-        int age = 18;
-        Faculty faculty = new Faculty(1L, "Technic", "Blue");
-        Student student = new Student(id, name, age);
-        student.setFaculty(faculty);
-
-        JSONObject jsonFaculty = new JSONObject();
-        jsonFaculty.put("id", 1L);
-        jsonFaculty.put("name", "Economics");
-        jsonFaculty.put("color", "Red");
-        JSONObject jsonStudent = new JSONObject();
-        jsonStudent.put("id", id);
-        jsonStudent.put("name", name);
-        jsonStudent.put("age", age);
-        jsonStudent.put("faculty", jsonFaculty);
-
-        when(studentRepository.save(any(Student.class))).thenReturn(student);
-        when(studentRepository.findById(any(Long.class))).thenReturn(Optional.of(student));
+        when(studentRepository.save(any(Student.class))).thenReturn(OLGA);
+        when(studentRepository.findById(any(Long.class))).thenReturn(Optional.of(OLGA));
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post("http://localhost/student")
@@ -90,19 +76,19 @@ class StudentControllerMVCTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(id))
-                .andExpect(jsonPath("$.name").value(name))
-                .andExpect(jsonPath("$.age").value(age))
-                .andExpect(jsonPath("$.faculty").value(faculty));
+                .andExpect(jsonPath("$.id").value(OLGA.getId()))
+                .andExpect(jsonPath("$.name").value(OLGA.getName()))
+                .andExpect(jsonPath("$.age").value(OLGA.getAge()))
+                .andExpect(jsonPath("$.faculty").value(OLGA.getFaculty()));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("http://localhost/student?id=" + id)
+                        .get("http://localhost/student?id=" + OLGA.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(id))
-                .andExpect(jsonPath("$.name").value(name))
-                .andExpect(jsonPath("$.age").value(age))
-                .andExpect(jsonPath("$.faculty").value(faculty));
+                .andExpect(jsonPath("$.id").value(OLGA.getId()))
+                .andExpect(jsonPath("$.name").value(OLGA.getName()))
+                .andExpect(jsonPath("$.age").value(OLGA.getAge()))
+                .andExpect(jsonPath("$.faculty").value(OLGA.getFaculty()));
     }
 
     @Test
@@ -132,6 +118,19 @@ class StudentControllerMVCTest {
                 .andExpect(jsonPath("$.name").value(ALEX.getName()))
                 .andExpect(jsonPath("$.age").value(ALEX.getAge()))
                 .andExpect(jsonPath("$.faculty").value(ALEX.getFaculty()));
+    }
+
+    @Test
+    void shouldReturnNotFoundById() throws Exception {
+        Long id = 77L;
+        List<Student> studentList = STUDENTS.stream().filter(s -> s.getId() == (id)).toList();
+
+        when(studentRepository.findByNameContainsIgnoreCase(any(String.class))).thenReturn(studentList);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("http://localhost/student?id=" + id)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -232,6 +231,7 @@ class StudentControllerMVCTest {
         if (minAge != null && maxAge == null) {
             url = url + minAge;
         }
+
         when(studentRepository.findByAgeBetween(any(Integer.class), any(Integer.class))).thenReturn(STUDENTS);
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -251,6 +251,47 @@ class StudentControllerMVCTest {
         );
     }
 
+    @Test
+    void updateTest() throws Exception {
 
+        when(studentRepository.save(any(Student.class))).thenReturn(OLGA);
 
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("http://localhost/student")
+                        .content(getJsonObjectStudent())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(OLGA.getId()))
+                .andExpect(jsonPath("$.name").value(OLGA.getName()))
+                .andExpect(jsonPath("$.age").value(OLGA.getAge()))
+                .andExpect(jsonPath("$.faculty").value(OLGA.getFaculty()));
+    }
+
+    @Test
+    void shouldReturnNotFoundExceptionByUpdate() throws Exception {
+        OLGA.setFaculty(POLYTECHNIC);
+        when(studentRepository.save(any(Student.class))).thenThrow(StudentNotFoundException.class);
+        String jsonStudent = getJsonObjectStudent();
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("http://localhost/student")
+                        .content(jsonStudent)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    private String getJsonObjectStudent() throws JSONException {
+        JSONObject jsonFaculty = new JSONObject();
+        jsonFaculty.put("id", OLGA.getFaculty().getId());
+        jsonFaculty.put("name", OLGA.getFaculty().getName());
+        jsonFaculty.put("color", OLGA.getFaculty().getColor());
+        JSONObject jsonStudent = new JSONObject();
+        jsonStudent.put("id", OLGA.getId());
+        jsonStudent.put("name", OLGA.getName());
+        jsonStudent.put("age", OLGA.getAge());
+        jsonStudent.put("faculty", jsonFaculty);
+
+        return jsonStudent.toString();
+    }
 }
