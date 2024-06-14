@@ -115,36 +115,19 @@ class StudentControllerMVCTest {
                 .andExpect(jsonPath("$[4]").value(STUDENTS.get(4)));
     }
 
+    @Test
+    void getByIdTest() throws Exception {
+        when(studentRepository.findById(any(Long.class))).thenReturn(Optional.of(ALEX));
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("http://localhost/student?id=1")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath(".id").value(ALEX.getId()))
+                .andExpect(jsonPath(".name").value(ALEX.getName()))
+                .andExpect(jsonPath(".age").value(ALEX.getAge()))
+                .andExpect(jsonPath(".faculty").value(ALEX.getFaculty()));
+    }
 
 
 }
