@@ -1,4 +1,4 @@
-package ru.msu.university.service.impl;
+package ru.msu.university;
 
 import ru.msu.university.entities.Faculty;
 import ru.msu.university.entities.Student;
@@ -21,7 +21,7 @@ public class ConstantsForTests {
     public static final Student IVAN_EXPECTED = new Student(1L, "Ivan", 60);
     public static final Student OLGA = new Student(1L, "Olga", 41);
 
-    public static final List<Student> STUDENTS = List.of(ALEX, SERGEY, MARIIA, TATYANA, IVAN);
+    public static final List<Student> STUDENTS = List.of(ALEX_EXPECTED, SERGEY_EXPECTED, MARIIA_EXPECTED, TATYANA_EXPECTED, IVAN_EXPECTED);
 
     public static final Faculty POLYTECHNIC = new Faculty(1L, "polytechnic", "Black");
     public static final Faculty BIOLOGY = new Faculty("Biology", "Green");
@@ -35,5 +35,5 @@ public class ConstantsForTests {
     public static final Faculty PHILOLOGY = new Faculty("Philology", "Red");
     public static final Faculty PHILOLOGY_EXPECTED = new Faculty(1L, "Philology", "Red");
 
-    public static final List<Faculty> FACULTIES = List.of(BIOLOGY, MATHEMATICS, ECONOMICS, CHEMICAL, PHILOLOGY);
+    public static final List<Faculty> FACULTIES = List.of(BIOLOGY_EXPECTED, MATHEMATICS_EXPECTED, ECONOMICS_EXPECTED, CHEMICAL_EXPECTED, PHILOLOGY_EXPECTED);
 }

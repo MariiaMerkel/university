@@ -16,7 +16,7 @@ import ru.msu.university.entities.Faculty;
 import ru.msu.university.entities.Student;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static ru.msu.university.service.impl.ConstantsForTests.*;
+import static ru.msu.university.ConstantsForTests.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("home")
