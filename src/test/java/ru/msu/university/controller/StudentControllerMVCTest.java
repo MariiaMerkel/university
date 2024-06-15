@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.msu.university.ConstantsForTests.*;
 
-@WebMvcTest                        //todo
+@WebMvcTest(StudentController.class)
 @ActiveProfiles("home")
 class StudentControllerMVCTest {
 
@@ -180,7 +180,7 @@ class StudentControllerMVCTest {
                         .param("age", String.valueOf(age))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpectAll(jsonPath("$[0]").value(MARIIA));
+                .andExpectAll(jsonPath("$[0]").value(MARIIA_EXPECTED));
     }
 
     @Test

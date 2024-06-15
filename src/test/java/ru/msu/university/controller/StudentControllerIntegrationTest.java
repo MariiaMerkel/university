@@ -25,7 +25,7 @@ import static ru.msu.university.ConstantsForTests.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("home")
-class StudentControllerTest {
+class StudentControllerIntegrationTest {
 
     @LocalServerPort
     private int port;
