@@ -24,11 +24,11 @@ public class StudentController {
     }
 
     @GetMapping
-    public ResponseEntity<?> get(@RequestParam(required = false) Long id,
-                                 @RequestParam(required = false) String name,
-                                 @RequestParam(required = false) Integer age,
-                                 @RequestParam(required = false) Integer minAge,
-                                 @RequestParam(required = false) Integer maxAge) {
+    public ResponseEntity<Object> get(@RequestParam(required = false) Long id,
+                                      @RequestParam(required = false) String name,
+                                      @RequestParam(required = false) Integer age,
+                                      @RequestParam(required = false) Integer minAge,
+                                      @RequestParam(required = false) Integer maxAge) {
 
         if (id != null) {
             return ResponseEntity.ok(studentService.get(id));
@@ -39,8 +39,10 @@ public class StudentController {
         if (age != null) {
             return ResponseEntity.ok(studentService.getByAge(age));
         }
-        if (minAge != null && minAge > 0) {
+        if (minAge != null && minAge > 0 && maxAge != null && maxAge > 0) {
             return ResponseEntity.ok(studentService.getByAgeBetween(minAge, maxAge));
+        } else if ((minAge != null ^ maxAge != null) || (minAge != null && minAge < 0) || (maxAge != null && maxAge < 0)) {
+            return ResponseEntity.badRequest().body("Один из параметров введён не корректно");
         }
         return ResponseEntity.ok(studentService.getAll());
     }
