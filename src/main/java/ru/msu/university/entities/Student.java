@@ -1,14 +1,15 @@
-package ru.msu.university.model;
+package ru.msu.university.entities;
 
 import jakarta.persistence.*;
 
 import java.util.Objects;
 
 @Entity
+@Table(name = "students")
 public class Student {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private int age;
@@ -36,11 +37,7 @@ public class Student {
     }
 
     public void setId(Long id) {
-        if (id != null) {
-            this.id = id;
-        } else {
-            throw new NullPointerException("id студента не может быть null");
-        }
+        this.id = id;
     }
 
     public String getName() {
@@ -73,18 +70,20 @@ public class Student {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", age=" + age +
+                ", faculty=" + faculty +
                 '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Student student)) return false;
-        return id == student.id && age == student.age && Objects.equals(name, student.name);
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return Objects.equals(id, student.id) && age == student.age && Objects.equals(name, student.name) && Objects.equals(faculty, student.faculty);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, age);
+        return Objects.hash(id, name, age, faculty);
     }
 }

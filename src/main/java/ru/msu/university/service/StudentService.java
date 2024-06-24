@@ -1,7 +1,6 @@
 package ru.msu.university.service;
 
-import ru.msu.university.model.Faculty;
-import ru.msu.university.model.Student;
+import ru.msu.university.entities.Student;
 
 import java.util.Collection;
 

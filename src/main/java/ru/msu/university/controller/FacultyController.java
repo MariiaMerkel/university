@@ -2,8 +2,8 @@ package ru.msu.university.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.msu.university.model.Faculty;
-import ru.msu.university.model.Student;
+import ru.msu.university.entities.Faculty;
+import ru.msu.university.entities.Student;
 import ru.msu.university.service.FacultyService;
 import ru.msu.university.service.impl.FacultyServiceImpl;
 
@@ -13,7 +13,7 @@ import java.util.Collection;
 @RestController
 public class FacultyController {
 
-    private FacultyService facultyService;
+    private final FacultyService facultyService;
 
     public FacultyController(FacultyServiceImpl facultyService) {
         this.facultyService = facultyService;
@@ -25,30 +25,33 @@ public class FacultyController {
         return ResponseEntity.ok(addedFaculty);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<Faculty> get(@PathVariable Long id) {
+    @GetMapping(params = "id")
+    public ResponseEntity<Faculty> get(@RequestParam Long id) {
         Faculty faculty = facultyService.get(id);
-        if (faculty == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(faculty);
     }
 
-    @GetMapping("getByName/{name}")
-    public ResponseEntity<Collection<Faculty>> getByName(@PathVariable String name) {
+    @GetMapping(params = "name")
+    public ResponseEntity<Collection<Faculty>> getByName(@RequestParam String name) {
         Collection<Faculty> faculties = facultyService.getByName(name);
         return ResponseEntity.ok(faculties);
     }
 
-    @GetMapping("getByColor/{color}")
-    public ResponseEntity<Collection<Faculty>> getByAge(@PathVariable String color) {
+    @GetMapping(params = "color")
+    public ResponseEntity<Collection<Faculty>> getByColor(@RequestParam String color) {
         Collection<Faculty> faculties = facultyService.getByColor(color);
         return ResponseEntity.ok(faculties);
     }
 
-    @GetMapping("getStudents/{id}")
-    public ResponseEntity<Collection<Student>> getStudents(@PathVariable Long id) {
-        Collection<Student> students = facultyService.getStudents(id);
+    @GetMapping(params = "nameOrColor")
+    public ResponseEntity<Collection<Faculty>> getByNameOrColor(@RequestParam String nameOrColor) {
+        Collection<Faculty> faculties = facultyService.getByNameOrColor(nameOrColor);
+        return ResponseEntity.ok(faculties);
+    }
+
+    @GetMapping("/{id}/students")
+    public ResponseEntity<Collection<Student>> getStudentsByFaculty(@PathVariable Long id) {
+        Collection<Student> students = facultyService.getStudentsByFaculty(id);
         return ResponseEntity.ok(students);
     }
 
@@ -61,18 +64,12 @@ public class FacultyController {
     @PutMapping
     public ResponseEntity<Faculty> update(@RequestBody Faculty faculty) {
         Faculty updatedFaculty = facultyService.update(faculty);
-        if (updatedFaculty == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(updatedFaculty);
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Faculty> delete(@PathVariable Long id) {
+    @DeleteMapping(params = "id")
+    public ResponseEntity<Faculty> delete(@RequestParam Long id) {
         Faculty faculty = facultyService.delete(id);
-        if (faculty == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(faculty);
     }
 }
