@@ -1,5 +1,6 @@
 package ru.msu.university.controller;
 
+import lombok.Data;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("home")
+@Data
 class MainControllerTest {
 
     @LocalServerPort

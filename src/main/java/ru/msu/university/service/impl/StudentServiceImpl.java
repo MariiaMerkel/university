@@ -91,4 +91,9 @@ public class StudentServiceImpl implements StudentService {
     public Integer getAmountStudent() {
         return studentRepository.getAmountOfStudent();
     }
+
+    @Override
+    public Integer getAverageAge() {
+        return studentRepository.getAverageAge();
+    }
 }
