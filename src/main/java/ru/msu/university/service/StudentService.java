@@ -22,4 +22,6 @@ public interface StudentService {
     Collection<Student> getAll();
 
     Integer getAmountStudent();
+
+    Integer getAvgAge();
 }
