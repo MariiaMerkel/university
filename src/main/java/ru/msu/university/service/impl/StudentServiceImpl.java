@@ -86,4 +86,9 @@ public class StudentServiceImpl implements StudentService {
     public Collection<Student> getAll() {
         return studentRepository.findAll();
     }
+
+    @Override
+    public Integer getAmountStudent() {
+        return studentRepository.getAmountOfStudent();
+    }
 }

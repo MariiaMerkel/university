@@ -64,4 +64,10 @@ public class StudentController {
         Student student = studentService.delete(id);
         return ResponseEntity.ok(student);
     }
+
+    @GetMapping("/getAmount")
+    public ResponseEntity<Integer> getAmountStudent() {
+        Integer amount = studentService.getAmountStudent();
+        return ResponseEntity.ok(amount);
+    }
 }

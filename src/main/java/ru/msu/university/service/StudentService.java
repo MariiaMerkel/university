@@ -20,4 +20,6 @@ public interface StudentService {
     Student delete(Long id);
 
     Collection<Student> getAll();
+
+    Integer getAmountStudent();
 }
