@@ -7,6 +7,8 @@ import ru.msu.university.entities.Student;
 import ru.msu.university.service.StudentService;
 import ru.msu.university.service.impl.StudentServiceImpl;
 
+import java.util.List;
+
 @RequestMapping("/student")
 @RestController
 public class StudentController {
@@ -71,10 +73,15 @@ public class StudentController {
         return ResponseEntity.ok(amount);
     }
 
-
     @GetMapping("/getAverageAge")
     public ResponseEntity<Integer> getAvgAge() {
         Integer avg = studentService.getAverageAge();
         return ResponseEntity.ok(avg);
+    }
+
+    @GetMapping("/getLastFive")
+    public ResponseEntity<List<Student>> getLastFive() {
+        List<Student> students = studentService.getLastFive();
+        return ResponseEntity.ok(students);
     }
 }

@@ -3,6 +3,7 @@ package ru.msu.university.service;
 import ru.msu.university.entities.Student;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface StudentService {
     Student add(Student student);
@@ -24,4 +25,6 @@ public interface StudentService {
     Integer getAmountStudent();
 
     Integer getAverageAge();
+
+    List<Student> getLastFive();
 }
