@@ -1,6 +1,8 @@
 package ru.msu.university.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -62,10 +64,10 @@ public class AvatarController {
         }
     }
 
-    @GetMapping("/avatar")
-    public ResponseEntity<List<Avatar>> getAll(@RequestParam("page") Integer pageNumber, @RequestParam("size") Integer pageSize) {
-        List<Avatar> avatars = avatarService.getAll(pageNumber, pageSize);
-        return ResponseEntity.ok(avatars);
+    @GetMapping("/avatars")
+    public List<Avatar> getAll(@RequestParam(defaultValue="1") @Min(1) Integer page,
+                               @RequestParam(defaultValue = "10") @Min(1) @Max(10) Integer size) {
+        return avatarService.getAll(page, size);
     }
 
 }
