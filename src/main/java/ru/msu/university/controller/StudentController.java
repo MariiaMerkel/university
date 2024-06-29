@@ -67,21 +67,21 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-    @GetMapping("/getAmount")
+    @GetMapping("/amount")
     public ResponseEntity<Integer> getAmountStudent() {
         Integer amount = studentService.getAmountStudent();
         return ResponseEntity.ok(amount);
     }
 
-    @GetMapping("/getAverageAge")
+    @GetMapping("/average-age")
     public ResponseEntity<Integer> getAvgAge() {
         Integer avg = studentService.getAverageAge();
         return ResponseEntity.ok(avg);
     }
 
-    @GetMapping("/getLastFive")
-    public ResponseEntity<List<Student>> getLastFive() {
-        List<Student> students = studentService.getLastFive();
+    @GetMapping("/last")
+    public ResponseEntity<List<Student>> getLastFive(@RequestParam(defaultValue="5") Integer amount) {
+        List<Student> students = studentService.getLast(amount);
         return ResponseEntity.ok(students);
     }
 }
