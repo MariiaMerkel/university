@@ -3,8 +3,6 @@ package ru.msu.university;
 import ru.msu.university.entities.Faculty;
 import ru.msu.university.entities.Student;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class ConstantsForTests {

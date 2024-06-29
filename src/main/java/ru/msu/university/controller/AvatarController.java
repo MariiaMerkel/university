@@ -1,6 +1,8 @@
 package ru.msu.university.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 @RestController
 public class AvatarController {
@@ -60,4 +63,11 @@ public class AvatarController {
             is.transferTo(os);
         }
     }
+
+    @GetMapping("/avatars")
+    public List<Avatar> getAll(@RequestParam(defaultValue="1") @Min(1) Integer page,
+                               @RequestParam(defaultValue = "10") @Min(1) @Max(10) Integer size) {
+        return avatarService.getAll(page, size);
+    }
+
 }
