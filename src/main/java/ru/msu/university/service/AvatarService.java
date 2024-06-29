@@ -1,6 +1,5 @@
 package ru.msu.university.service;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.web.multipart.MultipartFile;
 import ru.msu.university.entities.Avatar;
 
