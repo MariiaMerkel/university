@@ -99,7 +99,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<Student> getLastFive() {
-        return studentRepository.getLastFive();
+    public List<Student> getLast(Integer amount) {
+        return studentRepository.getLast(amount);
     }
 }
