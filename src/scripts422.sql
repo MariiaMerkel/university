@@ -13,6 +13,6 @@ CREATE TABLE cars (
 );
 
 CREATE TABLE persons_cars (
-	id_person INTEGER NOT NULL REFERENCES persons (id),
-	id_car INTEGER NOT NULL REFERENCES cars (id)
+	person_id INTEGER NOT NULL REFERENCES persons (id),
+	car_id INTEGER NOT NULL REFERENCES cars (id)
 );
