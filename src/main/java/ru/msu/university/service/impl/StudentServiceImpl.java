@@ -7,6 +7,7 @@ import ru.msu.university.repositories.StudentRepository;
 import ru.msu.university.service.StudentService;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -85,5 +86,20 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Collection<Student> getAll() {
         return studentRepository.findAll();
+    }
+
+    @Override
+    public Integer getAmountStudent() {
+        return studentRepository.getAmountOfStudent();
+    }
+
+    @Override
+    public Integer getAverageAge() {
+        return studentRepository.getAverageAge();
+    }
+
+    @Override
+    public List<Student> getLast(Integer amount) {
+        return studentRepository.getLast(amount);
     }
 }
