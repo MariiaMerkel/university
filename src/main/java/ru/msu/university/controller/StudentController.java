@@ -7,6 +7,8 @@ import ru.msu.university.entities.Student;
 import ru.msu.university.service.StudentService;
 import ru.msu.university.service.impl.StudentServiceImpl;
 
+import java.util.List;
+
 @RequestMapping("/student")
 @RestController
 public class StudentController {
@@ -65,15 +67,21 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-    @GetMapping("/getAmount")
+    @GetMapping("/amount")
     public ResponseEntity<Integer> getAmountStudent() {
         Integer amount = studentService.getAmountStudent();
         return ResponseEntity.ok(amount);
     }
 
-    @GetMapping("/averageAge")
-    public ResponseEntity<Integer> getAverageAge() {
-        Integer avg = studentService.getAvgAge();
+    @GetMapping("/average-age")
+    public ResponseEntity<Integer> getAvgAge() {
+        Integer avg = studentService.getAverageAge();
         return ResponseEntity.ok(avg);
+    }
+
+    @GetMapping("/last")
+    public ResponseEntity<List<Student>> getLastFive(@RequestParam(defaultValue = "5") Integer amount) {
+        List<Student> students = studentService.getLast(amount);
+        return ResponseEntity.ok(students);
     }
 }
