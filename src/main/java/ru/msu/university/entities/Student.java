@@ -14,7 +14,7 @@ public class Student {
     private String name;
     private int age;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "faculty_id")
     private Faculty faculty;
 
