@@ -16,7 +16,7 @@ import java.util.Optional;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
-    Logger logger = LoggerFactory.getLogger(FacultyServiceImpl.class);
+    Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
 
     public StudentServiceImpl(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
@@ -81,6 +81,7 @@ public class StudentServiceImpl implements StudentService {
                 })
                 .orElseThrow(() -> new StudentNotFoundException(student.getId()));
         logger.debug("updated student {}", updated);
+        return updated;
     }
 
     @Override
@@ -92,7 +93,7 @@ public class StudentServiceImpl implements StudentService {
                 })
                 .orElseThrow(() -> new StudentNotFoundException(id));
         logger.debug("deleted student {}", deleted);
-
+        return deleted;
     }
 
     @Override
