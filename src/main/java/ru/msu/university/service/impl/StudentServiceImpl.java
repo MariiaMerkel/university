@@ -24,9 +24,14 @@ public class StudentServiceImpl implements StudentService {
 
     public Student add(Student student) {
         student.setId(null);
-        Student saved = studentRepository.save(student);
-        logger.debug("saved student {}", saved);
-        return saved;
+        try {
+            Student saved = studentRepository.save(student);
+            logger.debug("Saved student {}", saved);
+            return saved;
+        } catch (Exception e) {
+            logger.error("Student {} wasn't add", student);
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     @Override
@@ -34,9 +39,10 @@ public class StudentServiceImpl implements StudentService {
 
         Optional<Student> student = studentRepository.findById(id);
         if (student.isPresent()) {
-            logger.debug("got student {}", student.get());
+            logger.debug("Student with id={} was find", id);
             return student.get();
         }
+        logger.error("Student with id={} not found", id);
         throw new StudentNotFoundException(id);
     }
 
@@ -44,9 +50,10 @@ public class StudentServiceImpl implements StudentService {
     public Collection<Student> getByName(String name) {
         Collection<Student> student = studentRepository.findByNameContainsIgnoreCase(name);
         if (student.isEmpty()) {
+            logger.error("Student wasn't find by name \"{}\"", name);
             throw new StudentNotFoundException(name);
         }
-        logger.debug("got student by name {}", student);
+        logger.debug("Student found by name \"{}\"", name);
         return student;
     }
 
@@ -54,9 +61,10 @@ public class StudentServiceImpl implements StudentService {
     public Collection<Student> getByAge(int age) {
         Collection<Student> students = studentRepository.findByAge(age);
         if (students.isEmpty()) {
+            logger.error("Student wasn't find by age={}", age);
             throw new StudentNotFoundException(age);
         }
-        logger.debug("got students by age {}", students);
+        logger.debug("Students was find by age {}", students);
         return students;
     }
 
@@ -64,9 +72,10 @@ public class StudentServiceImpl implements StudentService {
     public Collection<Student> getByAgeBetween(int min, int max) {
         Collection<Student> students = studentRepository.findByAgeBetween(min, max);
         if (students.isEmpty()) {
+            logger.error("Studenta wasn't find by age between {} and {}", min, max);
             throw new StudentNotFoundException("Студенты с указанным возрастом не найдены");
         }
-        logger.debug("got students {}", students);
+        logger.debug("Students found by age between {} and {}", min, max);
         return students;
     }
 
@@ -79,8 +88,11 @@ public class StudentServiceImpl implements StudentService {
                     s.setFaculty(student.getFaculty());
                     return studentRepository.save(s);
                 })
-                .orElseThrow(() -> new StudentNotFoundException(student.getId()));
-        logger.debug("updated student {}", updated);
+                .orElseThrow(() -> {
+                    logger.error("Student {} wasn't update", student);
+                    return new StudentNotFoundException(student.getId());
+                });
+        logger.debug("Updated student {}", updated);
         return updated;
     }
 
@@ -91,7 +103,10 @@ public class StudentServiceImpl implements StudentService {
                     studentRepository.delete(s);
                     return s;
                 })
-                .orElseThrow(() -> new StudentNotFoundException(id));
+                .orElseThrow(() -> {
+                    logger.error("Student with id={} wasn't delete", id);
+                    return new StudentNotFoundException(id);
+                });
         logger.debug("deleted student {}", deleted);
         return deleted;
     }
@@ -99,7 +114,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Collection<Student> getAll() {
         List<Student> all = studentRepository.findAll();
-        logger.debug("got all students {}", all);
+        logger.debug("All students was find");
         return all;
     }
 
