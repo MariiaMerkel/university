@@ -1,5 +1,7 @@
 package ru.msu.university.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.msu.university.entities.Student;
 import ru.msu.university.exceptions.StudentNotFoundException;
@@ -14,6 +16,7 @@ import java.util.Optional;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
+    Logger logger = LoggerFactory.getLogger(FacultyServiceImpl.class);
 
     public StudentServiceImpl(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
@@ -21,7 +24,9 @@ public class StudentServiceImpl implements StudentService {
 
     public Student add(Student student) {
         student.setId(null);
-        return studentRepository.save(student);
+        Student saved = studentRepository.save(student);
+        logger.debug("saved student {}", saved);
+        return saved;
     }
 
     @Override
@@ -29,6 +34,7 @@ public class StudentServiceImpl implements StudentService {
 
         Optional<Student> student = studentRepository.findById(id);
         if (student.isPresent()) {
+            logger.debug("got student {}", student.get());
             return student.get();
         }
         throw new StudentNotFoundException(id);
@@ -40,6 +46,7 @@ public class StudentServiceImpl implements StudentService {
         if (student.isEmpty()) {
             throw new StudentNotFoundException(name);
         }
+        logger.debug("got student by name {}", student);
         return student;
     }
 
@@ -49,6 +56,7 @@ public class StudentServiceImpl implements StudentService {
         if (students.isEmpty()) {
             throw new StudentNotFoundException(age);
         }
+        logger.debug("got students by age {}", students);
         return students;
     }
 
@@ -58,12 +66,13 @@ public class StudentServiceImpl implements StudentService {
         if (students.isEmpty()) {
             throw new StudentNotFoundException("Студенты с указанным возрастом не найдены");
         }
+        logger.debug("got students {}", students);
         return students;
     }
 
     @Override
     public Student update(Student student) {
-        return studentRepository.findById(student.getId())
+        Student updated = studentRepository.findById(student.getId())
                 .map(s -> {
                     s.setName(student.getName());
                     s.setAge(student.getAge());
@@ -71,35 +80,46 @@ public class StudentServiceImpl implements StudentService {
                     return studentRepository.save(s);
                 })
                 .orElseThrow(() -> new StudentNotFoundException(student.getId()));
+        logger.debug("updated student {}", updated);
     }
 
     @Override
     public Student delete(Long id) {
-        return studentRepository.findById(id)
+        Student deleted = studentRepository.findById(id)
                 .map(s -> {
                     studentRepository.delete(s);
                     return s;
                 })
                 .orElseThrow(() -> new StudentNotFoundException(id));
+        logger.debug("deleted student {}", deleted);
+
     }
 
     @Override
     public Collection<Student> getAll() {
-        return studentRepository.findAll();
+        List<Student> all = studentRepository.findAll();
+        logger.debug("got all students {}", all);
+        return all;
     }
 
     @Override
     public Integer getAmountStudent() {
-        return studentRepository.getAmountOfStudent();
+        Integer amount = studentRepository.getAmountOfStudent();
+        logger.debug("got amount of students {}", amount);
+        return amount;
     }
 
     @Override
     public Integer getAverageAge() {
-        return studentRepository.getAverageAge();
+        Integer averageAge = studentRepository.getAverageAge();
+        logger.debug("got average age of students {}", averageAge);
+        return averageAge;
     }
 
     @Override
     public List<Student> getLast(Integer amount) {
-        return studentRepository.getLast(amount);
+        List<Student> last = studentRepository.getLast(amount);
+        logger.debug("got last students {}", last);
+        return last;
     }
 }
