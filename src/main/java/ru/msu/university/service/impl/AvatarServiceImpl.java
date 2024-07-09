@@ -62,12 +62,12 @@ public class AvatarServiceImpl implements AvatarService {
         avatar.setPreview(generateImagePreview(filePath));
         avatar.setData(avatarFile.getBytes());
         avatarRepository.save(avatar);
-        logger.debug("uploaded avatar {}", avatar);
+        logger.debug("Uploaded avatar for student with id={}", studentId);
     }
 
     private Avatar findAvatarByStudent(Long studentId) {
         Avatar avatar = avatarRepository.findByStudentId(studentId).orElse(new Avatar());
-        logger.debug("finded avatar of student {}", studentId);
+        logger.debug("Found avatar by student with id={}", studentId);
         return avatar;
     }
 
@@ -88,15 +88,18 @@ public class AvatarServiceImpl implements AvatarService {
             graphics2D.dispose();
 
             ImageIO.write(preview, getExtensions(filePath.getFileName().toString()), baos);
-            logger.debug("generated avatar");
+            logger.debug("Generated avatar");
             return baos.toByteArray();
         }
     }
 
     @Override
     public Avatar getAvatarByStudent(Long studentId) {
-        Avatar avatar = avatarRepository.findByStudentId(studentId).orElseThrow(AvatarNotFoundException::new);
-        logger.debug("founded avatar of student", studentId);
+        Avatar avatar = avatarRepository.findByStudentId(studentId).orElseThrow(() -> {
+            logger.error("Avatar wasn't find by student with id={}", studentId);
+            return new AvatarNotFoundException();
+        });
+        logger.debug("Found avatar of student with id={}", studentId);
         return avatar;
     }
 
