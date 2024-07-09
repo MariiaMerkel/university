@@ -1,7 +1,5 @@
 package ru.msu.university.service.impl;
 
-import org.hibernate.exception.ConstraintViolationException;
-import org.postgresql.util.PSQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -108,7 +106,7 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public Faculty delete(Long id) {
-       Faculty faculty = facultyRepository.findById(id)
+        Faculty faculty = facultyRepository.findById(id)
                 .map(f -> {
                     facultyRepository.delete(f);
                     return f;
