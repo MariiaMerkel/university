@@ -25,7 +25,7 @@ public class Avatar {
     @Lob
     private byte[] data;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     private Student student;
 
     public long getId() {
