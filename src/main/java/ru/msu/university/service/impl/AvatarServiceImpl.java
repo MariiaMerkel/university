@@ -1,5 +1,7 @@
 package ru.msu.university.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,7 @@ public class AvatarServiceImpl implements AvatarService {
 
     private final AvatarRepository avatarRepository;
     private final StudentService studentService;
+    Logger logger = LoggerFactory.getLogger(AvatarServiceImpl.class);
 
     public AvatarServiceImpl(AvatarRepository avatarRepository, StudentServiceImpl studentService) {
         this.avatarRepository = avatarRepository;
@@ -59,10 +62,13 @@ public class AvatarServiceImpl implements AvatarService {
         avatar.setPreview(generateImagePreview(filePath));
         avatar.setData(avatarFile.getBytes());
         avatarRepository.save(avatar);
+        logger.debug("uploaded avatar {}", avatar);
     }
 
     private Avatar findAvatarByStudent(Long studentId) {
-        return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
+        Avatar avatar = avatarRepository.findByStudentId(studentId).orElse(new Avatar());
+        logger.debug("finded avatar of student {}", studentId);
+        return avatar;
     }
 
     private String getExtensions(String fileName) {
@@ -82,18 +88,23 @@ public class AvatarServiceImpl implements AvatarService {
             graphics2D.dispose();
 
             ImageIO.write(preview, getExtensions(filePath.getFileName().toString()), baos);
+            logger.debug("generated avatar");
             return baos.toByteArray();
         }
     }
 
     @Override
     public Avatar getAvatarByStudent(Long studentId) {
-        return avatarRepository.findByStudentId(studentId).orElseThrow(AvatarNotFoundException::new);
+        Avatar avatar = avatarRepository.findByStudentId(studentId).orElseThrow(AvatarNotFoundException::new);
+        logger.debug("founded avatar of student", studentId);
+        return avatar;
     }
 
     @Override
     public List<Avatar> getAll(Integer pageNumber, Integer pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
-        return avatarRepository.findAll(pageRequest).getContent();
+        List<Avatar> avatarList = avatarRepository.findAll(pageRequest).getContent();
+        logger.debug("Founded all avatars {}", avatarList);
+        return avatarList;
     }
 }
