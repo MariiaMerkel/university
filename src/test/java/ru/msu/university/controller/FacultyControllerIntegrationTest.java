@@ -13,8 +13,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import ru.msu.university.entities.Faculty;
 import ru.msu.university.entities.Student;
+import ru.msu.university.exceptions.FacultyNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static ru.msu.university.ConstantsForTests.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -126,20 +129,24 @@ class FacultyControllerIntegrationTest {
 
     @Test
     void shouldReturnStudentNotFoundException() {
+        Faculty updated = new Faculty(1L, "Polytechnic", "purple");
         try {
-            facultyController.delete(10L);
+            facultyController.delete(1L);
         } catch (Exception e) {
-            Faculty updated = new Faculty(10L, "Polytechnic", "purple");
-
-            ResponseEntity<String> response = testRestTemplate.exchange(
-                    url,
-                    HttpMethod.PUT,
-                    new HttpEntity<>(updated),
-                    String.class
-            );
-
-            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+            System.out.println("e = " + e);
         }
+        Exception exception = assertThrows(FacultyNotFoundException.class, () -> {
+                    testRestTemplate.exchange(
+                            url,
+                            HttpMethod.PUT,
+                            new HttpEntity<>(updated),
+                            String.class
+                    );
+                });
+        String expectedMessage = "For input string";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
