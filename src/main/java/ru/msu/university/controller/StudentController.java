@@ -84,4 +84,12 @@ public class StudentController {
         List<Student> students = studentService.getLast(amount);
         return ResponseEntity.ok(students);
     }
+
+    @GetMapping("/names-start-A")
+    public ResponseEntity<List<Student>> getNamesStartingA() {
+        List<Student> students = (List<Student>) studentService.getNamesStartingA();
+        return ResponseEntity.ok(students);
+    }
+
+
 }

@@ -11,6 +11,7 @@ import ru.msu.university.repositories.StudentRepository;
 import ru.msu.university.service.StudentService;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -138,5 +139,11 @@ public class StudentServiceImpl implements StudentService {
         List<Student> last = studentRepository.getLast(amount);
         logger.debug("got last students {}", last);
         return last;
+    }
+
+    @Override
+    public Object getNamesStartingA() {
+        List<Student> students = studentRepository.findAll();
+        return students.stream().filter(s -> s.getName().startsWith("A")).sorted(Comparator.comparing(Student::getName)).toList();
     }
 }
