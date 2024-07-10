@@ -2,9 +2,11 @@ package ru.msu.university.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import ru.msu.university.entities.Faculty;
 import ru.msu.university.entities.Student;
+import ru.msu.university.exceptions.CustomFacultyException;
 import ru.msu.university.exceptions.FacultyNotFoundException;
 import ru.msu.university.repositories.FacultyRepository;
 import ru.msu.university.repositories.StudentRepository;
@@ -20,7 +22,7 @@ public class FacultyServiceImpl implements FacultyService {
     private final FacultyRepository facultyRepository;
     private final StudentRepository studentRepository;
 
-    Logger logger = LoggerFactory.getLogger(FacultyServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(FacultyServiceImpl.class);
 
     public FacultyServiceImpl(FacultyRepository facultyRepository, StudentRepository studentRepository) {
         this.facultyRepository = facultyRepository;
@@ -32,11 +34,10 @@ public class FacultyServiceImpl implements FacultyService {
         faculty.setId(null);
         try {
             Faculty saved = facultyRepository.save(faculty);
-            logger.info("Added faculty {}", saved);
+            logger.debug("Added faculty {}", saved);
             return saved;
-        } catch (Exception e) {
-            logger.error("Faculty {} wasn't add", faculty);
-            throw new RuntimeException(e.getMessage());
+        } catch (DataIntegrityViolationException e) {
+            throw new CustomFacultyException(faculty + " wasn't add.", e);
         }
     }
 
@@ -44,7 +45,7 @@ public class FacultyServiceImpl implements FacultyService {
     public Faculty get(Long id) {
         Optional<Faculty> faculty = facultyRepository.findById(id);
         if (faculty.isPresent()) {
-            logger.info("Was find faculty {}", faculty);
+            logger.debug("Was find faculty {}", faculty);
             return faculty.get();
         }
         logger.error("Faculty with id={} not found", id);
@@ -58,14 +59,14 @@ public class FacultyServiceImpl implements FacultyService {
             logger.error("Faculties with name={} not found", name);
             throw new FacultyNotFoundException(name);
         }
-        logger.info("Was find by name faculties {}", faculties);
+        logger.debug("Was find by name faculties {}", faculties);
         return faculties;
     }
 
     @Override
     public Collection<Faculty> getByColor(String color) {
         Collection<Faculty> faculties = facultyRepository.findByColorContainsIgnoreCase(color);
-        logger.info("Was find faculty by color {}", faculties);
+        logger.debug("Was find faculty by color {}", faculties);
         if (faculties.isEmpty()) {
             logger.error("Faculty with color={} not found", color);
             throw new FacultyNotFoundException(color);
@@ -76,14 +77,14 @@ public class FacultyServiceImpl implements FacultyService {
     @Override
     public Collection<Faculty> getByNameOrColor(String nameOrColor) {
         Collection<Faculty> faculties = facultyRepository.findByNameContainsIgnoreCaseOrColorContainsIgnoreCase(nameOrColor, nameOrColor);
-        logger.info("Was find faculties by name or color {}", faculties);
+        logger.debug("Was find faculties by name or color {}", faculties);
         return faculties;
     }
 
     @Override
     public Collection<Student> getStudentsByFaculty(Long facultyId) {
         Collection<Student> students = studentRepository.findByFaculty_Id(facultyId);
-        logger.info("Was find students by faculty {}", students);
+        logger.debug("Was find students by faculty {}", students);
         return students;
 
     }
@@ -100,7 +101,7 @@ public class FacultyServiceImpl implements FacultyService {
                     logger.error("Faculty {} wasn't update", faculty);
                     return new FacultyNotFoundException(faculty.getId());
                 });
-        logger.info("Updated faculty {}", faculty);
+        logger.debug("Updated faculty {}", faculty);
         return founded;
     }
 
@@ -115,14 +116,14 @@ public class FacultyServiceImpl implements FacultyService {
                     logger.error("Faculty with id={} wasn't delete", id);
                     return new FacultyNotFoundException(id);
                 });
-        logger.info("Deleted faculty {}", faculty);
+        logger.debug("Deleted faculty {}", faculty);
         return faculty;
     }
 
     @Override
     public Collection<Faculty> getAll() {
         List<Faculty> all = facultyRepository.findAll();
-        logger.info("Founded all faculties {}", all);
+        logger.debug("Founded all faculties {}", all);
         return all;
     }
 }

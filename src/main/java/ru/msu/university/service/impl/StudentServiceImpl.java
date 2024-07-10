@@ -2,8 +2,10 @@ package ru.msu.university.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import ru.msu.university.entities.Student;
+import ru.msu.university.exceptions.CustomStudentException;
 import ru.msu.university.exceptions.StudentNotFoundException;
 import ru.msu.university.repositories.StudentRepository;
 import ru.msu.university.service.StudentService;
@@ -16,7 +18,7 @@ import java.util.Optional;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
-    Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
 
     public StudentServiceImpl(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
@@ -28,9 +30,8 @@ public class StudentServiceImpl implements StudentService {
             Student saved = studentRepository.save(student);
             logger.debug("Saved student {}", saved);
             return saved;
-        } catch (Exception e) {
-            logger.error("Student {} wasn't add", student);
-            throw new RuntimeException(e.getMessage());
+        } catch (DataIntegrityViolationException e) {
+            throw new CustomStudentException(student + " wasn't add.", e);
         }
     }
 
