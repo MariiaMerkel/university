@@ -10,10 +10,7 @@ import ru.msu.university.exceptions.StudentNotFoundException;
 import ru.msu.university.repositories.StudentRepository;
 import ru.msu.university.service.StudentService;
 
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -145,5 +142,12 @@ public class StudentServiceImpl implements StudentService {
     public Object getNamesStartingA() {
         List<Student> students = studentRepository.findAll();
         return students.stream().filter(s -> s.getName().startsWith("A")).sorted(Comparator.comparing(Student::getName)).toList();
+    }
+
+    @Override
+    public OptionalDouble getAverageAge2() {
+        List<Student> students = studentRepository.findAll();
+        OptionalDouble avg = students.stream().map(m -> m.getAge()).mapToInt((a) -> a).average();
+        return avg;
     }
 }

@@ -8,6 +8,7 @@ import ru.msu.university.service.StudentService;
 import ru.msu.university.service.impl.StudentServiceImpl;
 
 import java.util.List;
+import java.util.OptionalDouble;
 
 @RequestMapping("/student")
 @RestController
@@ -91,5 +92,9 @@ public class StudentController {
         return ResponseEntity.ok(students);
     }
 
-
+    @GetMapping("/average-age-2")
+    public ResponseEntity<OptionalDouble> getAvgAge2() {
+        OptionalDouble avg = studentService.getAverageAge2();
+        return ResponseEntity.ok(avg);
+    }
 }
