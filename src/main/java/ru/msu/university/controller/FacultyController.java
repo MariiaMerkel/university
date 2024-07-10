@@ -25,26 +25,25 @@ public class FacultyController {
         return ResponseEntity.ok(addedFaculty);
     }
 
-    @GetMapping(params = "id")
-    public ResponseEntity<Faculty> get(@RequestParam Long id) {
-        Faculty faculty = facultyService.get(id);
-        return ResponseEntity.ok(faculty);
-    }
+    @GetMapping
+    public ResponseEntity<Object> get(@RequestParam(required = false) Long id,
+                                      @RequestParam(required = false) String name,
+                                      @RequestParam(required = false) String color) {
 
-    @GetMapping(params = "name")
-    public ResponseEntity<Collection<Faculty>> getByName(@RequestParam String name) {
-        Collection<Faculty> faculties = facultyService.getByName(name);
-        return ResponseEntity.ok(faculties);
-    }
-
-    @GetMapping(params = "color")
-    public ResponseEntity<Collection<Faculty>> getByColor(@RequestParam String color) {
-        Collection<Faculty> faculties = facultyService.getByColor(color);
-        return ResponseEntity.ok(faculties);
+        if (id != null) {
+            return ResponseEntity.ok(facultyService.get(id));
+        }
+        if (name != null) {
+            return ResponseEntity.ok(facultyService.getByName(name));
+        }
+        if (color != null) {
+            return ResponseEntity.ok(facultyService.getByColor(color));
+        }
+        return ResponseEntity.ok(facultyService.getAll());
     }
 
     @GetMapping(params = "nameOrColor")
-    public ResponseEntity<Collection<Faculty>> getByNameOrColor(@RequestParam String nameOrColor) {
+    public ResponseEntity<Collection<Faculty>> getByNameOrColor(@RequestParam(required = false) String nameOrColor) {
         Collection<Faculty> faculties = facultyService.getByNameOrColor(nameOrColor);
         return ResponseEntity.ok(faculties);
     }
@@ -53,12 +52,6 @@ public class FacultyController {
     public ResponseEntity<Collection<Student>> getStudentsByFaculty(@PathVariable Long id) {
         Collection<Student> students = facultyService.getStudentsByFaculty(id);
         return ResponseEntity.ok(students);
-    }
-
-    @GetMapping
-    public ResponseEntity<Collection<Faculty>> getAll() {
-        Collection<Faculty> faculties = facultyService.getAll();
-        return ResponseEntity.ok(faculties);
     }
 
     @PutMapping

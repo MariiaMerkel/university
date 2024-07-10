@@ -65,7 +65,7 @@ public class AvatarController {
     }
 
     @GetMapping("/avatars")
-    public List<Avatar> getAll(@RequestParam(defaultValue="1") @Min(1) Integer page,
+    public List<Avatar> getAll(@RequestParam(defaultValue = "1") @Min(1) Integer page,
                                @RequestParam(defaultValue = "10") @Min(1) @Max(10) Integer size) {
         return avatarService.getAll(page, size);
     }

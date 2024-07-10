@@ -80,7 +80,7 @@ public class StudentController {
     }
 
     @GetMapping("/last")
-    public ResponseEntity<List<Student>> getLastFive(@RequestParam(defaultValue="5") Integer amount) {
+    public ResponseEntity<List<Student>> getLastFive(@RequestParam(defaultValue = "5") Integer amount) {
         List<Student> students = studentService.getLast(amount);
         return ResponseEntity.ok(students);
     }
