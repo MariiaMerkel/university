@@ -8,6 +8,7 @@ import ru.msu.university.service.FacultyService;
 import ru.msu.university.service.impl.FacultyServiceImpl;
 
 import java.util.Collection;
+import java.util.List;
 
 @RequestMapping("/faculty")
 @RestController
@@ -64,5 +65,11 @@ public class FacultyController {
     public ResponseEntity<Faculty> delete(@RequestParam Long id) {
         Faculty faculty = facultyService.delete(id);
         return ResponseEntity.ok(faculty);
+    }
+
+    @DeleteMapping("/max")
+    public ResponseEntity<List<String>> getMaxName() {
+        List<String> maxName = facultyService.getMaxName();
+        return ResponseEntity.ok(maxName);
     }
 }
