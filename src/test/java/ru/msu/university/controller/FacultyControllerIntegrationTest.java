@@ -11,6 +11,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
 import ru.msu.university.entities.Faculty;
 import ru.msu.university.entities.Student;
 import ru.msu.university.exceptions.FacultyNotFoundException;
@@ -21,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static ru.msu.university.ConstantsForTests.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
 class FacultyControllerIntegrationTest {
 
     @LocalServerPort

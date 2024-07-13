@@ -142,14 +142,20 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Object getNamesStartingA() {
-        List<Student> students = studentRepository.findAll();
-        return students.stream().filter(s -> s.getName().startsWith("A")).sorted(Comparator.comparing(Student::getName)).toList();
+    public List<Student> getNamesStarting(String letter) {
+        return studentRepository.findAll()
+                .stream()
+                .filter(student -> student.getName().startsWith(letter))
+                .sorted(Comparator.comparing(Student::getName))
+                .toList();
     }
 
     @Override
-    public Double getAverageAge2() {
-        List<Student> students = studentRepository.findAll();
-        return students.stream().mapToInt((a) -> a.getAge()).average().orElseGet(() -> 0.0);
+    public Double getAverageAgeSecond() {
+        return studentRepository.findAll()
+                .stream()
+                .mapToInt((student) -> student.getAge())
+                .average()
+                .orElse(0.0);
     }
 }

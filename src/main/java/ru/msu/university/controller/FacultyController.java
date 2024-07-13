@@ -67,9 +67,8 @@ public class FacultyController {
         return ResponseEntity.ok(faculty);
     }
 
-    @DeleteMapping("/max")
-    public ResponseEntity<List<String>> getMaxName() {
-        List<String> maxName = facultyService.getMaxName();
-        return ResponseEntity.ok(maxName);
+    @GetMapping("/with-longest-names")
+    public ResponseEntity<List<String>> findFacultiesWithLongestNames() {
+        return ResponseEntity.ok(facultyService.getFacultiesWithLongestNames());
     }
 }

@@ -4,7 +4,6 @@ import ru.msu.university.entities.Student;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.OptionalDouble;
 
 public interface StudentService {
     Student add(Student student);
@@ -29,7 +28,7 @@ public interface StudentService {
 
     List<Student> getLast(Integer amount);
 
-    Object getNamesStartingA();
+    List<Student> getNamesStarting(String letter);
 
-    Double getAverageAge2();
+    Double getAverageAgeSecond();
 }

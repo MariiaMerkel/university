@@ -85,15 +85,18 @@ public class StudentController {
         return ResponseEntity.ok(students);
     }
 
-    @GetMapping("/names-start-A")
-    public ResponseEntity<List<Student>> getNamesStartingA() {
-        List<Student> students = (List<Student>) studentService.getNamesStartingA();
+    @GetMapping("/names-starting-with/{letter}")
+    public ResponseEntity<List<Student>> getNamesStartingA(@PathVariable String letter) {
+        if (letter.length() > 1) {
+            return (ResponseEntity<List<Student>>) ResponseEntity.badRequest();
+        }
+        List<Student> students = studentService.getNamesStarting(letter);
         return ResponseEntity.ok(students);
     }
 
-    @GetMapping("/average-age-2")
+    @GetMapping("/average-age-second")
     public ResponseEntity<Double> getAvgAge2() {
-        Double avg = studentService.getAverageAge2();
+        Double avg = studentService.getAverageAgeSecond();
         return ResponseEntity.ok(avg);
     }
 }
