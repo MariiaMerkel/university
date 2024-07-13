@@ -11,7 +11,6 @@ import ru.msu.university.repositories.StudentRepository;
 import ru.msu.university.service.StudentService;
 
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -142,11 +141,13 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<Student> getNamesStarting(String letter) {
-        return studentRepository.findAll()
-                .stream()
-                .filter(student -> student.getName().startsWith(letter))
-                .sorted(Comparator.comparing(Student::getName))
+    public List<String> getNamesStarting(String letter) {
+        List<Student> students = studentRepository.findAll();
+        List<String> names = students.stream()
+                .map(student -> student.getName().toUpperCase())
+                .toList();
+        return names.stream().filter(name -> name.toUpperCase().startsWith(letter))
+                .sorted()
                 .toList();
     }
 
@@ -154,7 +155,7 @@ public class StudentServiceImpl implements StudentService {
     public Double getAverageAgeSecond() {
         return studentRepository.findAll()
                 .stream()
-                .mapToInt((student) -> student.getAge())
+                .mapToInt(Student::getAge)
                 .average()
                 .orElse(0.0);
     }
