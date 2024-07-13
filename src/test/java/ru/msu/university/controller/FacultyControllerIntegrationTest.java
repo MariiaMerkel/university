@@ -130,11 +130,6 @@ class FacultyControllerIntegrationTest {
     @Test
     void shouldReturnStudentNotFoundException() {
         Faculty updated = new Faculty(1L, "Polytechnic", "purple");
-        try {
-            facultyController.delete(1L);
-        } catch (Exception e) {
-            System.out.println("e = " + e);
-        }
         Exception exception = assertThrows(FacultyNotFoundException.class, () -> {
                     testRestTemplate.exchange(
                             url,
