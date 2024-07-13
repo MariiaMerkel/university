@@ -8,7 +8,6 @@ import ru.msu.university.service.StudentService;
 import ru.msu.university.service.impl.StudentServiceImpl;
 
 import java.util.List;
-import java.util.OptionalDouble;
 
 @RequestMapping("/student")
 @RestController

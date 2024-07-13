@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.stream.Stream;
 
-import static java.time.LocalTime.now;
-
 @RestController
 public class MainController {
     private Logger logger = LoggerFactory.getLogger(MainController.class);
@@ -20,7 +18,7 @@ public class MainController {
 
     @GetMapping("sum")
     public int getNum() {
-        int sum = Stream.iterate(1, a -> a +1).limit(1_000_000).parallel().reduce(0, (a, b) -> a + b );
+        int sum = Stream.iterate(1, a -> a + 1).limit(1_000_000).parallel().reduce(0, (a, b) -> a + b);
         return sum;
     }
 }
