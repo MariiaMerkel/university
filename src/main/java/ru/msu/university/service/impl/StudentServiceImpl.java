@@ -145,9 +145,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public OptionalDouble getAverageAge2() {
+    public Double getAverageAge2() {
         List<Student> students = studentRepository.findAll();
-        OptionalDouble avg = students.stream().map(m -> m.getAge()).mapToInt((a) -> a).average();
-        return avg;
+        return students.stream().mapToInt((a) -> a.getAge()).average().orElseGet(() -> 0.0);
     }
 }

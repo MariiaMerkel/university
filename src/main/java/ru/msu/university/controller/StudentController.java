@@ -93,8 +93,8 @@ public class StudentController {
     }
 
     @GetMapping("/average-age-2")
-    public ResponseEntity<OptionalDouble> getAvgAge2() {
-        OptionalDouble avg = studentService.getAverageAge2();
+    public ResponseEntity<Double> getAvgAge2() {
+        Double avg = studentService.getAverageAge2();
         return ResponseEntity.ok(avg);
     }
 }

@@ -31,5 +31,5 @@ public interface StudentService {
 
     Object getNamesStartingA();
 
-    OptionalDouble getAverageAge2();
+    Double getAverageAge2();
 }
