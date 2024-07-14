@@ -9,9 +9,9 @@ import java.util.stream.Stream;
 public class SumServiceImpl implements SumService {
     @Override
     public Long computeSum() {
-        return Long.valueOf(Stream.iterate(1, a -> a + 1)
-                .limit(1_000_000)
+        return Stream.iterate(1L, a -> a + 1)
+                .limit(1000000)
                 .parallel()
-                .reduce(0, Integer::sum));
+                .reduce(0L, Long::sum);
     }
 }

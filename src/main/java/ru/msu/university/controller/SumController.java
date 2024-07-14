@@ -6,13 +6,11 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.msu.university.service.SumService;
 import ru.msu.university.service.impl.SumServiceImpl;
 
-import java.util.stream.Stream;
-
 @RestController
 @RequestMapping("/sum")
 public class SumController {
 
-    private SumService sumService;
+    private final SumService sumService;
 
     public SumController(SumServiceImpl sumService) {
         this.sumService = sumService;

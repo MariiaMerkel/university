@@ -130,14 +130,14 @@ public class FacultyServiceImpl implements FacultyService {
     public List<String> getFacultiesWithLongestNames() {
         List<Faculty> faculties = facultyRepository.findAll();
         logger.debug("Founded all faculties {}", faculties);
-        List<String> names = faculties.stream()
+        int max = faculties.stream()
                 .map(Faculty::getName)
-                .toList();
-        int max = names.stream()
                 .mapToInt(String::length)
                 .max()
-                .getAsInt();
-        return names.stream()
+                .orElse(0);
+
+        return faculties.stream()
+                .map(Faculty::getName)
                 .filter(name -> name.length() == max)
                 .toList();
     }

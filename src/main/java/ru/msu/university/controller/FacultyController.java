@@ -1,6 +1,5 @@
 package ru.msu.university.controller;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.msu.university.entities.Faculty;
 import ru.msu.university.entities.Student;
@@ -27,8 +26,8 @@ public class FacultyController {
 
     @GetMapping
     public Object get(@RequestParam(required = false) Long id,
-                                      @RequestParam(required = false) String name,
-                                      @RequestParam(required = false) String color) {
+                      @RequestParam(required = false) String name,
+                      @RequestParam(required = false) String color) {
 
         if (id != null) {
             return facultyService.get(id);
