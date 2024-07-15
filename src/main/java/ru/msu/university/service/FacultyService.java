@@ -4,6 +4,7 @@ import ru.msu.university.entities.Faculty;
 import ru.msu.university.entities.Student;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface FacultyService {
     Faculty add(Faculty faculty);
@@ -23,4 +24,6 @@ public interface FacultyService {
     Collection<Student> getStudentsByFaculty(Long id);
 
     Collection<Faculty> getByNameOrColor(String nameOrColor);
+
+    List<String> getFacultiesWithLongestNames();
 }

@@ -9,7 +9,7 @@ import ru.msu.university.service.impl.InfoServiceImpl;
 @RestController
 public class InfoController {
 
-    private InfoService infoService;
+    private final InfoService infoService;
 
     public InfoController(InfoServiceImpl infoService) {
         this.infoService = infoService;

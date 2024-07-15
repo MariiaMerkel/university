@@ -86,7 +86,6 @@ public class FacultyServiceImpl implements FacultyService {
         Collection<Student> students = studentRepository.findByFaculty_Id(facultyId);
         logger.debug("Was find students by faculty {}", students);
         return students;
-
     }
 
     @Override
@@ -125,5 +124,21 @@ public class FacultyServiceImpl implements FacultyService {
         List<Faculty> all = facultyRepository.findAll();
         logger.debug("Founded all faculties {}", all);
         return all;
+    }
+
+    @Override
+    public List<String> getFacultiesWithLongestNames() {
+        List<Faculty> faculties = facultyRepository.findAll();
+        logger.debug("Founded all faculties {}", faculties);
+        int max = faculties.stream()
+                .map(Faculty::getName)
+                .mapToInt(String::length)
+                .max()
+                .orElse(0);
+
+        return faculties.stream()
+                .map(Faculty::getName)
+                .filter(name -> name.length() == max)
+                .toList();
     }
 }

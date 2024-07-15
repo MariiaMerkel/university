@@ -139,4 +139,21 @@ public class StudentServiceImpl implements StudentService {
         logger.debug("got last students {}", last);
         return last;
     }
+
+    @Override
+    public List<String> getNamesStarting(String letter) {
+        return studentRepository.findAll().stream()
+                .map(student -> student.getName().toUpperCase())
+                .filter(name -> name.startsWith(letter))
+                .sorted()
+                .toList();
+    }
+
+    @Override
+    public Double getAverageAgeSecond() {
+        return studentRepository.findAll().stream()
+                .mapToInt(Student::getAge)
+                .average()
+                .orElse(0.0);
+    }
 }

@@ -27,4 +27,8 @@ public interface StudentService {
     Integer getAverageAge();
 
     List<Student> getLast(Integer amount);
+
+    List<String> getNamesStarting(String letter);
+
+    Double getAverageAgeSecond();
 }

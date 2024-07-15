@@ -20,9 +20,8 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<Student> add(@RequestBody Student student) {
-        Student addedStudent = studentService.add(student);
-        return ResponseEntity.ok(addedStudent);
+    public Student add(@RequestBody Student student) {
+        return studentService.add(student);
     }
 
     @GetMapping
@@ -50,38 +49,46 @@ public class StudentController {
     }
 
     @GetMapping("/{id}/faculty")
-    public ResponseEntity<Faculty> getFacultyOfStudent(@PathVariable Long id) {
-        Faculty faculty = studentService.get(id).getFaculty();
-        return ResponseEntity.ok(faculty);
+    public Faculty getFacultyOfStudent(@PathVariable Long id) {
+        return studentService.get(id).getFaculty();
     }
 
     @PutMapping
-    public ResponseEntity<Student> update(@RequestBody Student student) {
-        Student updatedStudent = studentService.update(student);
-        return ResponseEntity.ok(updatedStudent);
+    public Student update(@RequestBody Student student) {
+        return studentService.update(student);
     }
 
     @DeleteMapping
-    public ResponseEntity<Student> delete(Long id) {
-        Student student = studentService.delete(id);
-        return ResponseEntity.ok(student);
+    public Student delete(Long id) {
+        return studentService.delete(id);
     }
 
     @GetMapping("/amount")
-    public ResponseEntity<Integer> getAmountStudent() {
-        Integer amount = studentService.getAmountStudent();
-        return ResponseEntity.ok(amount);
+    public Integer getAmountStudent() {
+        return studentService.getAmountStudent();
     }
 
     @GetMapping("/average-age")
-    public ResponseEntity<Integer> getAvgAge() {
-        Integer avg = studentService.getAverageAge();
-        return ResponseEntity.ok(avg);
+    public Integer getAvgAge() {
+        return studentService.getAverageAge();
     }
 
     @GetMapping("/last")
-    public ResponseEntity<List<Student>> getLastFive(@RequestParam(defaultValue = "5") Integer amount) {
-        List<Student> students = studentService.getLast(amount);
-        return ResponseEntity.ok(students);
+    public List<Student> getLastFive(@RequestParam(defaultValue = "5") Integer amount) {
+        return studentService.getLast(amount);
     }
+
+    @GetMapping("/names-starting-with/{letter}")
+    public ResponseEntity<?> getNamesStarting(@PathVariable String letter) {
+        if (letter.length() > 1) {
+            return ResponseEntity.badRequest().body("Invalid parameter: 'letter' must be a single character.");
+        }
+        return ResponseEntity.ok(studentService.getNamesStarting(letter));
+    }
+
+    @GetMapping("/average-age-second")
+    public Double getAvgAgeSecond() {
+        return studentService.getAverageAgeSecond();
+    }
+
 }

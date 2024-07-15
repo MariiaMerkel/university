@@ -12,7 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("home")
-class MainControllerTest {
+class SumControllerTest {
 
     @LocalServerPort
     private int port;
