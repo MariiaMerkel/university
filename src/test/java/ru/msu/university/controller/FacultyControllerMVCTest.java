@@ -133,7 +133,9 @@ class FacultyControllerMVCTest {
     @Test
     void getByNameTest() throws Exception {
         String substring = "gy";
-        List<Faculty> facultyList = FACULTIES.stream().filter(s -> s.getName().toLowerCase().contains(substring.toLowerCase())).toList();
+        List<Faculty> facultyList = FACULTIES.stream()
+                .filter(s -> s.getName().toLowerCase().contains(substring.toLowerCase()))
+                .toList();
 
         when(facultyRepository.findByNameContainsIgnoreCase(substring)).thenReturn(facultyList);
 
@@ -163,8 +165,11 @@ class FacultyControllerMVCTest {
     @Test
     void getByColorTest() throws Exception {
         String color = "ed";
-        List<Faculty> facultyList = FACULTIES.stream().filter(s -> s.getColor().toLowerCase().contains(color.toLowerCase())).toList();
-        when(facultyRepository.findByColorContainsIgnoreCase(color)).thenReturn(facultyList);
+        List<Faculty> facultyList = FACULTIES.stream()
+                .filter(s -> s.getColor().toLowerCase().contains(color.toLowerCase()))
+                .toList();
+        when(facultyRepository.findByColorContainsIgnoreCase(color))
+                .thenReturn(facultyList);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .get(url)
@@ -233,7 +238,11 @@ class FacultyControllerMVCTest {
         list.get(2).setFaculty(MATHEMATICS_EXPECTED);
         list.get(3).setFaculty(ECONOMICS_EXPECTED);
         list.get(4).setFaculty(CHEMICAL_EXPECTED);
-        List<Student> studentList = list.stream().filter(s -> s.getFaculty().getId().equals(expected.getId())).toList();
+        List<Student> studentList = list.stream()
+                .filter(s -> s.getFaculty()
+                        .getId()
+                        .equals(expected.getId()))
+                .toList();
 
         when(studentRepository.findByFaculty_Id(2L)).thenReturn(studentList);
 

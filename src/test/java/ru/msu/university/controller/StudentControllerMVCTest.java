@@ -140,7 +140,11 @@ class StudentControllerMVCTest {
     @Test
     void getByNameTest() throws Exception {
         String substring = "mAr";
-        List<Student> studentList = STUDENTS.stream().filter(s -> s.getName().toLowerCase().contains(substring.toLowerCase())).toList();
+        List<Student> studentList = STUDENTS.stream()
+                .filter(s -> s.getName()
+                        .toLowerCase()
+                        .contains(substring.toLowerCase()))
+                .toList();
 
         when(studentRepository.findByNameContainsIgnoreCase(any(String.class))).thenReturn(studentList);
 
@@ -155,7 +159,11 @@ class StudentControllerMVCTest {
     @Test
     void shouldReturnNotFoundByName() throws Exception {
         String substring = "rrr";
-        List<Student> studentList = STUDENTS.stream().filter(s -> s.getName().toLowerCase().contains(substring.toLowerCase())).toList();
+        List<Student> studentList = STUDENTS.stream()
+                .filter(s -> s.getName()
+                        .toLowerCase()
+                        .contains(substring.toLowerCase()))
+                .toList();
 
         when(studentRepository.findByNameContainsIgnoreCase(any(String.class))).thenReturn(studentList);
 
@@ -169,7 +177,9 @@ class StudentControllerMVCTest {
     @Test
     void getByAgeTest() throws Exception {
         int age = 35;
-        List<Student> studentList = STUDENTS.stream().filter(s -> s.getAge() == age).toList();
+        List<Student> studentList = STUDENTS.stream()
+                .filter(s -> s.getAge() == age)
+                .toList();
 
         when(studentRepository.findByAge(any(Integer.class))).thenReturn(studentList);
 
@@ -184,7 +194,9 @@ class StudentControllerMVCTest {
     @Test
     void shouldReturnNotFoundByAge() throws Exception {
         int age = 51;
-        List<Student> studentList = STUDENTS.stream().filter(s -> s.getAge() == age).toList();
+        List<Student> studentList = STUDENTS.stream()
+                .filter(s -> s.getAge() == age)
+                .toList();
 
         when(studentRepository.findByAge(any(Integer.class))).thenReturn(studentList);
 
@@ -199,7 +211,9 @@ class StudentControllerMVCTest {
     void getByAgeBetweenTest() throws Exception {
         int minAge = 40;
         int maxAge = 50;
-        List<Student> studentList = STUDENTS.stream().filter(s -> s.getAge() >= minAge && s.getAge() <= maxAge).toList();
+        List<Student> studentList = STUDENTS.stream()
+                .filter(s -> s.getAge() >= minAge && s.getAge() <= maxAge)
+                .toList();
 
         when(studentRepository.findByAgeBetween(any(Integer.class), any(Integer.class))).thenReturn(studentList);
 
@@ -217,7 +231,9 @@ class StudentControllerMVCTest {
     void shouldReturnNotFoundByAgeBetween() throws Exception {
         int minAge = 10;
         int maxAge = 15;
-        List<Student> studentList = STUDENTS.stream().filter(s -> s.getAge() >= minAge && s.getAge() <= maxAge).toList();
+        List<Student> studentList = STUDENTS.stream()
+                .filter(s -> s.getAge() >= minAge && s.getAge() <= maxAge)
+                .toList();
 
         when(studentRepository.findByAgeBetween(any(Integer.class), any(Integer.class))).thenReturn(studentList);
 

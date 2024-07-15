@@ -90,4 +90,5 @@ public class StudentController {
     public Double getAvgAgeSecond() {
         return studentService.getAverageAgeSecond();
     }
+
 }
