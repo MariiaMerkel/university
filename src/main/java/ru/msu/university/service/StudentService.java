@@ -33,4 +33,6 @@ public interface StudentService {
     Double getAverageAgeSecond();
 
     void printAllNames();
+
+    void printAllNamesSynchronized();
 }

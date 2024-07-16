@@ -180,4 +180,28 @@ public class StudentServiceImpl implements StudentService {
             System.out.println("print names stopped");
         }
     }
+
+    @Override
+    public void printAllNamesSynchronized() {
+        List<Student> students = studentRepository.findAll();
+        printNameSynchronized("students.get(0) = " + students.get(0).getName());
+        printNameSynchronized("students.get(1) = " + students.get(1).getName());
+        new Thread(() -> {
+            this.printNameSynchronized("students.get(2) = " + students.get(2).getName());
+            this.printNameSynchronized("students.get(3) = " + students.get(3).getName());
+        }).start();
+        new Thread(() -> {
+            this.printNameSynchronized("students.get(4) = " + students.get(4).getName());
+            this.printNameSynchronized("students.get(5) = " + students.get(5).getName());
+        }).start();
+    }
+
+    private synchronized void printNameSynchronized(String name) {
+        System.out.println(name);
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            System.out.println("print names stopped");
+        }
+    }
 }
