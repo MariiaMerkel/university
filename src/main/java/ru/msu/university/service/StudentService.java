@@ -31,4 +31,6 @@ public interface StudentService {
     List<String> getNamesStarting(String letter);
 
     Double getAverageAgeSecond();
+
+    void printAllNames();
 }

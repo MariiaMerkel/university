@@ -91,4 +91,8 @@ public class StudentController {
         return studentService.getAverageAgeSecond();
     }
 
+    @GetMapping("/students/print-parallel")
+    public void printNamesParallel() {
+        studentService.printAllNames();
+    }
 }
