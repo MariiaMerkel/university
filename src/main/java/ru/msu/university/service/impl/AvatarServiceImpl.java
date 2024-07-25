@@ -1,5 +1,19 @@
 package ru.msu.university.service.impl;
 
+import static java.nio.file.StandardOpenOption.CREATE_NEW;
+
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import javax.imageio.ImageIO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,16 +27,6 @@ import ru.msu.university.exceptions.AvatarNotFoundException;
 import ru.msu.university.repositories.AvatarRepository;
 import ru.msu.university.service.AvatarService;
 import ru.msu.university.service.StudentService;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
-
-import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @Service
 @Transactional
@@ -77,8 +81,8 @@ public class AvatarServiceImpl implements AvatarService {
 
     private byte[] generateImagePreview(Path filePath) throws IOException {
         try (InputStream is = Files.newInputStream(filePath);
-             BufferedInputStream bis = new BufferedInputStream(is, 1024);
-             ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+                BufferedInputStream bis = new BufferedInputStream(is, 1024);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             BufferedImage image = ImageIO.read(bis);
 
             int height = image.getHeight() / (image.getWidth() / 100);

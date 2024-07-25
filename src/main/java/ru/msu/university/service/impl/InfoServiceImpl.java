@@ -6,6 +6,7 @@ import ru.msu.university.service.InfoService;
 
 @Service
 public class InfoServiceImpl implements InfoService {
+
     @Value("${server.port}")
     private Integer port;
 

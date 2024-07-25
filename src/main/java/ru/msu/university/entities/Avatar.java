@@ -1,8 +1,14 @@
 package ru.msu.university.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -99,8 +105,12 @@ public class Avatar {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Avatar avatar = (Avatar) o;
         return id == avatar.id;
     }

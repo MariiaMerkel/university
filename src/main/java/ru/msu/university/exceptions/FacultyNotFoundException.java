@@ -1,6 +1,7 @@
 package ru.msu.university.exceptions;
 
 public class FacultyNotFoundException extends RuntimeException {
+
     public FacultyNotFoundException() {
         super("Такого факультета не найдено");
     }

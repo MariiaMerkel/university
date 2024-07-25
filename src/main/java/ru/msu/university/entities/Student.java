@@ -1,7 +1,13 @@
 package ru.msu.university.entities;
 
-import jakarta.persistence.*;
-
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.util.Objects;
 
 @Entity
@@ -76,8 +82,12 @@ public class Student {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Student student = (Student) o;
         return Objects.equals(id, student.id) && age == student.age && Objects.equals(name, student.name) && Objects.equals(faculty, student.faculty);
     }

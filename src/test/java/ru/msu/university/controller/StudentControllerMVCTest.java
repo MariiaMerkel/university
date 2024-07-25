@@ -1,5 +1,21 @@
 package ru.msu.university.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.msu.university.ConstantsForTests.ALEX_EXPECTED;
+import static ru.msu.university.ConstantsForTests.BIOLOGY_EXPECTED;
+import static ru.msu.university.ConstantsForTests.ECONOMICS_EXPECTED;
+import static ru.msu.university.ConstantsForTests.MARIIA_EXPECTED;
+import static ru.msu.university.ConstantsForTests.OLGA;
+import static ru.msu.university.ConstantsForTests.POLYTECHNIC;
+import static ru.msu.university.ConstantsForTests.STUDENTS;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -22,17 +38,6 @@ import ru.msu.university.repositories.StudentRepository;
 import ru.msu.university.service.impl.AvatarServiceImpl;
 import ru.msu.university.service.impl.FacultyServiceImpl;
 import ru.msu.university.service.impl.StudentServiceImpl;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.msu.university.ConstantsForTests.*;
 
 @WebMvcTest(StudentController.class)
 class StudentControllerMVCTest {
@@ -73,25 +78,25 @@ class StudentControllerMVCTest {
         when(studentRepository.findById(any(Long.class))).thenReturn(Optional.of(expected));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .post(url)
-                        .content(jsonStudent)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(expected.getId()))
-                .andExpect(jsonPath("$.name").value(expected.getName()))
-                .andExpect(jsonPath("$.age").value(expected.getAge()))
-                .andExpect(jsonPath("$.faculty").value(expected.getFaculty()));
+                                .post(url)
+                                .content(jsonStudent)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.id").value(expected.getId()))
+               .andExpect(jsonPath("$.name").value(expected.getName()))
+               .andExpect(jsonPath("$.age").value(expected.getAge()))
+               .andExpect(jsonPath("$.faculty").value(expected.getFaculty()));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(url)
-                        .param("id", String.valueOf(expected.getId()))
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(expected.getId()))
-                .andExpect(jsonPath("$.name").value(expected.getName()))
-                .andExpect(jsonPath("$.age").value(expected.getAge()))
-                .andExpect(jsonPath("$.faculty").value(expected.getFaculty()));
+                                .get(url)
+                                .param("id", String.valueOf(expected.getId()))
+                                .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.id").value(expected.getId()))
+               .andExpect(jsonPath("$.name").value(expected.getName()))
+               .andExpect(jsonPath("$.age").value(expected.getAge()))
+               .andExpect(jsonPath("$.faculty").value(expected.getFaculty()));
     }
 
     @Test
@@ -99,14 +104,14 @@ class StudentControllerMVCTest {
         when(studentRepository.findAll()).thenReturn(STUDENTS);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(url)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0]").value(STUDENTS.get(0)))
-                .andExpect(jsonPath("$[1]").value(STUDENTS.get(1)))
-                .andExpect(jsonPath("$[2]").value(STUDENTS.get(2)))
-                .andExpect(jsonPath("$[3]").value(STUDENTS.get(3)))
-                .andExpect(jsonPath("$[4]").value(STUDENTS.get(4)));
+                                .get(url)
+                                .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$[0]").value(STUDENTS.get(0)))
+               .andExpect(jsonPath("$[1]").value(STUDENTS.get(1)))
+               .andExpect(jsonPath("$[2]").value(STUDENTS.get(2)))
+               .andExpect(jsonPath("$[3]").value(STUDENTS.get(3)))
+               .andExpect(jsonPath("$[4]").value(STUDENTS.get(4)));
     }
 
     @Test
@@ -115,14 +120,14 @@ class StudentControllerMVCTest {
         when(studentRepository.findById(any(Long.class))).thenReturn(Optional.of(expected));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(url)
-                        .param("id", String.valueOf(expected.getId()))
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(expected.getId()))
-                .andExpect(jsonPath("$.name").value(expected.getName()))
-                .andExpect(jsonPath("$.age").value(expected.getAge()))
-                .andExpect(jsonPath("$.faculty").value(expected.getFaculty()));
+                                .get(url)
+                                .param("id", String.valueOf(expected.getId()))
+                                .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.id").value(expected.getId()))
+               .andExpect(jsonPath("$.name").value(expected.getName()))
+               .andExpect(jsonPath("$.age").value(expected.getAge()))
+               .andExpect(jsonPath("$.faculty").value(expected.getFaculty()));
     }
 
     @Test
@@ -131,80 +136,80 @@ class StudentControllerMVCTest {
         when(studentRepository.findById(id)).thenThrow(StudentNotFoundException.class);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(url)
-                        .param("id", String.valueOf(id))
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                                .get(url)
+                                .param("id", String.valueOf(id))
+                                .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isNotFound());
     }
 
     @Test
     void getByNameTest() throws Exception {
         String substring = "mAr";
         List<Student> studentList = STUDENTS.stream()
-                .filter(s -> s.getName()
-                        .toLowerCase()
-                        .contains(substring.toLowerCase()))
-                .toList();
+                                            .filter(s -> s.getName()
+                                                          .toLowerCase()
+                                                          .contains(substring.toLowerCase()))
+                                            .toList();
 
         when(studentRepository.findByNameContainsIgnoreCase(any(String.class))).thenReturn(studentList);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(url)
-                        .param("name", substring)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpectAll(jsonPath("$[0]").value(studentList.get(0)));
+                                .get(url)
+                                .param("name", substring)
+                                .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk())
+               .andExpectAll(jsonPath("$[0]").value(studentList.get(0)));
     }
 
     @Test
     void shouldReturnNotFoundByName() throws Exception {
         String substring = "rrr";
         List<Student> studentList = STUDENTS.stream()
-                .filter(s -> s.getName()
-                        .toLowerCase()
-                        .contains(substring.toLowerCase()))
-                .toList();
+                                            .filter(s -> s.getName()
+                                                          .toLowerCase()
+                                                          .contains(substring.toLowerCase()))
+                                            .toList();
 
         when(studentRepository.findByNameContainsIgnoreCase(any(String.class))).thenReturn(studentList);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(url)
-                        .param("name", substring)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                                .get(url)
+                                .param("name", substring)
+                                .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isNotFound());
     }
 
     @Test
     void getByAgeTest() throws Exception {
         int age = 35;
         List<Student> studentList = STUDENTS.stream()
-                .filter(s -> s.getAge() == age)
-                .toList();
+                                            .filter(s -> s.getAge() == age)
+                                            .toList();
 
         when(studentRepository.findByAge(any(Integer.class))).thenReturn(studentList);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(url)
-                        .param("age", String.valueOf(age))
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpectAll(jsonPath("$[0]").value(MARIIA_EXPECTED));
+                                .get(url)
+                                .param("age", String.valueOf(age))
+                                .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk())
+               .andExpectAll(jsonPath("$[0]").value(MARIIA_EXPECTED));
     }
 
     @Test
     void shouldReturnNotFoundByAge() throws Exception {
         int age = 51;
         List<Student> studentList = STUDENTS.stream()
-                .filter(s -> s.getAge() == age)
-                .toList();
+                                            .filter(s -> s.getAge() == age)
+                                            .toList();
 
         when(studentRepository.findByAge(any(Integer.class))).thenReturn(studentList);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(url)
-                        .param("age", String.valueOf(age))
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                                .get(url)
+                                .param("age", String.valueOf(age))
+                                .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isNotFound());
     }
 
     @Test
@@ -212,19 +217,19 @@ class StudentControllerMVCTest {
         int minAge = 40;
         int maxAge = 50;
         List<Student> studentList = STUDENTS.stream()
-                .filter(s -> s.getAge() >= minAge && s.getAge() <= maxAge)
-                .toList();
+                                            .filter(s -> s.getAge() >= minAge && s.getAge() <= maxAge)
+                                            .toList();
 
         when(studentRepository.findByAgeBetween(any(Integer.class), any(Integer.class))).thenReturn(studentList);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(url)
-                        .param("minAge", String.valueOf(minAge))
-                        .param("maxAge", String.valueOf(maxAge))
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0]").value(studentList.get(0)))
-                .andExpect(jsonPath("$[1]").value(studentList.get(1)));
+                                .get(url)
+                                .param("minAge", String.valueOf(minAge))
+                                .param("maxAge", String.valueOf(maxAge))
+                                .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$[0]").value(studentList.get(0)))
+               .andExpect(jsonPath("$[1]").value(studentList.get(1)));
     }
 
     @Test
@@ -232,17 +237,17 @@ class StudentControllerMVCTest {
         int minAge = 10;
         int maxAge = 15;
         List<Student> studentList = STUDENTS.stream()
-                .filter(s -> s.getAge() >= minAge && s.getAge() <= maxAge)
-                .toList();
+                                            .filter(s -> s.getAge() >= minAge && s.getAge() <= maxAge)
+                                            .toList();
 
         when(studentRepository.findByAgeBetween(any(Integer.class), any(Integer.class))).thenReturn(studentList);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(url)
-                        .param("minAge", String.valueOf(minAge))
-                        .param("maxAge", String.valueOf(maxAge))
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                                .get(url)
+                                .param("minAge", String.valueOf(minAge))
+                                .param("maxAge", String.valueOf(maxAge))
+                                .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isNotFound());
     }
 
     @ParameterizedTest
@@ -262,10 +267,10 @@ class StudentControllerMVCTest {
         when(studentRepository.findByAgeBetween(any(Integer.class), any(Integer.class))).thenReturn(STUDENTS);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(url)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$").value(expected));
+                                .get(url)
+                                .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isBadRequest())
+               .andExpect(jsonPath("$").value(expected));
     }
 
     public static Stream<Arguments> provideParamsForShouldReturnBadRequest() {
@@ -289,15 +294,15 @@ class StudentControllerMVCTest {
         when(studentRepository.save(any(Student.class))).thenReturn(expected);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .put(url)
-                        .content(jsonStudent)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(expected.getId()))
-                .andExpect(jsonPath("$.name").value(expected.getName()))
-                .andExpect(jsonPath("$.age").value(expected.getAge()))
-                .andExpect(jsonPath("$.faculty").value(expected.getFaculty()));
+                                .put(url)
+                                .content(jsonStudent)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.id").value(expected.getId()))
+               .andExpect(jsonPath("$.name").value(expected.getName()))
+               .andExpect(jsonPath("$.age").value(expected.getAge()))
+               .andExpect(jsonPath("$.faculty").value(expected.getFaculty()));
     }
 
     @Test
@@ -309,12 +314,12 @@ class StudentControllerMVCTest {
         when(studentRepository.save(any(Student.class))).thenThrow(StudentNotFoundException.class);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .put(url)
-                        .content(jsonStudent)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$").value("Студент с id=1 не найден"));
+                                .put(url)
+                                .content(jsonStudent)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isNotFound())
+               .andExpect(jsonPath("$").value("Студент с id=1 не найден"));
     }
 
     @Test
@@ -323,13 +328,13 @@ class StudentControllerMVCTest {
         when(studentRepository.findById(1L)).thenReturn(Optional.of(OLGA));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("http://localhost/student/1/faculty")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(POLYTECHNIC.getId()))
-                .andExpect(jsonPath("$.name").value(POLYTECHNIC.getName()))
-                .andExpect(jsonPath("$.color").value(POLYTECHNIC.getColor()));
+                                .get("http://localhost/student/1/faculty")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.id").value(POLYTECHNIC.getId()))
+               .andExpect(jsonPath("$.name").value(POLYTECHNIC.getName()))
+               .andExpect(jsonPath("$.color").value(POLYTECHNIC.getColor()));
     }
 
     @Test
@@ -338,15 +343,15 @@ class StudentControllerMVCTest {
         doNothing().when(studentRepository).delete(any(Student.class));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("http://localhost/student")
-                        .param("id", String.valueOf(1))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(OLGA.getId()))
-                .andExpect(jsonPath("$.name").value(OLGA.getName()))
-                .andExpect(jsonPath("$.age").value(OLGA.getAge()))
-                .andExpect(jsonPath("$.faculty").value(OLGA.getFaculty()));
+                                .delete("http://localhost/student")
+                                .param("id", String.valueOf(1))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.id").value(OLGA.getId()))
+               .andExpect(jsonPath("$.name").value(OLGA.getName()))
+               .andExpect(jsonPath("$.age").value(OLGA.getAge()))
+               .andExpect(jsonPath("$.faculty").value(OLGA.getFaculty()));
 
     }
 

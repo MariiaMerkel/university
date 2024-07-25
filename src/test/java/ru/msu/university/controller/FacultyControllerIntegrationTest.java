@@ -1,6 +1,18 @@
 package ru.msu.university.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static ru.msu.university.ConstantsForTests.BIOLOGY;
+import static ru.msu.university.ConstantsForTests.CHEMICAL;
+import static ru.msu.university.ConstantsForTests.ECONOMICS;
+import static ru.msu.university.ConstantsForTests.MARIIA;
+import static ru.msu.university.ConstantsForTests.MATHEMATICS;
+import static ru.msu.university.ConstantsForTests.PHILOLOGY;
+import static ru.msu.university.ConstantsForTests.TATYANA;
+
+import java.util.Collection;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,18 +23,12 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ActiveProfiles;
 import ru.msu.university.entities.Faculty;
 import ru.msu.university.entities.Student;
-import ru.msu.university.exceptions.FacultyNotFoundException;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static ru.msu.university.ConstantsForTests.*;
+import ru.msu.university.service.FacultyService;
+import ru.msu.university.service.StudentService;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
 class FacultyControllerIntegrationTest {
 
     @LocalServerPort
@@ -34,11 +40,28 @@ class FacultyControllerIntegrationTest {
     @Autowired
     private TestRestTemplate testRestTemplate;
 
+    @Autowired
+    private FacultyService facultyService;
+
+    @Autowired
+    private StudentService studentService;
+
     private String url;
 
     @BeforeEach
     void setUp() {
         url = "http://localhost:" + port + "/faculty";
+    }
+
+    @AfterEach
+    void tearDown() {
+        Collection<Student> students = studentService.getAll();
+        students.forEach(student -> studentService.delete(student.getId()));
+        Collection<Faculty> faculties = facultyService.getAll();
+        faculties.forEach(faculty -> {
+            facultyService.delete(faculty.getId());
+        });
+
     }
 
     @Test
@@ -131,19 +154,16 @@ class FacultyControllerIntegrationTest {
 
     @Test
     void shouldReturnStudentNotFoundException() {
-        Faculty updated = new Faculty(1L, "Polytechnic", "purple");
-        Exception exception = assertThrows(FacultyNotFoundException.class, () -> {
-                    testRestTemplate.exchange(
-                            url,
-                            HttpMethod.PUT,
-                            new HttpEntity<>(updated),
-                            String.class
-                    );
-                });
-        String expectedMessage = "For input string";
-        String actualMessage = exception.getMessage();
+        Faculty updated = new Faculty(1L, "ADS", "ads");
+        ResponseEntity<String> response = testRestTemplate.exchange(
+                url,
+                HttpMethod.PUT,
+                new HttpEntity<>(updated),
+                String.class
+        );
 
-        assertTrue(actualMessage.contains(expectedMessage));
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertEquals(response.getBody(), "Факультет с id=1 не найден");
     }
 
     @Test
