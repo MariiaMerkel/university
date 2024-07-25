@@ -1,5 +1,21 @@
 package ru.msu.university.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.msu.university.ConstantsForTests.BIOLOGY_EXPECTED;
+import static ru.msu.university.ConstantsForTests.CHEMICAL_EXPECTED;
+import static ru.msu.university.ConstantsForTests.ECONOMICS_EXPECTED;
+import static ru.msu.university.ConstantsForTests.FACULTIES;
+import static ru.msu.university.ConstantsForTests.MATHEMATICS_EXPECTED;
+import static ru.msu.university.ConstantsForTests.PHILOLOGY_EXPECTED;
+import static ru.msu.university.ConstantsForTests.STUDENTS;
+
+import java.util.List;
+import java.util.Optional;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -19,17 +35,6 @@ import ru.msu.university.repositories.StudentRepository;
 import ru.msu.university.service.impl.AvatarServiceImpl;
 import ru.msu.university.service.impl.FacultyServiceImpl;
 import ru.msu.university.service.impl.StudentServiceImpl;
-
-import java.util.List;
-import java.util.Optional;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.msu.university.ConstantsForTests.*;
 
 @WebMvcTest(FacultyController.class)
 class FacultyControllerMVCTest {
@@ -69,23 +74,23 @@ class FacultyControllerMVCTest {
         when(facultyRepository.findById(any(Long.class))).thenReturn(Optional.of(BIOLOGY_EXPECTED));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .post(url)
-                        .content(getJsonObjectFaculty(expected))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(expected.getId()))
-                .andExpect(jsonPath("$.name").value(expected.getName()))
-                .andExpect(jsonPath("$.color").value(expected.getColor()));
+                                .post(url)
+                                .content(getJsonObjectFaculty(expected))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.id").value(expected.getId()))
+               .andExpect(jsonPath("$.name").value(expected.getName()))
+               .andExpect(jsonPath("$.color").value(expected.getColor()));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(url)
-                        .param("id", String.valueOf(expected.getId()))
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(expected.getId()))
-                .andExpect(jsonPath("$.name").value(expected.getName()))
-                .andExpect(jsonPath("$.color").value(expected.getColor()));
+                                .get(url)
+                                .param("id", String.valueOf(expected.getId()))
+                                .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.id").value(expected.getId()))
+               .andExpect(jsonPath("$.name").value(expected.getName()))
+               .andExpect(jsonPath("$.color").value(expected.getColor()));
     }
 
     @Test
@@ -93,14 +98,14 @@ class FacultyControllerMVCTest {
         when(facultyRepository.findAll()).thenReturn(FACULTIES);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(url)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0]").value(FACULTIES.get(0)))
-                .andExpect(jsonPath("$[1]").value(FACULTIES.get(1)))
-                .andExpect(jsonPath("$[2]").value(FACULTIES.get(2)))
-                .andExpect(jsonPath("$[3]").value(FACULTIES.get(3)))
-                .andExpect(jsonPath("$[4]").value(FACULTIES.get(4)));
+                                .get(url)
+                                .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$[0]").value(FACULTIES.get(0)))
+               .andExpect(jsonPath("$[1]").value(FACULTIES.get(1)))
+               .andExpect(jsonPath("$[2]").value(FACULTIES.get(2)))
+               .andExpect(jsonPath("$[3]").value(FACULTIES.get(3)))
+               .andExpect(jsonPath("$[4]").value(FACULTIES.get(4)));
     }
 
     @Test
@@ -109,13 +114,13 @@ class FacultyControllerMVCTest {
         when(facultyRepository.findById(any(Long.class))).thenReturn(Optional.of(MATHEMATICS_EXPECTED));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(url)
-                        .param("id", String.valueOf(expected.getId()))
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(expected.getId()))
-                .andExpect(jsonPath("$.name").value(expected.getName()))
-                .andExpect(jsonPath("$.color").value(expected.getColor()));
+                                .get(url)
+                                .param("id", String.valueOf(expected.getId()))
+                                .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.id").value(expected.getId()))
+               .andExpect(jsonPath("$.name").value(expected.getName()))
+               .andExpect(jsonPath("$.color").value(expected.getColor()));
     }
 
     @Test
@@ -123,30 +128,30 @@ class FacultyControllerMVCTest {
         when(facultyRepository.findById(any(Long.class))).thenThrow(FacultyNotFoundException.class);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(url)
-                        .param("id", "-1")
-                        .accept(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isNotFound());
+                                .get(url)
+                                .param("id", "-1")
+                                .accept(MediaType.APPLICATION_JSON))
+               .andDo(print())
+               .andExpect(status().isNotFound());
     }
 
     @Test
     void getByNameTest() throws Exception {
         String substring = "gy";
         List<Faculty> facultyList = FACULTIES.stream()
-                .filter(s -> s.getName().toLowerCase().contains(substring.toLowerCase()))
-                .toList();
+                                             .filter(s -> s.getName().toLowerCase().contains(substring.toLowerCase()))
+                                             .toList();
 
         when(facultyRepository.findByNameContainsIgnoreCase(substring)).thenReturn(facultyList);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(url)
-                        .param("name", substring)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpectAll(jsonPath("$[0]").value(BIOLOGY_EXPECTED))
-                .andExpectAll(jsonPath("$[1]").value(PHILOLOGY_EXPECTED));
+                                .get(url)
+                                .param("name", substring)
+                                .accept(MediaType.APPLICATION_JSON))
+               .andDo(print())
+               .andExpect(status().isOk())
+               .andExpectAll(jsonPath("$[0]").value(BIOLOGY_EXPECTED))
+               .andExpectAll(jsonPath("$[1]").value(PHILOLOGY_EXPECTED));
     }
 
     @Test
@@ -156,28 +161,28 @@ class FacultyControllerMVCTest {
         when(facultyRepository.findByNameContainsIgnoreCase(substring)).thenThrow(FacultyNotFoundException.class);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(url)
-                        .param("name", substring)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                                .get(url)
+                                .param("name", substring)
+                                .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isNotFound());
     }
 
     @Test
     void getByColorTest() throws Exception {
         String color = "ed";
         List<Faculty> facultyList = FACULTIES.stream()
-                .filter(s -> s.getColor().toLowerCase().contains(color.toLowerCase()))
-                .toList();
+                                             .filter(s -> s.getColor().toLowerCase().contains(color.toLowerCase()))
+                                             .toList();
         when(facultyRepository.findByColorContainsIgnoreCase(color))
                 .thenReturn(facultyList);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(url)
-                        .param("color", color)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpectAll(jsonPath("$[0]").value(PHILOLOGY_EXPECTED));
+                                .get(url)
+                                .param("color", color)
+                                .accept(MediaType.APPLICATION_JSON))
+               .andDo(print())
+               .andExpect(status().isOk())
+               .andExpectAll(jsonPath("$[0]").value(PHILOLOGY_EXPECTED));
     }
 
     @Test
@@ -186,11 +191,11 @@ class FacultyControllerMVCTest {
         when(facultyRepository.findByColorContainsIgnoreCase(color)).thenThrow(FacultyNotFoundException.class);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(url)
-                        .param("color", color)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isNotFound());
+                                .get(url)
+                                .param("color", color)
+                                .accept(MediaType.APPLICATION_JSON))
+               .andDo(print())
+               .andExpect(status().isNotFound());
     }
 
     @Test
@@ -201,14 +206,14 @@ class FacultyControllerMVCTest {
         when(facultyRepository.save(expected)).thenReturn(expected);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .put(url)
-                        .content(jsonFaculty)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(expected.getId()))
-                .andExpect(jsonPath("$.name").value(expected.getName()))
-                .andExpect(jsonPath("$.color").value(expected.getColor()));
+                                .put(url)
+                                .content(jsonFaculty)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.id").value(expected.getId()))
+               .andExpect(jsonPath("$.name").value(expected.getName()))
+               .andExpect(jsonPath("$.color").value(expected.getColor()));
     }
 
     @Test
@@ -218,15 +223,14 @@ class FacultyControllerMVCTest {
 
         when(facultyRepository.save(expected)).thenThrow(FacultyNotFoundException.class);
 
-
         mockMvc.perform(MockMvcRequestBuilders
-                        .put(url)
-                        .content(jsonFaculty)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$").value("Факультет с id=2 не найден"));
+                                .put(url)
+                                .content(jsonFaculty)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON))
+               .andDo(print())
+               .andExpect(status().isNotFound())
+               .andExpect(jsonPath("$").value("Факультет с id=2 не найден"));
     }
 
     @Test
@@ -239,21 +243,21 @@ class FacultyControllerMVCTest {
         list.get(3).setFaculty(ECONOMICS_EXPECTED);
         list.get(4).setFaculty(CHEMICAL_EXPECTED);
         List<Student> studentList = list.stream()
-                .filter(s -> s.getFaculty()
-                        .getId()
-                        .equals(expected.getId()))
-                .toList();
+                                        .filter(s -> s.getFaculty()
+                                                      .getId()
+                                                      .equals(expected.getId()))
+                                        .toList();
 
         when(studentRepository.findByFaculty_Id(2L)).thenReturn(studentList);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(url + "/2/students")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0]").value(list.get(0)))
-                .andExpect(jsonPath("$[1]").value(list.get(1)));
+                                .get(url + "/2/students")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON))
+               .andDo(print())
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$[0]").value(list.get(0)))
+               .andExpect(jsonPath("$[1]").value(list.get(1)));
     }
 
     @Test
@@ -263,15 +267,15 @@ class FacultyControllerMVCTest {
         doNothing().when(facultyRepository).delete(BIOLOGY_EXPECTED);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete(url)
-                        .param("id", String.valueOf(expected.getId()))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(expected.getId()))
-                .andExpect(jsonPath("$.name").value(expected.getName()))
-                .andExpect(jsonPath("$.color").value(expected.getColor()));
+                                .delete(url)
+                                .param("id", String.valueOf(expected.getId()))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON))
+               .andDo(print())
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.id").value(expected.getId()))
+               .andExpect(jsonPath("$.name").value(expected.getName()))
+               .andExpect(jsonPath("$.color").value(expected.getColor()));
     }
 
 

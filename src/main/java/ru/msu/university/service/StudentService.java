@@ -1,11 +1,11 @@
 package ru.msu.university.service;
 
-import ru.msu.university.entities.Student;
-
 import java.util.Collection;
 import java.util.List;
+import ru.msu.university.entities.Student;
 
 public interface StudentService {
+
     Student add(Student student);
 
     Student get(Long id);

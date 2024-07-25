@@ -1,5 +1,8 @@
 package ru.msu.university.service.impl;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -9,10 +12,6 @@ import ru.msu.university.exceptions.CustomStudentException;
 import ru.msu.university.exceptions.StudentNotFoundException;
 import ru.msu.university.repositories.StudentRepository;
 import ru.msu.university.service.StudentService;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -83,16 +82,16 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student update(Student student) {
         Student updated = studentRepository.findById(student.getId())
-                .map(s -> {
-                    s.setName(student.getName());
-                    s.setAge(student.getAge());
-                    s.setFaculty(student.getFaculty());
-                    return studentRepository.save(s);
-                })
-                .orElseThrow(() -> {
-                    logger.error("Student {} wasn't update", student);
-                    return new StudentNotFoundException(student.getId());
-                });
+                                           .map(s -> {
+                                               s.setName(student.getName());
+                                               s.setAge(student.getAge());
+                                               s.setFaculty(student.getFaculty());
+                                               return studentRepository.save(s);
+                                           })
+                                           .orElseThrow(() -> {
+                                               logger.error("Student {} wasn't update", student);
+                                               return new StudentNotFoundException(student.getId());
+                                           });
         logger.debug("Updated student {}", updated);
         return updated;
     }
@@ -100,14 +99,14 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student delete(Long id) {
         Student deleted = studentRepository.findById(id)
-                .map(s -> {
-                    studentRepository.delete(s);
-                    return s;
-                })
-                .orElseThrow(() -> {
-                    logger.error("Student with id={} wasn't delete", id);
-                    return new StudentNotFoundException(id);
-                });
+                                           .map(s -> {
+                                               studentRepository.delete(s);
+                                               return s;
+                                           })
+                                           .orElseThrow(() -> {
+                                               logger.error("Student with id={} wasn't delete", id);
+                                               return new StudentNotFoundException(id);
+                                           });
         logger.debug("deleted student {}", deleted);
         return deleted;
     }
@@ -143,18 +142,18 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public List<String> getNamesStarting(String letter) {
         return studentRepository.findAll().stream()
-                .map(student -> student.getName().toUpperCase())
-                .filter(name -> name.startsWith(letter))
-                .sorted()
-                .toList();
+                                .map(student -> student.getName().toUpperCase())
+                                .filter(name -> name.startsWith(letter))
+                                .sorted()
+                                .toList();
     }
 
     @Override
     public Double getAverageAgeSecond() {
         return studentRepository.findAll().stream()
-                .mapToInt(Student::getAge)
-                .average()
-                .orElse(0.0);
+                                .mapToInt(Student::getAge)
+                                .average()
+                                .orElse(0.0);
     }
 
     @Override

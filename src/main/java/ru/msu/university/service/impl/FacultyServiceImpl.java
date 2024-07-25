@@ -1,5 +1,8 @@
 package ru.msu.university.service.impl;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -11,10 +14,6 @@ import ru.msu.university.exceptions.FacultyNotFoundException;
 import ru.msu.university.repositories.FacultyRepository;
 import ru.msu.university.repositories.StudentRepository;
 import ru.msu.university.service.FacultyService;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
@@ -91,15 +90,15 @@ public class FacultyServiceImpl implements FacultyService {
     @Override
     public Faculty update(Faculty faculty) {
         Faculty founded = facultyRepository.findById(faculty.getId())
-                .map(f -> {
-                    f.setName(faculty.getName());
-                    f.setColor(faculty.getColor());
-                    return facultyRepository.save(f);
-                })
-                .orElseThrow(() -> {
-                    logger.error("Faculty {} wasn't update", faculty);
-                    return new FacultyNotFoundException(faculty.getId());
-                });
+                                           .map(f -> {
+                                               f.setName(faculty.getName());
+                                               f.setColor(faculty.getColor());
+                                               return facultyRepository.save(f);
+                                           })
+                                           .orElseThrow(() -> {
+                                               logger.error("Faculty {} wasn't update", faculty);
+                                               return new FacultyNotFoundException(faculty.getId());
+                                           });
         logger.debug("Updated faculty {}", faculty);
         return founded;
     }
@@ -107,14 +106,14 @@ public class FacultyServiceImpl implements FacultyService {
     @Override
     public Faculty delete(Long id) {
         Faculty faculty = facultyRepository.findById(id)
-                .map(f -> {
-                    facultyRepository.delete(f);
-                    return f;
-                })
-                .orElseThrow(() -> {
-                    logger.error("Faculty with id={} wasn't delete", id);
-                    return new FacultyNotFoundException(id);
-                });
+                                           .map(f -> {
+                                               facultyRepository.delete(f);
+                                               return f;
+                                           })
+                                           .orElseThrow(() -> {
+                                               logger.error("Faculty with id={} wasn't delete", id);
+                                               return new FacultyNotFoundException(id);
+                                           });
         logger.debug("Deleted faculty {}", faculty);
         return faculty;
     }
@@ -131,14 +130,14 @@ public class FacultyServiceImpl implements FacultyService {
         List<Faculty> faculties = facultyRepository.findAll();
         logger.debug("Founded all faculties {}", faculties);
         int max = faculties.stream()
-                .map(Faculty::getName)
-                .mapToInt(String::length)
-                .max()
-                .orElse(0);
+                           .map(Faculty::getName)
+                           .mapToInt(String::length)
+                           .max()
+                           .orElse(0);
 
         return faculties.stream()
-                .map(Faculty::getName)
-                .filter(name -> name.length() == max)
-                .toList();
+                        .map(Faculty::getName)
+                        .filter(name -> name.length() == max)
+                        .toList();
     }
 }

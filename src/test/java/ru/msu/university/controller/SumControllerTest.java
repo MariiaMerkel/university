@@ -1,6 +1,5 @@
 package ru.msu.university.controller;
 
-import lombok.Data;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

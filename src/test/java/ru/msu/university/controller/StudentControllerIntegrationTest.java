@@ -1,5 +1,12 @@
 package ru.msu.university.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static ru.msu.university.ConstantsForTests.ALEX;
+import static ru.msu.university.ConstantsForTests.MARIIA;
+import static ru.msu.university.ConstantsForTests.SERGEY;
+import static ru.msu.university.ConstantsForTests.TATYANA;
+
+import java.util.stream.Stream;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,11 +23,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import ru.msu.university.entities.Faculty;
 import ru.msu.university.entities.Student;
-
-import java.util.stream.Stream;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static ru.msu.university.ConstantsForTests.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class StudentControllerIntegrationTest {

@@ -1,7 +1,10 @@
 package ru.msu.university.entities;
 
-import jakarta.persistence.*;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.util.Objects;
 
 @Entity
@@ -63,8 +66,12 @@ public class Faculty {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Faculty faculty)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Faculty faculty)) {
+            return false;
+        }
         return id.equals(faculty.id) && Objects.equals(name, faculty.name) && Objects.equals(color, faculty.color);
     }
 
